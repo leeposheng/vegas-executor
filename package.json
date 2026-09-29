@@ -1,0 +1,17 @@
+{
+  "name": "vegas-executor",
+  "version": "0.1.0",
+  "description": "維加斯通道+QQE 訊號的執行層骨架（階段 0：只計算不下單）",
+  "private": true,
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test/smoke.js && node test/okx.js && node test/drift.js && node test/equity.js && node test/notional.js && node test/fixed-margin.js && node test/reconcile.js && node test/config-parse.js && node test/concurrency.js && node test/symbols.js && node test/dual-exchange.js",
+    "sample": "node tools/send-sample.js",
+    "preflight": "node tools/okx-preflight.js"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,40 @@
+# ── 絕對不能上傳的 ─────────────────────────────────
+#
+# Git 的歷史是永久的。密鑰一旦 commit 進去，之後刪掉檔案也沒用 ——
+# 它還在歷史裡，而私有 repo 哪天轉公開，整段歷史跟著公開。
+# 所以這一段寧可擋過頭。
+
+.env
+.env.*
+!.env.example
+
+# 實際的交易狀態：部位、已實現損益、下單意圖。
+# 不是機密，但是「你的」資料，沒有理由進版本控制，
+# 而且它會在每次部署時被 commit 覆蓋掉 —— 那才是真正的危險。
+data/
+*.state.json
+
+# REST Client 的請求檔。範本裡是佔位字串，但很多人會直接把
+# 真的金鑰填進去測試，然後忘記改回來。
+tools/requests.http
+
+# 各種常見的金鑰檔名
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+*-secret*
+*-credentials*
+
+# ── 其他 ───────────────────────────────────────────
+node_modules/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+coverage/
+.nyc_output/
+*.tgz
+*.zip

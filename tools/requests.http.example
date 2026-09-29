@@ -1,0 +1,69 @@
+### 在 VS Code 裡直接打 API（需安裝 REST Client 擴充套件）
+###
+### 【使用方式】把這個檔案複製成 requests.http 再填金鑰。
+### requests.http 已被 .gitignore 擋住，不會上傳；
+### 這個 .example 才是進版本控制的那一份，裡面永遠只放佔位字串。
+###
+### 用法：把下面兩個密鑰換成你 .env 裡的值，
+### 然後點每個請求上方出現的「Send Request」。
+### 好處是不用記 curl 語法，Windows 上尤其方便。
+
+@host = http://localhost:8080
+@executorKey = 換成你的 EXECUTOR_WEBHOOK_SECRET
+@controlKey = 換成你的 EXECUTOR_CONTROL_SECRET
+
+
+### 健康檢查（不需密鑰）
+GET {{host}}/health
+
+
+### 送一筆高品質做多訊號 → 應回 placed
+# 注意：ts 要是「現在」的毫秒時間戳，否則會被重放保護擋下。
+# 取得現在的時間戳：在終端機執行 node -e "console.log(Date.now())"
+POST {{host}}/signal
+Content-Type: application/json
+X-Executor-Key: {{executorKey}}
+
+{
+  "v": "11.8",
+  "sig_id": "BTCUSDT.P-60-manual-001-long",
+  "ts": 1758470000000,
+  "symbol": "BTCUSDT.P",
+  "tf": "60",
+  "grade": 3,
+  "score": 85,
+  "side": "long",
+  "entry": 85397.5,
+  "sl": 85011.8,
+  "tp": [85783.2, 86169.0, 86554.7]
+}
+
+
+### 沒帶密鑰 → 應回 403
+POST {{host}}/signal
+Content-Type: application/json
+
+{}
+
+
+### 停止下單（kill switch）
+POST {{host}}/control/halt
+Content-Type: application/json
+X-Control-Key: {{controlKey}}
+
+{ "reason": "手動測試" }
+
+
+### 恢復下單
+POST {{host}}/control/resume
+X-Control-Key: {{controlKey}}
+
+
+### 查看目前登記的部位
+GET {{host}}/positions
+X-Control-Key: {{controlKey}}
+
+
+### 用 webhook 密鑰打控制端點 → 應回 403（驗證權限隔離）
+POST {{host}}/control/resume
+X-Control-Key: {{executorKey}}

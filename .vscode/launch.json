@@ -1,0 +1,56 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "1. 啟動執行服務（可下中斷點）",
+      "program": "${workspaceFolder}/src/index.js",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "2. 執行冒煙測試",
+      "program": "${workspaceFolder}/test/smoke.js",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "3. 送出範例訊號：做多",
+      "program": "${workspaceFolder}/tools/send-sample.js",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "4. 送出範例訊號：弱訊號（應被擋下）",
+      "program": "${workspaceFolder}/tools/send-sample.js",
+      "args": ["weak"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "5. 送出範例訊號：方向寫反（應被擋下）",
+      "program": "${workspaceFolder}/tools/send-sample.js",
+      "args": ["bad"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "6. 送出範例訊號：重複（測冪等）",
+      "program": "${workspaceFolder}/tools/send-sample.js",
+      "args": ["dup"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

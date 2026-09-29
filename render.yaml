@@ -1,0 +1,48 @@
+# Render 的 Infrastructure as Code 設定。
+#
+# 放這個檔案的用意不是「現在就搬過去」，而是把搬過去需要的每一項決定
+# 寫在一個看得到的地方 —— 尤其是那些「不設定就會安靜出錯」的項目。
+#
+# 兩個硬性前提（在 Render 上與 Zeabur 不同）：
+#   1. plan 不能是 free。免費方案 15 分鐘沒有流量就休眠，
+#      喚醒約需一分鐘 —— 訊號進來時服務是睡著的，那一筆就沒了。
+#      而且免費方案掛不了硬碟，state.json 每次重啟歸零。
+#   2. 必須掛 disk。沒有硬碟的話，冪等紀錄、持倉、當日損益全部
+#      會在每次部署時消失。
+services:
+  - type: web
+    name: vegas-executor
+    runtime: node
+    # 新加坡離 OKX 最近。Render 的區域一旦建立就不能改，只能重建服務。
+    region: singapore
+    plan: starter          # $7/月。free 會休眠，見上方說明。
+    buildCommand: npm install
+    startCommand: node src/index.js
+    # Render 會定期打這個路徑；連續失敗會自動重啟服務。
+    healthCheckPath: /health
+    autoDeploy: false      # 交易系統不要一 push 就自動上線
+    disk:
+      name: vegas-data
+      mountPath: /data
+      sizeGB: 1            # $0.25/月
+    envVars:
+      - key: DATA_DIR
+        value: /data       # 必須指向上面的 mountPath
+      - key: NODE_VERSION
+        value: "20"
+      # 以下一律在 Render 後台的 Environment 分頁設定，不寫在這裡。
+      # sync: false 的意思是「這個值由人工填寫，IaC 不管」。
+      - key: OKX_API_KEY
+        sync: false
+      - key: OKX_API_SECRET
+        sync: false
+      - key: OKX_PASSPHRASE
+        sync: false
+      - key: EXECUTOR_WEBHOOK_SECRET
+        sync: false
+      - key: EXECUTOR_CONTROL_SECRET
+        sync: false
+      - key: TG_TOKEN
+        sync: false
+      - key: TG_CHAT_ID
+        sync: false
