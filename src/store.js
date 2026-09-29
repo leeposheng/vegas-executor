@@ -44,6 +44,17 @@ const EMPTY = {
   // 存在狀態檔裡而不是只放記憶體：重新部署之後你設的值要還在。
   // 否則每次上新版都會悄悄退回環境變數的預設值，而你不會發現。
   overrides: {},   // { maxConcurrent }
+  // 最後一次日損重置的時間戳。
+  //
+  // 【為什麼不能只存在 daily[今天].resets 裡】
+  // daily 是按台北日期切的。23:55 按下重置，冷卻 30 分鐘 ——
+  // 到了 00:00，dailyResetInfo() 開始讀新的一天，那一天沒有 resets，
+  // 於是 lastAt 變成 0，冷卻直接消失。
+  //
+  // 而 24 小時的加密市場裡午夜不是任何一種休息。剛重置完的那個人，
+  // 在 00:05 跟在 23:55 是同一個人 —— 冷卻本來就該跨過去。
+  // 日損額度歸零是刻意的（那是「新的一天」的意思），冷卻被一起歸零不是。
+  lastResetAtMs: 0,
 };
 
 // 已處理紀錄保留天數，避免檔案無限成長
@@ -294,7 +305,9 @@ class Store {
     const last = d.resets.length ? d.resets[d.resets.length - 1] : null;
     return {
       count: d.resets.length,
-      lastAt: last ? last.at : 0,
+      // 次數看今天（跨日重算是對的），時間看全域（跨日不該重算）。
+      // 兩者的日界線意義不同，所以來源也不同。
+      lastAt: Math.max(this.state.lastResetAtMs || 0, last ? last.at : 0),
       realisedPnlUsdt: d.realisedPnlUsdt,
       baseline: d.resetBaseline || 0,
       effectivePnlUsdt: d.realisedPnlUsdt - (d.resetBaseline || 0),
@@ -321,6 +334,8 @@ class Store {
       clearedUsdt: cleared,
       note: String(o.note || ''),
     });
+    // 全域記一份，讓冷卻跨得過午夜
+    if (now > (this.state.lastResetAtMs || 0)) this.state.lastResetAtMs = now;
     this.save();
     return { count: d.resets.length, clearedUsdt: cleared, at: now };
   }

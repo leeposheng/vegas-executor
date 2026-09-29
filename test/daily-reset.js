@@ -221,5 +221,31 @@ t('調長後的冷卻，閘門真的會用', () => {
   assert.strictEqual(risk.resetCooldown(s, RISK).active, true, '改成 60 後應仍在冷卻');
 });
 
+// 【這一條是被一個會看時鐘的測試逼出來的】
+// 上面那條在台北時間 00:00–00:40 之間會紅：重置寫進「昨天」的紀錄，
+// 而 dailyResetInfo() 讀「今天」的，lastAt 因此歸零、冷卻消失。
+//
+// 那不是測試的問題，是真的漏洞：23:55 按下重置、冷卻 30 分鐘，
+// 到了 00:00 冷卻直接不見 —— 而 24 小時的加密市場裡午夜不是休息。
+// 日損額度歸零是刻意的，冷卻被一起歸零不是。
+t('冷卻跨得過午夜（重置在昨天、現在是今天）', () => {
+  const s = tmpStore();
+  // 固定一個「昨天 23:50、現在 00:10」的情境，不依賴實際時鐘。
+  // 台北是 UTC+8，所以台北 23:50 = 當日 UTC 15:50。
+  const resetAt = new Date('2026-09-29T15:50:00Z').getTime();  // 台北 09-29 23:50
+  const now = new Date('2026-09-29T16:10:00Z').getTime();      // 台北 09-30 00:10
+
+  s.recordPnl(-62.12, resetAt);
+  s.resetDailyLoss({ by: 'test', now: resetAt });
+
+  const info = s.dailyResetInfo(now);
+  assert.strictEqual(info.lastAt, resetAt, '重置時間必須跨日保留');
+  // 次數則應該歸零 —— 新的一天有新的額度，那是刻意的
+  assert.strictEqual(info.count, 0, '新的一天重置次數應歸零');
+
+  const cool = risk.resetCooldown(s, RISK, now);
+  assert.strictEqual(cool.active, true, '過了 20 分鐘、冷卻 30 分鐘，應仍在冷卻');
+});
+
 console.log('\n' + (fail ? '✗ ' : '✓ ') + pass + ' 通過，' + fail + ' 失敗');
 process.exit(fail ? 1 : 0);

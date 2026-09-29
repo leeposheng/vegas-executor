@@ -67,3 +67,11 @@ X-Control-Key: {{controlKey}}
 ### 用 webhook 密鑰打控制端點 → 應回 403（驗證權限隔離）
 POST {{host}}/control/resume
 X-Control-Key: {{executorKey}}
+
+
+### 查這台機器的對外 IP（填交易所白名單用）
+#
+# 開機日誌裡也有同一個數字，而且不必帶金鑰 ——
+# 這支是「想在不重開服務的情況下再查一次」時用的。
+GET {{host}}/control/whoami
+X-Control-Key: {{controlKey}}

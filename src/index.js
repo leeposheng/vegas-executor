@@ -882,6 +882,33 @@ async function start() {
       console.log('   修好之後：POST /control/resume');
     }
     console.log('─'.repeat(56));
+
+    // ── 對外 IP ────────────────────────────────────────────
+    //
+    // 【為什麼要在開機時印】
+    // 交易所的 API 金鑰 IP 白名單要填的就是這個數字，而它是
+    // 「這台機器送出請求時對方看到的來源位址」—— 不是你家的 IP，
+    // 也不是瀏覽器上查到的。跑在雲端時兩者完全不同。
+    //
+    // 原本只有 GET /control/whoami 查得到，而那支端點需要控制金鑰，
+    // 也就是說要拿到這個數字，得先把最高權限的金鑰帶在手上敲一次 API。
+    // 為了一個「公開查得到、也不敏感」的數字付這種代價並不合理。
+    //
+    // 印在開機日誌裡，翻一下 Zeabur 就有，不必帶任何金鑰。
+    // 查失敗不影響任何功能 —— 這純粹是診斷資訊。
+    fetch('https://api.ipify.org?format=json')
+      .then((r) => r.json())
+      .then((b) => {
+        console.log('對外 IP：' + b.ip);
+        console.log('  交易所 API 金鑰的 IP 白名單要填的就是這個。');
+        console.log('  ⚠️ 填之前請隔幾小時重開一次服務、比對數字有沒有變 ——');
+        console.log('     共享叢集的出口 IP 不保證固定，會變的話就不能拿來綁。');
+        console.log('─'.repeat(56));
+      })
+      .catch((err) => {
+        console.warn('對外 IP 查詢失敗：' + err.message
+          + '（不影響下單，這只是診斷資訊）');
+      });
   });
 
   // 對帳定時器。
