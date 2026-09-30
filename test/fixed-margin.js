@@ -369,6 +369,59 @@ ck('捨去只會讓虧損變小，不會變大', () => {
   });
 })();
 
+
+// ---- 加保證金時的對齊餘裕 ----
+(function headroomTests() {
+  // 真實案例：BTC 5M 做空 2026-09-30 10:35，止損 0.366%。
+  // 槓桿已頂到峰值 40x，虧損 18.63 低於下限 20，該靠加保證金補上來。
+  const BTC = { ctVal: 0.01, lotSz: 0.01, minSz: 0.01 };
+  const base = {
+    spec: BTC, exchange: 'okx', feeRateOneWay: 0.0005,
+    lossMinUsdt: 20, lossMaxUsdt: 45, equityUsdt: 1500,
+    maxNotionalUsdt: 4500, minLiqCushion: 3,
+    marginUsdt: 100, marginMaxUsdt: 300, leverage: 40, autoLeverage: true,
+    entry: 83300, sl: 83604.8, side: 'short',
+    tp: [82995.2, 82690.4, 82385.6],
+  };
+
+  const r = computeFixedMargin(base);
+
+  // 【這一條守的是「瞄準邊界」這個錯誤】
+  // 沒有餘裕的版本會算出 19.99 —— 數量對齊往下捨，必然落在線外，
+  // 然後被自己的閘門以「止損太緊」為由擋掉。
+  ck('加保證金後虧損真的進得了區間', () => {
+    assert.strictEqual(r.ok, true, r.error);
+    assert.ok(r.sizing.actualRiskUsdt >= 20,
+      `對齊後虧損 ${r.sizing.actualRiskUsdt} 應 >= 下限 20`);
+    assert.ok(r.sizing.actualRiskUsdt <= 45);
+  });
+  ck('保證金有被提高，且在區間內', () => {
+    assert.ok(r.sizing.targetMarginUsdt > 100 && r.sizing.targetMarginUsdt <= 300,
+      `保證金 ${r.sizing.targetMarginUsdt}`);
+  });
+  ck('卡片說得出保證金被動過', () =>
+    assert.ok(r.sizing.leverageNote.indexOf('保證金提高到') !== -1));
+
+  // 餘裕只補「一個跳動單位」，不該讓倉位無謂變大。
+  ck('餘裕很小，不會超過下限太多', () => {
+    assert.ok(r.sizing.actualRiskUsdt < 21,
+      `虧損 ${r.sizing.actualRiskUsdt} 應貼近下限，不是往上衝`);
+  });
+
+  // 跳動單位很粗的標的也要進得去。
+  ck('最小跳動單位很粗時也能對齊進區間', () => {
+    const coarse = Object.assign({}, base, {
+      spec: { ctVal: 1, lotSz: 1, minSz: 1 },
+      entry: 100, sl: 100.366,
+    });
+    const c = computeFixedMargin(coarse);
+    if (c.ok) {
+      assert.ok(c.sizing.actualRiskUsdt >= 20,
+        `虧損 ${c.sizing.actualRiskUsdt} 應 >= 20`);
+    }
+  });
+})();
+
 console.log(`固定保證金測試：通過 ${pass} 項` + (fails.length ? `，失敗 ${fails.length} 項` : ''));
 if (fails.length) {
   console.error('\n' + fails.map((f) => '  ✗ ' + f).join('\n'));

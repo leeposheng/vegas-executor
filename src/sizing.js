@@ -133,7 +133,8 @@ function bandNumbers(o) {
  */
 function autoSize(o) {
   const { baseLeverage, stopPct, feeRateOneWay, marginMin, marginMax,
-    lossMinUsdt, lossMaxUsdt, maxNotionalUsdt, minLiqCushion } = o;
+    lossMinUsdt, lossMaxUsdt, maxNotionalUsdt, minLiqCushion,
+    lotNotionalUsdt } = o;
   const tot = stopPct + feeRateOneWay * 2;
 
   // 槓桿的天花板：峰值與強平緩衝，取嚴格者
@@ -158,7 +159,18 @@ function autoSize(o) {
   // 加完仍受名目上限約束：保證金 × 槓桿永遠不能超過它。
   let marginRaised = false;
   if (loss < lossMinUsdt && lev >= levCap) {
-    const needNotional = lossMinUsdt / tot;
+    // 【為什麼要多加一個跳動單位】
+    // 瞄準 lossMin 這個「點」是錯的：算完之後數量還要對齊到交易所的
+    // 最小跳動單位，而對齊一律往下捨 —— 於是結果必然落在線的外面。
+    //
+    // BTC 的實例：需要名目 4292.71，換算 5.1533 張，捨成 5.15 張，
+    // 名目變 4289.95，虧損 19.99。差 0.01 被自己的閘門擋掉，
+    // 而拒絕理由會說「止損太緊」—— 一個與真正原因無關的結論。
+    //
+    // 多留一張的量，捨去之後仍然在線內。這不是安全邊際，
+    // 是「瞄準邊界」這個做法本身的修正。
+    const headroom = Number(lotNotionalUsdt) > 0 ? Number(lotNotionalUsdt) : 0;
+    const needNotional = lossMinUsdt / tot + headroom;
     const allowedNotional = Math.min(needNotional, maxNotionalUsdt);
     const wantMargin = allowedNotional / lev;
     if (wantMargin > margin) {
@@ -212,10 +224,17 @@ function computeFixedMargin(p) {
   let autoNote = '';
   let capBound = false;
   if (p.autoLeverage) {
+    // 一個最小跳動單位值多少名目。OKX 的數量單位是「張」，
+    // 一張等於 ctVal 個幣；BingX 直接以幣計價。
+    const lotNotionalUsdt = exchange === 'okx'
+      ? Number(spec.lotSz) * Number(spec.ctVal) * Number(entry)
+      : Number(spec.stepSize) * Number(entry);
+
     const auto = autoSize({
       baseLeverage,
       stopPct: riskDistance / entry,
       feeRateOneWay,
+      lotNotionalUsdt,
       marginMin: p.marginUsdt,
       // 保證金上限沒設時就等於下限 —— 等同「不准加保證金」，
       // 與舊行為相同。要開放區間得明確設 FIXED_MARGIN_MAX_USDT。
