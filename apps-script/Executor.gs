@@ -49,6 +49,11 @@
  * 7. 併入另一條分支（repo apps-script/Executor.gs）的自動槓桿顯示：
  *    [風險] 標示預算或上限、槓桿被自動調低時註明原槓桿與原因、
  *    保證金被調高時另列 [保證金]。這幾行一樣只出現在私訊。
+ *
+ * 【v3.4.1 修正】
+ * postToExecutor_ 沒有把執行層回傳的 band／preview／equity 轉出去。
+ * 這三個欄位是「👀 可觀察」抬頭、[效益] 與 [建議] 行、權益說明的資料來源，
+ * 少了它們，虧損區間外的拒絕永遠顯示成「⛔ 未執行」、只剩一行 [原因]。
  */
 
 // ---- 指令碼屬性名稱 ----
@@ -510,6 +515,12 @@ function postToExecutor_(payload, cfg) {
       decision: body.decision || 'unknown',
       reasons: body.reasons || [],
       sizing: body.sizing || null,
+      // v3.4.1：這三個欄位執行層一直有回，但這裡原本沒有轉出去 ——
+      // 於是 isObservable_ 看不到 band、卡片畫不出 [效益]，權益說明也不會出現。
+      // 區間外的拒絕因此一律顯示成「⛔ 未執行」，而不是「👀 可觀察」。
+      band: body.band || null,
+      preview: body.preview || null,
+      equity: body.equity || null,
       dryRun: Boolean(body.dryRun)
     };
   } catch (error) {
