@@ -93,8 +93,15 @@ async function buildPlan(rawPayload, ctx) {
     : risk.overflowEligible(riskResult, store, config.risk, exchange);
   if (overLimit) result.overLimit = overLimit;
 
-  if (!riskResult.passed && !overLimit) {
-    result.reasons = riskResult.reasons;
+  // 同幣同向且已持有部位：可能是加倉機會。這裡只看本地紀錄，
+  // 交易所端的部位是否真的存在、是否浮盈，等代碼對應完再查。
+  const addOnCheck = (riskResult.passed || overLimit) ? null
+    : risk.addOnEligible(riskResult, store, config.risk, exchange, signal);
+  const addOnCandidate = addOnCheck && addOnCheck.ok ? addOnCheck : null;
+
+  if (!riskResult.passed && !overLimit && !addOnCandidate) {
+    result.reasons = riskResult.reasons
+      .concat(addOnCheck && !addOnCheck.ok ? [addOnCheck.why] : []);
     // 只有「非冪等」造成的拒絕才記為已處理。若是冪等本身擋下的，
     // 再寫一次只會覆蓋掉原本更有用的處理結果。
     const blockedByIdempotency = riskResult.gates
@@ -115,6 +122,32 @@ async function buildPlan(rawPayload, ctx) {
   }
   let spec = mapped.spec;
   result.spec = spec;
+
+  // ---- 3b. 加倉：向交易所確認既有部位 ----
+  //
+  // 本地紀錄說有部位不代表交易所真的有 —— 殘留紀錄正是這樣產生的。
+  // 加倉一定要以交易所的實際部位為準，並且沿用它的實際槓桿：
+  // 逐倉下對一個在場部位改槓桿，會改到原部位的保證金與強平價。
+  let addOn = null;
+  if (addOnCandidate) {
+    const live = await liveBasePosition(exchange, spec, signal, config);
+    if (!live.ok) {
+      result.reasons = riskResult.reasons.concat([live.why]);
+      store.markProcessed(signal.sigId, 'rejected', result.reasons.join('；'), exchange);
+      return { ok: false, result };
+    }
+    addOn = {
+      baseSigId: addOnCandidate.base.sigId,
+      layerNo: addOnCandidate.layerNo,
+      max: addOnCandidate.max,
+      baseSide: addOnCandidate.base.side,
+      baseEntry: addOnCandidate.base.entry,
+      lever: live.lever || addOnCandidate.base.leverage || null,
+      upl: live.upl,
+      livePos: live.pos,
+    };
+    result.addOn = addOn;
+  }
 
   // ---- 4. 合約規格 ----
   // 階段 0 用靜態表；階段 1 起把 refreshSpec 設為 true，改由交易所取得，
@@ -149,7 +182,9 @@ async function buildPlan(rawPayload, ctx) {
   // 撞到絕對上限則是帳戶成長超過當初設定（該把天花板調高）。
   const notionalCap = resolveNotionalCap(config.risk, equity.equityUsdt);
   result.notionalCap = notionalCap;
-  const sized = sizeFor(config, equity.equityUsdt, signal, spec, exchange, notionalCap);
+  // 加倉時以原部位的實際槓桿計算，不跑自動槓桿（見 sizingConfig）
+  const sized = sizeFor(sizingConfig(config, addOn), equity.equityUsdt, signal, spec,
+    exchange, notionalCap);
   if (!sized.ok) {
     result.reasons = [sized.error];
     // 區間問題與其他錯誤要分開。前者是「這筆算得出來，但不值得做」，
@@ -184,8 +219,54 @@ async function buildPlan(rawPayload, ctx) {
       equity: result.equity,
       notionalCap: result.notionalCap,
       overLimit: result.overLimit || null,
+      addOn: result.addOn || null,
     },
   };
+}
+
+/**
+ * 向交易所確認加倉的前提：部位真的在、方向相同、（預設）浮盈為正。
+ * 永不拋例外；查不到一律不加倉 —— 無法驗證的前提不能當成成立。
+ */
+async function liveBasePosition(exchange, spec, signal, config) {
+  const instId = spec.instId || spec.symbol;
+  const mod = exchange === 'okx' ? okx : bingx;
+  const cfg = exchange === 'okx' ? config.okx : config.bingx;
+  let list;
+  try {
+    list = await mod.fetchPositions(cfg, { demo: config.demo });
+  } catch (err) {
+    return { ok: false, why: `加倉條件未符：無法向交易所確認既有部位（${err.message}）` };
+  }
+  const p = (list || []).find((x) => x.instId === instId);
+  if (!p) {
+    return { ok: false, why: `加倉條件未符：交易所上查無 ${instId} 部位（系統紀錄可能是殘留）` };
+  }
+  // 單向持倉時 pos 的正負就是方向；雙向持倉看 posSide
+  const liveSide = (p.posSide === 'long' || p.posSide === 'short') ? p.posSide
+    : (Number(p.pos) < 0 ? 'short' : 'long');
+  if (liveSide !== signal.side) {
+    return { ok: false, why: `加倉條件未符：交易所上的 ${instId} 部位方向為${liveSide === 'long' ? '做多' : '做空'}` };
+  }
+  const upl = Number(p.upl);
+  if (config.risk.addOnRequireProfit !== false && !(upl > 0)) {
+    return { ok: false, why: `加倉條件未符：既有部位未獲利（未實現 ${Number.isFinite(upl) ? upl.toFixed(2) : '?'} USDT），`
+      + '不在虧損部位上加碼（ADDON_REQUIRE_PROFIT）' };
+  }
+  return { ok: true, lever: Number(p.lever) || null, upl: Number.isFinite(upl) ? upl : null, pos: Number(p.pos) };
+}
+
+/**
+ * 加倉時的倉位計算設定：關掉自動槓桿、槓桿固定為原部位的實際槓桿。
+ *
+ * 自動槓桿會依這筆的止損距離另算一個槓桿，而 ensureLeverage 會把它
+ * 設到交易所上 —— 對逐倉的在場部位改槓桿，等於改了原部位的強平價。
+ */
+function sizingConfig(config, addOn) {
+  if (!addOn || !addOn.lever) return config;
+  return Object.assign({}, config, {
+    risk: Object.assign({}, config.risk, { autoLeverage: false, leverage: addOn.lever }),
+  });
 }
 
 // ================================================================
@@ -242,6 +323,9 @@ async function placeFromPlan(plan, ctx) {
       tp: signal.tp,
       orderQty: sizing.orderQty,
       baseQty: sizing.baseQty,
+      // 加倉的意圖要記得它屬於哪個部位：對帳若發現它其實成交了，
+      // 要補登成那個部位的一層，而不是另開一筆（會造成損益重複計算）。
+      addOnTo: plan.addOn ? plan.addOn.baseSigId : undefined,
     });
   }
 
@@ -322,7 +406,7 @@ async function placeFromPlan(plan, ctx) {
     // dryRun 下不登記部位：沒有真實部位，卻佔用「同時持倉上限」的額度，
     // 會讓階段 0 的測試在第 4 筆訊號後全部被擋下。
     if (placed.sent) {
-      store.addPosition(signal.sigId, {
+      const record = {
         symbol: signal.symbol,
         exchange,
         side: signal.side,
@@ -332,7 +416,22 @@ async function placeFromPlan(plan, ctx) {
         orderQty: sizing.orderQty,
         baseQty: sizing.baseQty,
         clientOrderId: cloid,
-      });
+        // 記下實際槓桿：之後的加倉要沿用它
+        leverage: (sizing && sizing.leverage) || config.risk.leverage,
+      };
+      if (plan.addOn) {
+        const layered = store.addLayer(plan.addOn.baseSigId, exchange,
+          Object.assign({ sigId: signal.sigId }, record));
+        if (!layered) {
+          // 原部位在下單的這一瞬間被對帳結算掉了。退回另開一筆，
+          // 至少這筆成交不會從系統裡消失 —— 但要說出來。
+          store.addPosition(signal.sigId, record);
+          result.reasons.push('⚠️ 原部位紀錄已不存在，這筆加倉改記為獨立部位，請到交易所確認持倉。');
+        }
+        result.addOn = plan.addOn;
+      } else {
+        store.addPosition(signal.sigId, record);
+      }
     }
     // 有了部位紀錄，意圖就完成了它的任務
     store.clearIntent(signal.sigId, exchange);
@@ -497,7 +596,8 @@ async function handleForExchange(rawPayload, ctx, exchange) {
   // ---- 決定要直接下單還是等人確認 ----
   // 超額單一律等人確認，即使是 auto 模式 —— 超出上限是一個需要你
   // 逐筆同意的例外，不該由系統自己決定。
-  const auto = !plan.overLimit && (config.executionMode === 'auto' ||
+  // 加倉同理：加碼是你對既有部位的判斷，一律按鈕。
+  const auto = !plan.overLimit && !plan.addOn && (config.executionMode === 'auto' ||
     (config.executionMode === 'by_grade' && plan.signal.grade >= config.autoGradeMin));
 
   if (auto) {
@@ -529,6 +629,7 @@ async function handleForExchange(rawPayload, ctx, exchange) {
     notionalCap: plan.notionalCap,
     // 確認時要知道這筆是超額單，才會以硬上限重查持倉數
     overLimit: plan.overLimit || null,
+    addOn: plan.addOn || null,
   });
   // 標記為已處理，避免同一筆訊號重送時產生第二個待確認紀錄
   store.markProcessed(plan.signal.sigId, 'pending', plan.clientOrderId, plan.exchange);
@@ -551,7 +652,12 @@ async function handleForExchange(rawPayload, ctx, exchange) {
     expiresAt,
     ttlSec: config.pendingTtlSec,
     overLimit: plan.overLimit || null,
-    reasons: plan.overLimit
+    addOn: plan.addOn || null,
+    reasons: plan.addOn
+      ? [`加倉機會：已持有${plan.addOn.baseSide === 'short' ? '做空' : '做多'}部位`
+        + (Number.isFinite(plan.addOn.upl) ? `（未實現 ${plan.addOn.upl >= 0 ? '+' : ''}${plan.addOn.upl.toFixed(2)} USDT）` : '')
+        + `，這是第 ${plan.addOn.layerNo} 次加倉（上限 ${plan.addOn.max}）`]
+      : plan.overLimit
       ? [`已達持倉上限 ${plan.overLimit.maxNow}（目前 ${plan.overLimit.openCount} 筆），`
         + `按「超額進場」將開第 ${plan.overLimit.openCount + 1} 筆，硬上限 ${plan.overLimit.hardCap}`]
       : [],
@@ -701,7 +807,7 @@ async function confirmSignalInner(sigId, ctx) {
 
   // 按下按鈕的當下重查會變動的閘門
   const re = risk.recheck(pending.signal, { store, risk: config.risk, exchange: pending.exchange },
-    { allowOverflow: Boolean(pending.overLimit) });
+    { allowOverflow: Boolean(pending.overLimit), addOn: pending.addOn || null });
   if (!re.passed) {
     store.resolvePending(sigId, 'skipped', '確認時風控未通過：' + re.reasons.join('；'), exchange);
     const result = {
@@ -718,6 +824,24 @@ async function confirmSignalInner(sigId, ctx) {
     };
     await notifyDecision(result, config, pending.exchange, ctx.suppressNotify);
     return result;
+  }
+
+  // ---- 加倉：按下去的當下再向交易所確認一次 ----
+  // 卡片躺在手機上的期間，原部位可能已經止損、或浮盈已經轉成虧損。
+  let addOn = pending.addOn || null;
+  if (addOn) {
+    const live = await liveBasePosition(pending.exchange, pending.spec, pending.signal, config);
+    if (!live.ok) {
+      store.resolvePending(sigId, 'skipped', '確認時加倉條件未符：' + live.why, exchange);
+      const rejected = {
+        at: new Date(now).toISOString(), decision: 'rejected', stage: 'addon_recheck',
+        sigId, signal: pending.signal, sizing: pending.sizing, addOn,
+        reasons: [live.why], elapsedMs: Date.now() - started,
+      };
+      await notifyDecision(rejected, config, pending.exchange, ctx.suppressNotify);
+      return rejected;
+    }
+    addOn = Object.assign({}, addOn, { upl: live.upl, lever: live.lever || addOn.lever });
   }
 
   // ---- 進場價漂移檢查 ----
@@ -775,7 +899,7 @@ async function confirmSignalInner(sigId, ctx) {
       // 同一筆交易的兩次計算若用了不同的本金，差異會變得無法解釋。
       const eq2 = (pending.equity && pending.equity.equityUsdt)
         || config.risk.equityUsdt;
-      const re2 = sizeFor(config, eq2,
+      const re2 = sizeFor(sizingConfig(config, addOn), eq2,
         Object.assign({}, pending.signal, { entry: drift.metrics.livePrice }),
         pending.spec, pending.exchange, pending.notionalCap || notionalCapFallback(config));
       if (!re2.ok) {
@@ -812,6 +936,7 @@ async function confirmSignalInner(sigId, ctx) {
       tpDeferred: pending.tpDeferred,
       gates: pending.gates,
       riskSummary: pending.riskSummary,
+      addOn,
     }, ctx);
   } catch (err) {
     // placeFromPlan 內部已經接住下單例外，走到這裡代表更底層的問題。

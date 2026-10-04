@@ -1,7 +1,7 @@
 /**
  * ================================================================
  * 執行層橋接（Executor.gs）
- * 對應指標 v11.9、Apps Script 第 3.5 批、vegas-executor（Zeabur，需含超額進場）
+ * 對應指標 v11.9、Apps Script 第 3.5 批、vegas-executor（Zeabur，需含超額進場與加倉）
  * ================================================================
  *
  * 【這個檔案在做什麼】
@@ -49,6 +49,11 @@
  * 7. 併入另一條分支（repo apps-script/Executor.gs）的自動槓桿顯示：
  *    [風險] 標示預算或上限、槓桿被自動調低時註明原槓桿與原因、
  *    保證金被調高時另列 [保證金]。這幾行一樣只出現在私訊。
+ *
+ * 【v3.6】加倉
+ * 同一個幣、同一個方向的訊號再次出現，且交易所上的既有部位浮盈為正時，
+ * 執行層回 decision=pending＋addOn。卡片抬頭為「➕ 加倉機會」，多兩行
+ * [加倉]／[次數]，按鈕為「➕ 加倉進場（第 N 次）」。群組廣播不受影響。
  *
  * 【v3.5】超額進場
  * 執行層達持倉上限、且只有這一道擋住時，改回 decision=pending＋overLimit。
@@ -528,6 +533,8 @@ function postToExecutor_(payload, cfg) {
       equity: body.equity || null,
       // v3.5：達持倉上限時，執行層改回 pending＋overLimit，卡片換成超額進場按鈕
       overLimit: body.overLimit || null,
+      // v3.6：同幣同向且已持有浮盈部位時，執行層回 pending＋addOn
+      addOn: body.addOn || null,
       dryRun: Boolean(body.dryRun)
     };
   } catch (error) {
@@ -745,6 +752,9 @@ function cardHead_(result) {
   // 前者要你去交易所確認，後者不必做任何事。
   if (d === 'error') return '⚠️ 結果未知，請到交易所確認';
   // 超額待確認：與一般待確認分開，一眼看得出「按下去會超過平常的上限」
+  if (d === 'pending' && result.addOn) {
+    return '➕ 加倉機會' + (result.dryRun ? '（DRY_RUN）' : '');
+  }
   if (d === 'pending' && result.overLimit) {
     return '🟡 已達持倉上限' + (result.dryRun ? '（DRY_RUN）' : '');
   }
@@ -835,6 +845,19 @@ function renderPendingCard_(payload, result, originalText, forBroadcast) {
   // 等於在群組裡公布帳戶規模。
   if (!forBroadcast && result.equity && result.equity.note) {
     lines.push('⚠️ ' + result.equity.note);
+  }
+
+  // 加倉待確認：原部位的方向、浮盈與這是第幾次加倉。只放私訊。
+  if (!forBroadcast && result.decision === 'pending' && result.addOn) {
+    var ao = result.addOn;
+    var upl = (ao.upl === null || ao.upl === undefined) ? null : Number(ao.upl);
+    lines.push('─────────────');
+    lines.push('[加倉] 已持有' + (ao.baseSide === 'short' ? '做空' : '做多') + '部位'
+      + (ao.baseEntry ? '（進場 ' + ao.baseEntry + '）' : '')
+      + (upl !== null ? '，未實現 ' + (upl >= 0 ? '+' : '') + upl.toFixed(2) + ' USDT' : ''));
+    lines.push('[次數] 第 ' + ao.layerNo + ' 次加倉（上限 ' + ao.max + '）'
+      + (ao.lever ? '｜沿用原部位槓桿 ' + ao.lever + 'x' : ''));
+    lines.push('這筆有自己的止損止盈，只作用在加倉的數量上。');
   }
 
   // 超額待確認：把「按下去會變成第幾筆、最多到幾筆」講清楚。
@@ -1633,7 +1656,9 @@ function sendPendingCard_(payload, result, originalText) {
         // 超額單用不同的文字，避免把「超過上限」當成一般進場順手按下去。
         // callback_data 不變：是否允許超額由執行層依待確認紀錄判定，
         // 不是由按鈕告訴它 —— 按鈕內容可以被偽造，紀錄不行。
-        { text: result.overLimit
+        { text: result.addOn
+            ? '➕ 加倉進場（第 ' + result.addOn.layerNo + ' 次）'
+            : result.overLimit
             ? '➕ 超額進場（第 ' + (result.overLimit.openCount + 1) + ' 筆）'
             : '✅ 進場',
           callback_data: CB_CONFIRM + payload.sig_id },

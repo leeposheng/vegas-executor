@@ -490,6 +490,8 @@ async function start() {
           preview: result.preview || null,
           // 超額進場的資訊。有值時卡片改成「🟡 已達持倉上限」並換按鈕文字。
           overLimit: result.overLimit || null,
+          // 加倉資訊。有值時卡片改成「➕ 加倉機會」並換按鈕文字。
+          addOn: result.addOn || null,
           // 權益來源要傳出去：卡片上的每個數字都是從它推出來的，
           // 它是查來的還是設定檔裡放著的，使用者有權知道。
           equity: result.equity || null,

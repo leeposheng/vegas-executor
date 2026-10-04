@@ -246,6 +246,16 @@ const config = {
     // 只放環境變數：Telegram 那端就算被冒用，也加不出這個數字以外的倉位。
     // 0 ＝ 停用超額，達上限一律拒絕（舊行為）。
     overflowPositions: num(process.env.OVERFLOW_POSITIONS, 2, 'OVERFLOW_POSITIONS'),
+
+    // ---- 加倉 ----
+    // 同一個幣、同一個方向的訊號再次出現，而且已經持有該幣的部位時，
+    // 不直接以「重複持倉」拒絕，改成待確認卡片＋「➕ 加倉進場」按鈕。
+    //
+    // 每個部位最多加幾次。0 ＝ 停用（舊行為：同幣一律拒絕）。
+    addOnMax: num(process.env.ADDON_MAX, 1, 'ADDON_MAX'),
+    // 既有部位必須浮盈才給加倉。順勢加碼是加在「已經證明方向對了」的部位上；
+    // 在虧損的部位上加碼是攤平，那是另一種策略，風險結構完全不同。
+    addOnRequireProfit: bool(process.env.ADDON_REQUIRE_PROFIT, true, 'ADDON_REQUIRE_PROFIT'),
     // 單日累計虧損達此金額（USDT）即停止當日下單
     dailyLossLimitUsdt: num(process.env.DAILY_LOSS_LIMIT_USDT, 50, 'DAILY_LOSS_LIMIT_USDT'),
 
@@ -454,6 +464,9 @@ function validate() {
   if (!(r.overflowPositions >= 0) || r.overflowPositions > 10
       || !Number.isInteger(r.overflowPositions)) {
     errors.push('OVERFLOW_POSITIONS 必須是 0 到 10 的整數');
+  }
+  if (!(r.addOnMax >= 0) || r.addOnMax > 5 || !Number.isInteger(r.addOnMax)) {
+    errors.push('ADDON_MAX 必須是 0 到 5 的整數');
   }
   if (r.maxConcurrent > r.maxConcurrentCeiling) {
     errors.push(

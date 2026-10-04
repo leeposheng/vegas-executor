@@ -41,6 +41,42 @@ function overflowEligible(riskResult, store, risk, exchange) {
 }
 
 /**
+ * 這次拒絕能不能改成「加倉」的待確認卡片（只看本地紀錄；交易所端的
+ * 部位存在與浮盈由 executor 另外向交易所查）。
+ *
+ * 條件：
+ *   - 失敗的閘門只有 no_duplicate_symbol（可另含 max_concurrent ——
+ *     加倉加在既有部位上，不佔新的持倉額度）
+ *   - 既有的是「部位」而不是未結案的下單意圖
+ *   - 方向相同（反向訊號在單向持倉下等於減倉或反手，不是加倉）
+ *   - 還沒用完加倉次數
+ *
+ * @returns {{ok:true, base, layerNo, max} | {ok:false, why} | null}
+ *          null ＝ 不適用（例如還有其他閘門沒過、或加倉已停用）
+ */
+function addOnEligible(riskResult, store, risk, exchange, signal) {
+  const max = Math.max(0, Math.floor(Number(risk.addOnMax) || 0));
+  if (!max) return null;
+  const failed = riskResult.gates.filter((g) => !g.passed).map((g) => g.name);
+  if (!failed.includes('no_duplicate_symbol')) return null;
+  if (failed.some((n) => n !== 'no_duplicate_symbol' && n !== 'max_concurrent')) return null;
+
+  const base = store.listPositions(exchange).find((p) => p.symbol === signal.symbol);
+  if (!base) {
+    return { ok: false, why: `加倉條件未符：${signal.symbol} 只有未結案的下單紀錄，沒有確認成交的部位` };
+  }
+  if (base.side && base.side !== signal.side) {
+    return { ok: false, why: `加倉條件未符：既有部位為${base.side === 'long' ? '做多' : '做空'}，`
+      + `訊號為${signal.side === 'long' ? '做多' : '做空'}（反向不加倉）` };
+  }
+  const used = Array.isArray(base.layers) ? base.layers.length : 0;
+  if (used >= max) {
+    return { ok: false, why: `加倉條件未符：此部位已加倉 ${used} 次，達上限 ${max}（ADDON_MAX）` };
+  }
+  return { ok: true, base, layerNo: used + 1, max };
+}
+
+/**
  * 目前生效的日損上限。
  *
  * 方向：Telegram 調大有天花板（DAILY_LOSS_CEILING_USDT），調小不限 ——
@@ -205,6 +241,9 @@ function recheck(signal, ctx, opts) {
   // allowOverflow：這筆是使用者按了「超額進場」的。持倉上限改以硬上限判定，
   // 其餘閘門照常重查。
   const allowOverflow = Boolean(opts && opts.allowOverflow);
+  // addOn：這筆是加倉。持倉額度與同標的重複改為「既有部位仍在、方向相同、
+  // 加倉次數未用完」—— 卡片躺在手機上的期間，部位可能已經平倉了。
+  const addOn = (opts && opts.addOn) || null;
   const gates = [];
   const add = (name, passed, detail) => gates.push({ name, passed, detail: detail || '' });
 
@@ -220,7 +259,15 @@ function recheck(signal, ctx, opts) {
 
   const openCount = store.openPositionCount(ctx.exchange);
   const maxNow = effectiveMaxConcurrent(store, risk);
-  if (allowOverflow) {
+  if (addOn) {
+    const base = store.listPositions(ctx.exchange).find((p) => p.sigId === addOn.baseSigId);
+    const used = base && Array.isArray(base.layers) ? base.layers.length : 0;
+    const max = Math.max(0, Math.floor(Number(risk.addOnMax) || 0));
+    const ok = Boolean(base) && (!base.side || base.side === signal.side) && used < max;
+    add('addon_base', ok, ok ? '' : (!base
+      ? '原部位已不存在（可能已平倉），不加倉'
+      : (used >= max ? `已加倉 ${used} 次，達上限 ${max}` : '方向與原部位不同')));
+  } else if (allowOverflow) {
     // 卡片躺在手機上的這段期間，可能又有別的訊號用掉了超額額度 ——
     // 所以按下去的當下以硬上限重新判定，不是按卡片產生時的數字。
     const a = overflowAllowance(store, risk, ctx.exchange);
@@ -233,9 +280,12 @@ function recheck(signal, ctx, opts) {
         `目前持倉 ${openCount} 筆，已達上限 ${maxNow}`);
   }
 
-  const dupSymbol = store.hasPositionForSymbol(signal.symbol, ctx.exchange);
-  add('no_duplicate_symbol', !dupSymbol,
-    dupSymbol ? `${signal.symbol} 已有未平倉部位` : '');
+  // 加倉時「已有部位」正是前提，不是拒絕理由 —— 由上面的 addon_base 取代。
+  if (!addOn) {
+    const dupSymbol = store.hasPositionForSymbol(signal.symbol, ctx.exchange);
+    add('no_duplicate_symbol', !dupSymbol,
+      dupSymbol ? `${signal.symbol} 已有未平倉部位` : '');
+  }
 
   const failed = gates.filter((g) => !g.passed);
   return {
@@ -256,6 +306,7 @@ function summarise(result) {
     reset_cooldown: '冷卻',
     max_concurrent: '倉數',
     no_duplicate_symbol: '重複',
+    addon_base: '加倉',
   };
   return result.gates
     .map((g) => (g.passed ? '✓' : '✗') + (zh[g.name] || g.name))
@@ -263,6 +314,6 @@ function summarise(result) {
 }
 
 module.exports = {
-  overflowAllowance, overflowEligible,
+  overflowAllowance, overflowEligible, addOnEligible,
   effectiveMaxConcurrent, effectiveDailyLossLimit, effectiveCooldownMin,
   resetCooldown, dailyLossGate, evaluate, recheck, summarise };

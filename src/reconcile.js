@@ -261,7 +261,7 @@ async function reconcileOnce(ctx) {
 
     if (order.state === 'filled') {
       // 成交了，而系統原本不知道。補登部位，之後就走正常的平倉對帳。
-      store.addPosition(it.sigId, {
+      const recovered = {
         symbol: it.symbol, exchange: exName, side: it.side,
         entry: order.avgPx || it.entry, sl: it.sl, tp: it.tp,
         // 數量以交易所實際成交為準，不用意圖裡的預期值。
@@ -280,7 +280,12 @@ async function reconcileOnce(ctx) {
           : it.at,
         // 標記來源。事後檢討時要分得出「正常下單」與「靠對帳撿回來的」。
         recoveredBy: 'reconcile',
-      });
+      };
+      // 加倉的意圖補登成原部位的一層。另開一筆的話，兩筆紀錄會去認領
+      // 交易所上同一個部位的同一筆平倉紀錄，損益被算兩次。
+      const layered = it.addOnTo
+        && store.addLayer(it.addOnTo, it.exchange, Object.assign({ sigId: it.sigId }, recovered));
+      if (!layered) store.addPosition(it.sigId, recovered);
       store.clearIntent(it.sigId, it.exchange);
       out.resolvedIntents.push({
         sigId: it.sigId, symbol: it.symbol, outcome: 'filled',
@@ -454,6 +459,8 @@ async function reconcileOnce(ctx) {
         + (exit ? '（' + exit + '）' : ''),
       closedAtMs: rec.closedAtMs,
       win: pnl > 0,
+      // 加倉次數。單向持倉下整個部位是一筆平倉紀錄，損益已含所有層。
+      layers: Array.isArray(t.layers) ? t.layers.length : 0,
       // relaxed＝殘留逾時後用放寬條件對上的。卡片會註明，事後檢討時分得出來。
       matchedBy,
     });
@@ -484,6 +491,7 @@ function renderClosedCard(c) {
     `[費用] ${((Number(c.feeUsdt) || 0) + (Number(c.fundingUsdt) || 0)).toFixed(2)} USDT`,
     `[損益] ${sign}${Number(c.pnlUsdt).toFixed(2)} USDT`,
   ];
+  if (c.layers) lines.push(`[加倉] ${c.layers} 次（損益為整個部位合計）`);
   if (c.matchedBy === 'relaxed') {
     lines.push('');
     lines.push('⚠️ 此筆在逾時後以放寬條件比對（未核對開倉時間），請到交易所確認是同一筆。');

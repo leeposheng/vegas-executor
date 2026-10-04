@@ -167,8 +167,9 @@ class Store {
    * 那個數字的意思一直是「同時最多幾個標的在場」，不是「幾個部位物件」。
    */
   openPositionCount(exchange) {
+    // 加倉的下單意圖不佔額度：它加在既有部位上，不是新的標的。
     return this.listPositions(exchange).length
-      + this.listIntents(exchange).length;
+      + this.listIntents(exchange).filter((i) => !i.addOnTo).length;
   }
 
   hasPositionForSymbol(symbol, exchange) {
@@ -213,6 +214,27 @@ class Store {
     // 值為 undefined 的欄位視為「刪除」—— 部位重新出現時要能清掉 goneSinceMs
     for (const k of Object.keys(patch)) if (patch[k] === undefined) delete next[k];
     this.state.positions[key] = next;
+    this.save();
+    return true;
+  }
+
+  /**
+   * 把一筆加倉記到既有部位底下（layers），而不是另開一個部位。
+   *
+   * 【為什麼不能另開一筆】
+   * 單向持倉下，同一個合約的加倉在交易所只有一個部位、一筆平倉紀錄。
+   * 系統裡若記成兩筆，對帳會讓兩筆都去認領同一筆平倉紀錄 ——
+   * 損益被算兩次，日損上限讀到加倍的虧損或獲利。
+   *
+   * @returns {boolean} 找不到既有部位時回 false，由呼叫端退回另開一筆
+   */
+  addLayer(baseSigId, exchange, layer) {
+    const key = this._posKey(baseSigId, exchange);
+    const cur = this.state.positions[key];
+    if (cur === undefined) return false;
+    const layers = Array.isArray(cur.layers) ? cur.layers.slice() : [];
+    layers.push(Object.assign({ addedAt: new Date().toISOString() }, layer));
+    this.state.positions[key] = Object.assign({}, cur, { layers });
     this.save();
     return true;
   }
