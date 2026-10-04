@@ -1,0 +1,21 @@
+# 維加斯執行層 HTTPS 反向代理（VPS 用）
+#
+# 把 vegas.example.com 換成你的網域（DNS A 紀錄要指向 VPS 的固定 IP）。
+# Caddy 會自動申請並續約 Let's Encrypt 憑證，不用另外設定。
+#
+# 安裝：
+#   sudo cp /opt/vegas-executor/deploy/Caddyfile /etc/caddy/Caddyfile
+#   sudo nano /etc/caddy/Caddyfile        ← 改網域
+#   sudo systemctl reload caddy
+#
+# 執行層本身只聽 8080，防火牆不開 8080，外界只能經由這裡進來。
+
+vegas.example.com {
+	reverse_proxy 127.0.0.1:8080
+
+	# 不記錄請求內容。金鑰在標頭裡，Caddy 預設本來就不寫存取日誌，
+	# 這行是提醒：之後若要開 log，不要把標頭一起記下來。
+	log {
+		output discard
+	}
+}

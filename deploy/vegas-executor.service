@@ -1,0 +1,44 @@
+# 維加斯執行層 systemd 服務（VPS 用）
+#
+# 安裝：
+#   sudo cp /opt/vegas-executor/deploy/vegas-executor.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now vegas-executor
+#
+# 看日誌：journalctl -u vegas-executor -f
+#
+# 設定只來自 /etc/vegas/vegas.env。程式碼目錄裡不放 .env ——
+# 兩個來源合併時，漏填的變數會被舊值靜靜補上（與 make-deploy.ps1 擋 .env 的理由相同）。
+
+[Unit]
+Description=Vegas signal executor
+After=network-online.target time-sync.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=vegas
+Group=vegas
+WorkingDirectory=/opt/vegas-executor
+EnvironmentFile=/etc/vegas/vegas.env
+ExecStart=/usr/bin/node src/index.js
+
+# 當掉就重啟。設定錯誤會連續失敗，StartLimit 讓它停下來而不是無限重試。
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+# 程式有處理 SIGTERM（收完手上的請求、存好狀態才退出）
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+# 最小權限：程式碼唯讀，只有 /data 可寫
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/data
+
+[Install]
+WantedBy=multi-user.target

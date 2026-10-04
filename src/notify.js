@@ -76,25 +76,75 @@ function renderDecision(o) {
   return lines.join('\n');
 }
 
-async function send(text, cfg) {
+// 重試間隔（毫秒）。第 1 次失敗後等 1 秒、第 2 次後等 3 秒，共試 3 次。
+const RETRY_DELAYS_MS = [1000, 3000];
+const SEND_TIMEOUT_MS = 10000;
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * 把 fetch 的錯誤翻成看得出原因的一行。
+ * Node 的 fetch 網路層失敗時 message 只有 "fetch failed"，
+ * 真正的原因（ECONNRESET、ETIMEDOUT、ENOTFOUND…）藏在 err.cause 裡。
+ */
+function describe(err) {
+  const c = err && err.cause;
+  const code = c && (c.code || c.name);
+  if (err && err.name === 'TimeoutError') return `逾時 ${SEND_TIMEOUT_MS / 1000} 秒`;
+  return code ? `${err.message}（${code}）` : String(err && err.message);
+}
+
+/**
+ * 送一則 Telegram 訊息，網路層失敗時重試。
+ *
+ * 【為什麼要重試】平倉、殘留釋放這些卡片只送一次，對帳不會再補。
+ * 實際日誌出現過連續三則「fetch failed」，兩筆止損平倉的通知就這樣消失 ——
+ * 真錢上那等於止損觸發了你卻不知道。
+ *
+ * 【哪些不重試】Telegram 回了明確的錯誤（401 token 錯、400 chat id 錯）
+ * 重送也不會變好，只會拖慢主流程。429 限流則照它給的秒數等一次。
+ * 重試的代價是極少數情況下同一則訊息收到兩次，比漏掉便宜得多。
+ */
+async function send(text, cfg, opts) {
   if (!cfg.token || !cfg.chatId) {
     console.log('[notify] 未設定 Telegram，內容僅輸出至主控台：\n' + text);
     return { sent: false };
   }
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${cfg.token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: String(cfg.chatId), text }),
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!json.ok) throw new Error(JSON.stringify(json).slice(0, 200));
-    return { sent: true };
-  } catch (err) {
-    // 通知失敗不可中斷主流程，但一定要留下痕跡
-    console.error('[notify] Telegram 傳送失敗：' + err.message);
-    return { sent: false, error: err.message };
+  const wait = (opts && opts.sleep) || sleep;
+  const delays = (opts && opts.delays) || RETRY_DELAYS_MS;
+  let lastError = '';
+  for (let attempt = 0; attempt <= delays.length; attempt += 1) {
+    let retryable = true;
+    let retryAfterMs = 0;
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${cfg.token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: String(cfg.chatId), text }),
+        signal: AbortSignal.timeout(SEND_TIMEOUT_MS),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (json.ok) {
+        if (attempt > 0) console.log(`[notify] Telegram 第 ${attempt + 1} 次重送成功`);
+        return { sent: true, attempts: attempt + 1 };
+      }
+      lastError = JSON.stringify(json).slice(0, 200);
+      const codeNum = Number(json.error_code || res.status);
+      if (codeNum === 429) {
+        retryAfterMs = Number(json.parameters && json.parameters.retry_after) * 1000 || 0;
+      } else if (codeNum >= 400 && codeNum < 500) {
+        retryable = false;
+      }
+    } catch (err) {
+      lastError = describe(err);
+    }
+    if (!retryable || attempt === delays.length) break;
+    await wait(Math.max(delays[attempt], retryAfterMs));
   }
+  // 通知失敗不可中斷主流程，但一定要留下痕跡
+  console.error('[notify] Telegram 傳送失敗：' + lastError
+    + '\n[notify] 未送出的內容：\n' + text);
+  return { sent: false, error: lastError };
 }
 
 module.exports = { send, renderDecision };

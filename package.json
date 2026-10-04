@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "test": "node test/smoke.js && node test/okx.js && node test/drift.js && node test/equity.js && node test/notional.js && node test/fixed-margin.js && node test/reconcile.js && node test/config-parse.js && node test/concurrency.js && node test/symbols.js && node test/dual-exchange.js && node test/daily-reset.js && node test/protection.js && node test/bingx-demo.js && node test/stale-overflow.js && node test/addon.js",
+    "test": "node test/smoke.js && node test/okx.js && node test/drift.js && node test/equity.js && node test/notional.js && node test/fixed-margin.js && node test/reconcile.js && node test/config-parse.js && node test/concurrency.js && node test/symbols.js && node test/dual-exchange.js && node test/daily-reset.js && node test/protection.js && node test/bingx-demo.js && node test/stale-overflow.js && node test/addon.js && node test/sizing-float.js && node test/notify-retry.js",
     "sample": "node tools/send-sample.js",
     "preflight": "node tools/okx-preflight.js"
   },

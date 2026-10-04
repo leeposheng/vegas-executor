@@ -28,6 +28,20 @@ function round4(n) {
   return Number(Number(n).toFixed(4));
 }
 
+/**
+ * 名目是否超過上限（容許浮點誤差）。
+ *
+ * 自動槓桿在名目上限生效時，會把 保證金 × 槓桿 算到「剛好等於」上限，
+ * 而 張數 × 面值 × 價格 的浮點運算常落在上限之上一點點
+ * （0.9 × 0.01 = 0.009000000000000001 → 名目 900.0000000000001）。
+ * 直接用 > 比，會把一筆完全合規的單以「超過上限」拒絕 ——
+ * 而且只在小帳戶（權益 × 倍數 小於 保證金 × 槓桿）時發生。
+ * 一億分之一的容差遠小於任何交易所的最小跳動單位，不會放過真正超標的單。
+ */
+function overCap(notional, cap) {
+  return notional > cap * (1 + 1e-9);
+}
+
 /** 無條件捨去到 step 的整數倍，並修掉浮點誤差。 */
 function floorToStep(value, step) {
   if (!(step > 0)) return value;
@@ -295,7 +309,7 @@ function computeFixedMargin(p) {
   const estLossUsdt = round4(priceLossUsdt + feeUsdt);
   const stopPct = riskDistance / entry;
 
-  if (notionalUsdt > maxNotionalUsdt) {
+  if (overCap(notionalUsdt, maxNotionalUsdt)) {
     return {
       ok: false,
       error: `名目價值 ${notionalUsdt.toFixed(2)} USDT 超過絕對上限 `
@@ -436,7 +450,7 @@ function computeSize(p) {
 
   // 名目上限是「倉位計算出錯」的最後一道攔截。正常情況不應觸發，
   // 一旦觸發代表參數或價格資料有問題，寧可不下單。
-  if (notionalUsdt > maxNotionalUsdt) {
+  if (overCap(notionalUsdt, maxNotionalUsdt)) {
     return {
       ok: false,
       error: `名目價值 ${notionalUsdt.toFixed(2)} USDT 超過上限 `
@@ -476,4 +490,4 @@ function computeSize(p) {
   };
 }
 
-module.exports = { computeSize, computeFixedMargin, floorToStep };
+module.exports = { computeSize, computeFixedMargin, floorToStep, overCap };
