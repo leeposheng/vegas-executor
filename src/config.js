@@ -127,6 +127,16 @@ const config = {
   // true = 走交易所模擬盤（OKX x-simulated-trading、BingX VST）
   demo: bool(process.env.DEMO_MODE, true, 'DEMO_MODE'),
 
+  // ---- 服務角色 ----
+  // live   = 主服務。Apps Script 的按鈕卡片、面板、確認都只連到它（預設）
+  // shadow = 模擬服務。Apps Script 把同一筆訊號另外轉一份過來，
+  //          只准跑模擬盤（DEMO_MODE=true），通常搭配 auto，用來量測
+  //          「每一筆訊號都做」的策略本身，並累積 BingX VST 的成交。
+  //
+  // 兩個服務並行時，真錢與模擬分在不同的行程、不同的狀態檔、不同的金鑰，
+  // 不會有「同一個服務一半真一半假」的情況。shadow 開成真錢會拒絕啟動。
+  instanceRole: (process.env.INSTANCE_ROLE || 'live').trim().toLowerCase(),
+
   // ---- 下單決策模式 ----
   // auto     = 通過閘門就直接下單（原本的行為）
   // manual   = 算完存成待確認，等 /confirm 才下單
@@ -419,6 +429,10 @@ const config = {
   telegram: {
     token: process.env.TG_TOKEN || '',
     chatId: process.env.TG_CHAT_ID || '',
+    // 模擬服務的每一則推播都加上抬頭。兩個服務共用同一個 bot 時，
+    // 這是在手機上一眼分辨「這則是真錢還是模擬」的唯一依據。
+    label: (process.env.INSTANCE_ROLE || 'live').trim().toLowerCase() === 'shadow'
+      ? '🧪 模擬服務' : '',
   },
 
   dataDir: process.env.DATA_DIR || path.join(__dirname, '..', 'data'),
@@ -434,6 +448,23 @@ function validate() {
 
   if (!config.webhookSecret || config.webhookSecret.length < 16) {
     errors.push('EXECUTOR_WEBHOOK_SECRET 未設定或長度不足 16 字元');
+  }
+  if (!['live', 'shadow'].includes(config.instanceRole)) {
+    errors.push('INSTANCE_ROLE 必須是 live 或 shadow');
+  }
+  // 模擬服務只准跑模擬盤。它收的是每一筆訊號、通常是 auto，
+  // 開成真錢等於「每一筆都自動用真錢下單」，而且沒有人在看。
+  if (config.instanceRole === 'shadow' && !config.demo) {
+    errors.push(
+      'INSTANCE_ROLE=shadow 必須搭配 DEMO_MODE=true。\n'
+      + '   模擬服務會收到每一筆訊號，開成真錢就是全自動真錢交易。'
+    );
+  }
+  if (config.instanceRole === 'shadow' && config.executionMode === 'manual') {
+    console.warn(
+      '⚠️ INSTANCE_ROLE=shadow 但 EXECUTION_MODE=manual。\n'
+      + '   模擬服務的卡片沒有按鈕，待確認的訊號只會逾時失效。建議設 auto。'
+    );
   }
   if (!config.controlSecret || config.controlSecret.length < 16) {
     errors.push('EXECUTOR_CONTROL_SECRET 未設定或長度不足 16 字元');

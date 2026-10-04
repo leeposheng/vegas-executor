@@ -50,6 +50,17 @@
  *    [風險] 標示預算或上限、槓桿被自動調低時註明原槓桿與原因、
  *    保證金被調高時另列 [保證金]。這幾行一樣只出現在私訊。
  *
+ * 【v3.7】模擬服務（shadow）並行
+ * 實盤與模擬分成兩個執行層服務。每一筆訊號照舊先送主服務（EXECUTOR_URL），
+ * 卡片、按鈕、面板都只連主服務；全部處理完之後，再把同一筆訊號轉一份給
+ * 模擬服務（EXECUTOR_SHADOW_URL）。模擬服務自己推播到它自己的聊天室，
+ * 這裡不畫卡片、不重試、失敗也不影響主流程。兩個屬性沒設就完全不動作。
+ * 轉過去的每一筆都帶 target:'shadow'，收到的服務若不是「模擬服務＋模擬盤」
+ * 會回 409 拒收（記成 shadow_target_mismatch）—— 每一筆都檢查，不只設定當下。
+ * testShadowConnection() 會確認模擬服務回報 role=shadow 且是模擬盤；
+ * testExecutorConnection() 則拒絕把主網址指向模擬服務；主服務是實盤時
+ * 一律不送測試訊號（manual 會出現可按的真錢卡片與群組廣播，auto 會直接下單）。
+ *
  * 【v3.6】加倉
  * 同一個幣、同一個方向的訊號再次出現，且交易所上的既有部位浮盈為正時，
  * 執行層回 decision=pending＋addOn。卡片抬頭為「➕ 加倉機會」，多兩行
@@ -69,6 +80,11 @@
 // ---- 指令碼屬性名稱 ----
 var EXECUTOR_URL_PROPERTY = 'EXECUTOR_URL';
 var EXECUTOR_SECRET_PROPERTY = 'EXECUTOR_WEBHOOK_SECRET';
+// v3.7 模擬服務（選填）。兩個都設才啟用。
+// 金鑰必須是「模擬服務」的 EXECUTOR_WEBHOOK_SECRET，不可與主服務共用 ——
+// 共用的話，任一邊外流就能對另一邊送訊號。
+var EXECUTOR_SHADOW_URL_PROPERTY = 'EXECUTOR_SHADOW_URL';
+var EXECUTOR_SHADOW_SECRET_PROPERTY = 'EXECUTOR_SHADOW_SECRET';
 
 // ---- 補送佇列 ----
 var EXECUTOR_RETRY_PREFIX = 'EXECRETRY_';
@@ -349,6 +365,86 @@ function getExecutorConfig_() {
   var url = normalizeExecutorUrl_(props.getProperty(EXECUTOR_URL_PROPERTY));
   var secret = String(props.getProperty(EXECUTOR_SECRET_PROPERTY) || '').trim();
   return { url: url, secret: secret, enabled: Boolean(url && secret) };
+}
+
+function getShadowConfig_() {
+  var props = PropertiesService.getScriptProperties();
+  var url = normalizeExecutorUrl_(props.getProperty(EXECUTOR_SHADOW_URL_PROPERTY));
+  var secret = String(props.getProperty(EXECUTOR_SHADOW_SECRET_PROPERTY) || '').trim();
+  return { url: url, secret: secret, enabled: Boolean(url && secret) };
+}
+
+/**
+ * v3.7：把同一筆訊號轉一份給模擬服務。永不拋例外、不重試、不畫卡片。
+ *
+ * 由 Code.gs 在 handleTradingViewSignal_ 的 finally 呼叫 —— 也就是主服務、
+ * 私訊卡片、群組廣播、補送全部處理完之後才輪到它。模擬服務掛掉或變慢，
+ * 最多讓 webhook 晚一點回應，不會讓任何一則真錢相關的訊息晚到。
+ *
+ * 【為什麼不重試】執行層有 60 秒重放保護，補送佇列每分鐘才跑一次，
+ * 補過去的訊號會以「已過期」被拒。模擬服務的價值在於「每一筆都在
+ * 訊號當下執行」，晚一兩分鐘的成交價會讓統計失真，寧可漏記並留下日誌。
+ *
+ * 【notify:true】模擬服務自己發推播（帶「🧪 模擬服務」抬頭）到它自己的
+ * TG_CHAT_ID。這裡不發，避免模擬的結果出現在你的私訊卡片旁邊。
+ */
+function forwardToShadow_(signalText, dedupKey) {
+  try {
+    var cfg = getShadowConfig_();
+    if (!cfg.enabled) return { sent: false, skipped: true };
+    var main = getExecutorConfig_();
+    if (main.url && main.url.toLowerCase() === cfg.url.toLowerCase()) {
+      logEvent_('error', 'shadow_same_as_main', {
+        source: 'shadow',
+        message: EXECUTOR_SHADOW_URL_PROPERTY + ' 與 ' + EXECUTOR_URL_PROPERTY + ' 相同，已略過'
+      });
+      return { sent: false, error: 'same_url' };
+    }
+
+    var parsed = parseSignalToJson_(signalText, dedupKey);
+    if (!parsed.ok) return { sent: false, error: 'parse' };
+
+    var started = Date.now();
+    var res = UrlFetchApp.fetch(cfg.url + '/signal', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: { 'X-Executor-Key': cfg.secret },
+      // target:'shadow' —— 收到的服務若不是「模擬服務＋模擬盤」會回 409 拒收。
+      // 這是每一筆都檢查的保護；testShadowConnection 只是設定當下檢查一次。
+      payload: JSON.stringify(Object.assign({}, parsed.payload, { notify: true, target: 'shadow' })),
+      muteHttpExceptions: true,
+      followRedirects: true
+    });
+    var status = res.getResponseCode();
+    var body = {};
+    try { body = JSON.parse(res.getContentText()); } catch (e) { /* 保持空物件 */ }
+    var decision = status === 200 ? (body.decision || 'unknown') : 'http_' + status;
+    if (status === 409) {
+      // 模擬服務的網址指到了實盤服務（或模擬服務被改成真錢）。對方已拒收，
+      // 但這是必須立刻處理的接線錯誤。
+      logEvent_('error', 'shadow_target_mismatch', {
+        source: 'shadow',
+        message: EXECUTOR_SHADOW_URL_PROPERTY + ' 指向的服務回報 role=' + body.role +
+          '、demo=' + body.demo + '，已拒收。請立刻檢查或刪除這個屬性。'
+      });
+      return { sent: false, error: 'target_mismatch' };
+    }
+    logEvent_(decision === 'placed' ? 'info' : 'warn',
+      decision === 'placed' ? 'shadow_placed' : 'shadow_not_placed', {
+        source: 'shadow',
+        sigId: parsed.payload.sig_id.slice(-12),
+        decision: decision,
+        reasons: truncate_((body.reasons || []).join('；'), 200),
+        elapsedMs: Date.now() - started
+      });
+    return { sent: status === 200, decision: decision };
+  } catch (error) {
+    logEvent_('warn', 'shadow_forward_failed', {
+      source: 'shadow',
+      message: truncate_(redactLogText_(error && error.message ? error.message : String(error)), 200)
+    });
+    return { sent: false, error: 'fetch' };
+  }
 }
 
 /**
@@ -2385,7 +2481,9 @@ function diagnoseExecutorBridge() {
     }),
     pendingRetries: countKeysWithPrefix_(props.getKeys(), EXECUTOR_RETRY_PREFIX),
     broadcastChatId: getBroadcastChatId_() || '(未設定或與私訊相同，廣播關閉)',
-    broadcastThreadId: getBroadcastThreadId_() || '(未設定，送到群組 General)'
+    broadcastThreadId: getBroadcastThreadId_() || '(未設定，送到群組 General)',
+    shadowUrl: getShadowConfig_().url || '(未設定，模擬服務停用)',
+    shadowSecretConfigured: Boolean(getShadowConfig_().secret)
   }, null, 2));
   if (executorUrlHadPath_()) {
     console.log('提醒：' + EXECUTOR_URL_PROPERTY +
@@ -2662,6 +2760,25 @@ function testExecutorConnection() {
       ' 是目前的公開網域。');
   }
 
+  // v3.7：兩道保護，都在送出測試訊號之前。
+  var info = {};
+  try { info = JSON.parse(body); } catch (e) { /* 舊版執行層沒有這些欄位 */ }
+  if (info.role === 'shadow') {
+    throw new Error(EXECUTOR_URL_PROPERTY + ' 指向的是模擬服務（role=shadow）。\n' +
+      '主網址必須是主服務，模擬服務請填在 ' + EXECUTOR_SHADOW_URL_PROPERTY + '。');
+  }
+  if (!info.mode) {
+    throw new Error('執行層 /health 沒有回報 mode，無法判斷是不是實盤，不送測試訊號。\n' +
+      '回應內容見上方日誌；請確認 ' + EXECUTOR_URL_PROPERTY + ' 指向的是執行層。');
+  }
+  if (info.mode === 'LIVE') {
+    // 實盤一律不送測試訊號：manual 下會出現一張可以按的真錢卡片，
+    // 群組也會收到一則假訊號的廣播；auto 下則直接成為一筆真錢單。
+    console.log('✅ 連線正常（主服務是實盤，下單決策 ' + info.executionMode + '）。\n' +
+      '   實盤不送測試訊號，檢查到 /health 為止。');
+    return;
+  }
+
   // 刻意走 forwardToExecutor_ 而不是直接呼叫 postToExecutor_。
   //
   // 因為 postToExecutor_ 送出的 payload 帶 notify:false，意思是
@@ -2714,6 +2831,43 @@ function testExecutorConnection() {
       console.log('   這是風控閘門擋下的，連線正常。');
     }
   }
+}
+
+/**
+ * v3.7：檢查模擬服務。只打 /health，不送訊號、不產生訂單。
+ * 必須同時滿足 role=shadow 與模擬盤，否則拋錯 —— 把真錢服務誤填成
+ * 模擬服務網址，會讓每一筆訊號都被轉過去。
+ */
+function testShadowConnection() {
+  var cfg = getShadowConfig_();
+  if (!cfg.enabled) {
+    throw new Error('尚未設定 ' + EXECUTOR_SHADOW_URL_PROPERTY + ' 或 ' + EXECUTOR_SHADOW_SECRET_PROPERTY);
+  }
+  if (cfg.url.toLowerCase() === String(getExecutorConfig_().url || '').toLowerCase()) {
+    throw new Error(EXECUTOR_SHADOW_URL_PROPERTY + ' 與 ' + EXECUTOR_URL_PROPERTY + ' 相同。兩個服務必須是不同的網址。');
+  }
+  var res;
+  try {
+    res = UrlFetchApp.fetch(cfg.url + '/health', { method: 'get', muteHttpExceptions: true });
+  } catch (err) {
+    throw new Error(diagnoseFetchFailure_(err, cfg));
+  }
+  var code = res.getResponseCode();
+  var text = res.getContentText();
+  console.log('模擬服務 /health HTTP ' + code + '：' + truncate_(text, 300));
+  if (code !== 200) throw new Error('模擬服務 /health 回應 HTTP ' + code);
+  var info = {};
+  try { info = JSON.parse(text); } catch (e) { /* 下面會擋 */ }
+  if (info.role !== 'shadow') {
+    throw new Error('這個服務回報 role=' + (info.role || '(未回報，執行層版本過舊)') +
+      '。模擬服務的環境變數必須設 INSTANCE_ROLE=shadow。');
+  }
+  if (info.demo !== true) {
+    throw new Error('模擬服務回報不是模擬盤（demo=' + info.demo + '）。立刻刪除 ' +
+      EXECUTOR_SHADOW_URL_PROPERTY + '，再檢查該服務的 DEMO_MODE。');
+  }
+  console.log('✅ 模擬服務正常：role=shadow、' + info.mode + '、下單決策 ' + info.executionMode +
+    '、交易所 ' + info.exchange + '。之後每一筆訊號都會轉一份過去。');
 }
 
 /**

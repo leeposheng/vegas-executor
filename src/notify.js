@@ -120,7 +120,7 @@ async function send(text, cfg, opts) {
       const res = await fetch(`https://api.telegram.org/bot${cfg.token}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: String(cfg.chatId), text }),
+        body: JSON.stringify({ chat_id: String(cfg.chatId), text: cfg.label ? cfg.label + '\n' + text : text }),
         signal: AbortSignal.timeout(SEND_TIMEOUT_MS),
       });
       const json = await res.json().catch(() => ({}));

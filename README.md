@@ -1,8 +1,12 @@
-# 維加斯執行服務（階段 0 骨架）
+# 維加斯執行服務
 
-對應 TradingView 指標 v11.8 與 Apps Script 第 3 批。
+對應 TradingView 指標 v11.9、Apps Script Code.gs 3.6／Executor.gs 3.7。
 
-**目前狀態：`DRY_RUN=true`，完整執行所有計算與簽章，但不送出任何委託。**
+**目前狀態（2026-10-04）：OKX 模擬盤運行中，準備切換實盤；模擬服務並行跑 OKX 模擬盤＋BingX VST。**
+BingX 真錢仍由程式擋下。接手或修改前先讀 `HANDOFF.md`；部署設定範本在 `deploy/`。
+
+> 這份 README 的「二～八」是系統設計說明，仍然有效；
+> 「九、十」已改成目前的待辦與上線檢查。最新細節以 HANDOFF.md 為準。
 
 ---
 
@@ -234,40 +238,36 @@ Apps Script 或 TradingView 應送出這個 JSON：
 
 ---
 
-## 九、尚未實作（依序）
+## 九、尚未實作
 
-| 階段 | 項目 |
+已完成（不再列入待辦）：對帳迴圈、已實現損益回填（日損上限生效）、意圖反查、
+殘留部位逾時釋放、超額進場、加倉、自動槓桿、止損掛單驗證、Telegram 推播重送、
+實盤／模擬服務並行。
+
+| 優先 | 項目 |
 |---|---|
-| 2 | **對帳迴圈**：每分鐘比對交易所實際持倉與 `state.json`，不一致即告警 |
-| 2 | 多段停利：分批平倉掛 TP2、TP3 |
+| 1 | BingX 已實現損益改用成交明細逐筆歸戶（解除 BingX 真錢封鎖的前提，HANDOFF 6.2） |
+| 2 | 多段停利：分批平倉掛 TP2、TP3（目前只掛 TP1） |
 | 2 | 移動止損：TP1 觸及後將 SL 移至成本 |
-| 2 | 已實現損益回填，讓每日虧損上限真正生效 |
-| 3 | 狀態層改用 SQLite，支援多實例 |
-
-**對帳迴圈是階段 2 最重要的一項。** API 逾時、部分成交、手動平倉都會造成 `state.json` 與交易所實際狀態漂移，沒有對帳就無從察覺。
-
-另外，目前 `daily_loss_limit` 閘門已經寫好，但 `recordPnl()` 還沒有被任何地方呼叫——必須等對帳迴圈完成才會有真實損益進來。在那之前這道閘門形同虛設，**這是上線前必須補上的缺口**。
+| 3 | `/health` 加驗證（目前公開，會透露持倉數與當日損益） |
+| 3 | 狀態層改用 SQLite |
 
 ---
 
-## 十、上線檢查清單
+## 十、上線檢查清單（OKX 實盤）
 
-`DRY_RUN=false` 之前，逐項確認：
+`DEMO_MODE=false` 之前，逐項確認：
 
-- [ ] `npm test` 全數通過
-- [ ] 模擬盤（`DEMO_MODE=true`）連續運行 2 週以上，無非預期拒絕
-- [ ] 對帳迴圈已實作並驗證
-- [ ] `recordPnl()` 已串接，每日虧損上限確實生效
-- [ ] API Key 未開啟提現權限
-- [ ] API Key 已綁定出口 IP（雲端請用 `/control/whoami` 查，並確認它不會變）
-- [ ] 主機已啟用 NTP（OKX 容許誤差僅 30 秒）
+- [ ] `npm test` 全數通過，且 Zeabur 跑的是最新 commit
+- [ ] 實盤服務 `DATA_DIR=/data/live`、`INSTANCE_ROLE=live`
+- [ ] OKX 實盤 API Key 只開讀取＋交易，綁定 `43.167.242.52`
+- [ ] 先用 `DRY_RUN=true` 開機，日誌出現「[自檢] ✓」與對外 IP `43.167.242.52`
+- [ ] 帳戶模式為合約模式、持倉模式為買賣模式（自檢會印出來）
+- [ ] 入金後權益來源顯示為 `exchange`，數字與入金一致
 - [ ] kill switch 實測可用，且控制金鑰與訊號金鑰不同
-- [ ] `npm run preflight` 通過（憑證、帳戶模式、權益、合約規格）
-- [ ] 權益來源顯示為 `exchange`，而非退回設定檔
-- [ ] `DRIFT_CHECK=true`，且已實測漂移過大時確實拒單
-- [ ] `MAX_NOTIONAL_USDT` 設為正常單筆名目的 2 至 3 倍
-- [ ] 已比對模擬盤與實盤的滑價差距
-- [ ] 首週僅用最小可下單量，單一幣種、單一週期
+- [ ] Apps Script 執行 `testExecutorConnection()` 通過（實盤只檢查 /health，不送測試訊號）
+- [ ] 首週：單一幣種、單一週期、最小規模（`deploy/live.env.example`）
+- [ ] 停止條件事先寫好（見實盤上線手冊）
 
 ---
 
@@ -275,30 +275,31 @@ Apps Script 或 TradingView 應送出這個 JSON：
 
 ```
 src/
-  config.js            設定載入與啟動驗證
+  config.js            設定載入與啟動驗證（含 INSTANCE_ROLE）
   signal.js            訊號解析與三層驗證
-  symbols.js           代碼白名單與合約規格靜態表
-  sizing.js            風險反推倉位
+  symbols.js           代碼白名單與合約規格
+  sizing.js            倉位計算（risk_pct／fixed_margin＋自動槓桿）
   equity.js            權益來源（交易所 → 快取 → 設定檔，來源會標明）
   drift.js             進場價漂移檢查（確認時才生效）
-  risk.js              七道風控閘門
-  store.js             狀態持久化（原子寫入）
+  risk.js              八道風控閘門、超額與加倉判定
+  store.js             狀態持久化（原子寫入、資金模式綁定）
   executor.js          主流程編排（純邏輯，可完整測試）
-  notify.js            Telegram 通知
+  reconcile.js         對帳：平倉偵測、損益歸戶、殘留釋放
+  notify.js            Telegram 通知（網路失敗重送）
   exchanges/okx.js     OKX V5 簽章與下單
   exchanges/bingx.js   BingX 簽章與下單
-  index.js             HTTP 入口
-test/
-  smoke.js             66 項冒煙測試（核心流程）
-  okx.js               25 項 OKX 模組測試（簽章以 openssl 獨立驗算）
-  drift.js             20 項漂移檢查（13 單元 + 7 整合）
-  equity.js             9 項權益來源
+  index.js             HTTP 入口與開機自檢
+test/                  19 個測試檔，npm test 全部執行，不連網
+deploy/
+  live.env.example     實盤主服務的環境變數（第一階段規模）
+  shadow.env.example   模擬服務的環境變數（OKX 模擬盤＋BingX VST）
+  vegas-executor.service／Caddyfile   自架 VPS 備案（目前未使用）
+apps-script/           貼進 Google Apps Script 的兩個檔（見該資料夾 README）
 tools/
-  okx-preflight.js     OKX 開機自檢（npm run preflight）
+  okx-preflight.js     OKX 自檢（npm run preflight，需在綁定 IP 的機器上跑）
   send-sample.js       範例訊號產生器
-  make-deploy.ps1      產生可直接上傳雲端的乾淨資料夾（不含 .env）
+  check-before-push.js push 前檢查有沒有密鑰被 git 追蹤
+  make-deploy.ps1      手動上傳用的乾淨資料夾（Git 部署不需要）
 ```
-
-共 120 項測試，全部不連網。
 
 零外部依賴，只用 Node 18+ 內建模組。

@@ -4,12 +4,13 @@
 放進這個 repo 只是為了「整套系統在同一個地方」—— 交接時不會漏掉一半。
 
 ```
-Code.gs      TradingView webhook 接收、Telegram 指令路由、系統日誌（第 3.5 批）
-Executor.gs  圖卡繪製、執行層橋接、各種 Telegram 面板（第 3.4 批）
+Code.gs      TradingView webhook 接收、Telegram 指令路由、系統日誌（第 3.6 批）
+Executor.gs  圖卡繪製、執行層橋接、各種 Telegram 面板（3.7）
 ```
 
-**兩個檔要一起換。** Code.gs 3.5 靠 Executor.gs 3.4 回傳的 `broadcastSent`
-判斷群組要不要補送；只換其中一個，群組會重複收到或漏掉訊號。
+**兩個檔要一起換。** Code.gs 3.6 呼叫 Executor.gs 3.7 的 `forwardToShadow_`，
+並靠它回傳的 `broadcastSent` 判斷群組要不要補送；只換其中一個，
+模擬服務收不到訊號，或群組重複收到、漏掉訊號。
 
 這兩份曾在不同的對話裡各自演進成兩個分支（一邊有話題群組、一邊有
 斜線指令修正），3.5／3.4 是合併後的版本。**以 repo 這一份為唯一來源**，
@@ -79,3 +80,30 @@ WEBAPP_URL
 原始訊號送不出去時進補送佇列，只補送失敗的那一邊。
 驗證：`testSignalThread()`（Code.gs）與 `testBroadcastTarget()`（Executor.gs）
 的測試訊息必須出現在同一個話題。
+
+### 模擬服務（選填，Code.gs 3.6／Executor.gs 3.7 起）
+
+實盤主服務之外，可以再跑一個只做模擬盤的執行層服務，同一筆訊號轉兩份。
+
+| 屬性 | 是什麼 |
+|---|---|
+| `EXECUTOR_SHADOW_URL` | 模擬服務的網址（只到網域），必須與 `EXECUTOR_URL` 不同 |
+| `EXECUTOR_SHADOW_SECRET` | 模擬服務的 `EXECUTOR_WEBHOOK_SECRET`，不可與主服務共用 |
+
+兩個都設才啟用；沒設時行為與 3.5／3.6 之前完全相同。
+
+| | 主服務 | 模擬服務 |
+|---|---|---|
+| 收到訊號的時機 | 先 | 主流程全部處理完之後 |
+| 卡片與按鈕 | 由 Apps Script 發到私訊 | 沒有。模擬服務自己推播到它的聊天室，抬頭「🧪 模擬服務」 |
+| 送不到時 | 進補送佇列 | 只記日誌（`shadow_forward_failed`），不補送 |
+| 接錯服務時 | — | 對方回 409 拒收，日誌記 `shadow_target_mismatch`（error） |
+
+驗證：
+
+```
+testShadowConnection()    模擬服務必須回報 role=shadow 且是模擬盤，否則拋錯
+testExecutorConnection()  主網址若指到模擬服務會拋錯；主服務是實盤時只檢查 /health，
+                          不送測試訊號（避免出現可按的真錢卡片與群組廣播）
+diagnoseExecutorBridge()  會列出 shadowUrl
+```

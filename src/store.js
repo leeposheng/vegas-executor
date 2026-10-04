@@ -95,6 +95,8 @@ class Store {
       // 檔案損壞時不要靜默重置：改名保留，讓人能事後查
       const backup = this.file + '.corrupt-' + Date.now();
       try { fs.renameSync(this.file, backup); } catch (_) { /* ignore */ }
+      // 記下來給 bindMode：損壞的檔案讀不出模式標記，不能讓實盤把它當成空目錄接手
+      this.corruptBackup = backup;
       console.error('[store] 狀態檔損壞，已備份至 ' + backup);
     }
     return JSON.parse(JSON.stringify(EMPTY));
@@ -104,6 +106,84 @@ class Store {
     const tmp = this.file + '.tmp';
     fs.writeFileSync(tmp, JSON.stringify(this.state, null, 2));
     fs.renameSync(tmp, this.file);
+  }
+
+  // ---- 狀態檔的資金模式 ----
+  //
+  // 狀態檔裡的部位、意圖、當日損益、冪等紀錄都只對「產生它的那個帳戶」有意義。
+  // 模擬盤的狀態檔被實盤服務讀到，會發生三件事，而且都不會報錯：
+  //   1. 模擬盤當天的虧損算進實盤的日損 —— 實盤第一筆就被日損上限擋下
+  //   2. 模擬盤的部位紀錄拿去跟實盤帳戶對帳 —— 持倉數錯，30 分鐘後才釋放
+  //   3. 冪等紀錄讓實盤拒絕「模擬盤處理過」的訊號
+  // 所以狀態檔第一次被使用時記下它屬於 demo 還是 live，之後對不上就拒絕啟動。
+  //
+  // 沒有標記的舊檔：目前是 demo 就直接標成 demo（舊檔都是模擬盤留下的）；
+  // 目前是 live 而舊檔裡有任何資料，就拒絕 —— 那幾乎一定是模擬盤的。
+  /**
+   * 角色（live／shadow）也一併記下：兩個模擬盤服務指到同一個目錄時，
+   * 冪等紀錄、部位與日損會混在一起，兩個行程還會同時寫同一個檔。
+   *
+   * @param {'demo'|'live'} mode
+   * @param {'live'|'shadow'} [role]
+   * @returns {{ok:true, stamped?:boolean} | {ok:false, error:string}}
+   */
+  bindMode(mode, role) {
+    const have = this.state.mode;
+    const haveRole = this.state.role;
+    if (role && haveRole && haveRole !== role) {
+      return {
+        ok: false,
+        error: `狀態檔屬於 ${haveRole} 服務（${this.file}），目前這個服務是 ${role}。\n`
+          + '   主服務與模擬服務必須用不同的 DATA_DIR（例如 /data/live 與 /data/shadow）。',
+      };
+    }
+    if (mode === 'live' && !have && this.corruptBackup) {
+      return {
+        ok: false,
+        error: `狀態檔損壞，已備份為 ${this.corruptBackup}。損壞的檔案讀不出它屬於哪種資金模式，`
+          + '實盤不接手。\n   請檢查備份後，把 DATA_DIR 指到新的目錄。',
+      };
+    }
+    if (have === mode) {
+      if (role && !haveRole) { this.state.role = role; this.save(); }
+      return { ok: true };
+    }
+    if (have) {
+      return {
+        ok: false,
+        error: `狀態檔屬於 ${have === 'live' ? '實盤' : '模擬盤'}（${this.file}），`
+          + `目前設定是 ${mode === 'live' ? '實盤' : '模擬盤'}。\n`
+          + '   兩種模式不可共用狀態檔：部位、日損與冪等紀錄會互相污染。\n'
+          + '   請把 DATA_DIR 改成另一個目錄（例如實盤用 /data/live），'
+          + '或確認 DEMO_MODE 沒有設錯。',
+      };
+    }
+    if (mode === 'live' && this._hasData()) {
+      return {
+        ok: false,
+        error: `狀態檔沒有模式標記且已有資料（${this.file}），`
+          + '多半是模擬盤留下的，不能拿來跑實盤。\n'
+          + '   請把 DATA_DIR 改成新的目錄（例如 /data/live）。'
+          + '舊檔不用刪，留著可供對照。',
+      };
+    }
+    this.state.mode = mode;
+    if (role) this.state.role = role;
+    this.save();
+    return { ok: true, stamped: true };
+  }
+
+  getMode() {
+    return this.state.mode || null;
+  }
+
+  _hasData() {
+    const st = this.state;
+    const nonEmpty = (o) => o && Object.keys(o).length > 0;
+    return nonEmpty(st.positions) || nonEmpty(st.intents) || nonEmpty(st.pendings)
+      || nonEmpty(st.processed) || nonEmpty(st.daily) || nonEmpty(st.overrides)
+      || Number(st.lastResetAtMs) > 0
+      || (Array.isArray(st.decisions) && st.decisions.length > 0);
   }
 
   // ---- 冪等 ----

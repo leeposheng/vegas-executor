@@ -1,6 +1,6 @@
 /**
  * 維加斯通道＋QQE 快訊機器人
- * 第 3.5 批（對應指標 v11.8 以上；須搭配 Executor.gs 第 3.4 批）
+ * 第 3.6 批（對應指標 v11.8 以上；須搭配 Executor.gs 3.7）
  *
  * 【第 3.5 批是兩條分支的合併】
  * 這份檔案曾在兩個不同的對話裡各自演進：
@@ -9,6 +9,11 @@
  *   B 分支（第 3.1～3.4 批）：SIGNAL_CHAT_ID／SIGNAL_THREAD_ID 話題群組、
  *     checkChatIds、群組補送。
  * 兩邊的功能全部保留。從這一版起，以這一份為唯一版本。
+ *
+ * 第 3.5 批 → 第 3.6 批（須搭配 Executor.gs 3.7）：
+ * 【新增】handleTradingViewSignal_ 的 finally 呼叫 forwardToShadow_，
+ *        把同一筆訊號轉一份給模擬服務（EXECUTOR_SHADOW_URL）。
+ *        排在所有主流程之後；屬性沒設就不動作，行為與 3.5 完全相同。
  *
  * 第 3.4 批 → 第 3.5 批：
  * 【合併】A 分支的 logConsoleOnly_、normalizeTelegramCommand_ 脫斜線、isCommand_。
@@ -378,6 +383,14 @@ function handleTradingViewSignal_(e, config, origin) {
       message: errorMessage_(error)
     });
     return textOutput_(queued ? "queued" : "error");
+  } finally {
+    // v3.6：模擬服務（選填）。排在最後 —— 主服務、私訊卡片、群組廣播、
+    // 補送佇列都處理完才轉這一份。forwardToShadow_ 永不拋例外；
+    // EXECUTOR_SHADOW_URL 沒設時直接返回，不做任何事。
+    if (typeof forwardToShadow_ === "function") {
+      forwardToShadow_(signalText, dedupKey);
+    }
+
   }
 }
 

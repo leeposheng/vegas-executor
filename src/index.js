@@ -377,6 +377,11 @@ async function installSymbols() {
 async function start() {
   validate();
   const store = new Store(config.dataDir);
+  // 狀態檔與資金模式綁定，對不上就不啟動（見 store.bindMode）
+  const bound = store.bindMode(config.demo ? 'demo' : 'live', config.instanceRole);
+  if (!bound.ok) {
+    throw new Error('狀態檔模式不符：' + bound.error);
+  }
   const syms = await installSymbols();
   const pre = await preflight(store);
 
@@ -392,6 +397,10 @@ async function start() {
         return json(res, 200, {
           ok: true,
           mode: config.dryRun ? 'DRY_RUN' : (config.demo ? 'DEMO' : 'LIVE'),
+          // Apps Script 的 testShadowConnection() 用這兩欄確認模擬服務真的是模擬盤
+          role: config.instanceRole,
+          demo: config.demo,
+          stateMode: store.getMode(),
           executionMode: config.executionMode,
           exchange: config.primaryExchange,
           halted: store.isHalted(),
@@ -459,6 +468,21 @@ async function start() {
           payload = JSON.parse(raw);
         } catch (_) {
           return json(res, 400, { ok: false, error: 'invalid json' });
+        }
+        // Apps Script 轉給模擬服務的那一份帶 target:'shadow'。
+        // 收到的服務若不是「模擬服務＋模擬盤」就拒收 —— 防的是模擬服務的網址
+        // 日後被換成一個實盤、auto 的服務，於是每一筆訊號都變成真錢自動單。
+        // 用 409 而不是 200：這不是風控決策，是接線錯誤，Apps Script 會記成 error。
+        if (payload && payload.target === 'shadow'
+            && !(config.instanceRole === 'shadow' && config.demo)) {
+          console.error('[http] 拒收：這筆是轉給模擬服務的訊號，但本服務是 '
+            + config.instanceRole + '／' + (config.demo ? '模擬盤' : '實盤'));
+          return json(res, 409, {
+            ok: false,
+            error: 'target_mismatch',
+            role: config.instanceRole,
+            demo: config.demo,
+          });
         }
 
         // notify:false 代表呼叫端（Apps Script）會自己發帶按鈕的 Telegram 卡片，
@@ -849,6 +873,10 @@ async function start() {
         : `by_grade（等級 ${config.autoGradeMin} 以上自動，其餘等確認）`;
     console.log('─'.repeat(56));
     console.log('維加斯執行服務已啟動');
+    console.log('  服務角色    : ' + (config.instanceRole === 'shadow'
+      ? 'shadow（模擬服務：只跑模擬盤，推播加「🧪 模擬服務」抬頭）'
+      : 'live（主服務：Apps Script 的按鈕與面板連到這裡）'));
+    console.log('  狀態檔      : ' + config.dataDir + '（' + (store.getMode() === 'live' ? '實盤' : '模擬盤') + '）');
     console.log('  連接埠      : ' + config.port);
     console.log('  執行模式    : ' + mode);
     console.log('  下單決策    : ' + decide);

@@ -1,8 +1,10 @@
 # vegas-executor 交接文件
 
-> 最後更新：2026-10-01
-> 測試：287 項全過（14 個測試檔）
-> 狀態：OKX 可上真錢；BingX 僅限 VST 模擬盤（程式會擋，見 6.2）
+> 最後更新：2026-10-04
+> 測試：`npm test` 19 個測試檔全過
+> 狀態：OKX 準備切換實盤（主服務）；模擬服務並行跑 OKX 模擬盤＋BingX VST（見 5g）；
+> BingX 真錢仍由程式擋下（見 6.2）
+> 部署：Zeabur 專用伺服器（Tencent Cloud 東京，固定 IP 43.167.242.52），從 GitHub 部署
 
 **接手時先讀這份，再讀 `src/config.js` 的註解。**
 程式碼裡的註解寫的是「為什麼這樣做」，不是「做了什麼」——
@@ -261,8 +263,12 @@ Telegram 打「日損」叫出面板。超標時才會出現 `♻️ 重置日�
 | 指令碼屬性 | 是什麼 | 收到什麼 |
 |---|---|---|
 | `ALLOWED_CHAT_ID` | 你的私訊 | 完整卡片＋按鈕、所有面板、平倉結果 |
-| `BROADCAST_CHAT_ID` | 群組（負數） | 只有訊號，無按鈕，無帳戶數字 |
+| `SIGNAL_CHAT_ID` | 訊號群組（負數） | 只有訊號，無按鈕，無帳戶數字。Code.gs 的原始訊號也讀這個 |
+| `SIGNAL_THREAD_ID` | 群組裡的話題 | 選填，話題群組才需要 |
 | `OPERATOR_USER_IDS` | 能按按鈕的人 | 逗號分隔；留空則退回 `ALLOWED_CHAT_ID` |
+
+`BROADCAST_CHAT_ID` 已停用（Executor.gs 3.4 起）。它曾指向同名的舊普通群組，
+造成執行層正常時訊號進錯群組。
 
 廣播版**不是把按鈕拿掉的同一張卡**，是另外組的。
 卡片下半段（風險、名目、數量、權益、拒絕原因）會反推出帳戶規模，
@@ -355,6 +361,43 @@ OKX 的模擬金鑰是獨立環境的，物理上碰不到真實資金。
 
 ---
 
+## 5g. 實盤與模擬服務並行（2026-10-04）
+
+同一個 repo 部署成兩個 Zeabur 服務，環境變數範本在 `deploy/`：
+
+| | 主服務 `live.env.example` | 模擬服務 `shadow.env.example` |
+|---|---|---|
+| `INSTANCE_ROLE` | `live`（預設） | `shadow` |
+| 資金 | `DEMO_MODE=false` | `DEMO_MODE=true`（強制） |
+| 下單決策 | manual | auto |
+| 交易所 | okx | okx,bingx（VST） |
+| `DATA_DIR` | `/data/live` | `/data/shadow` |
+| Apps Script 屬性 | `EXECUTOR_URL`／`EXECUTOR_WEBHOOK_SECRET` | `EXECUTOR_SHADOW_URL`／`EXECUTOR_SHADOW_SECRET` |
+| 推播 | Apps Script 發卡片（notify:false） | 自己發，抬頭「🧪 模擬服務」（notify:true） |
+
+四道保護，各自守一種錯誤：
+
+1. **`INSTANCE_ROLE=shadow` 只准模擬盤**（`config.validate`）。模擬服務收每一筆訊號、
+   通常是 auto，開成真錢就是全自動真錢交易。
+2. **狀態檔綁定資金模式**（`store.bindMode`）。第一次使用時記下 `mode: demo|live`，
+   之後對不上就拒絕啟動。沒有標記的舊檔：模擬盤直接標記；實盤遇到有資料的舊檔就拒絕
+   （那幾乎一定是模擬盤留下的）。防的是：模擬盤當日虧損算進實盤日損、模擬部位拿去跟
+   實盤對帳、冪等紀錄擋掉實盤訊號 —— 三件都不會報錯。
+3. **每一筆都驗收件人**：轉給模擬服務的訊號帶 `target:'shadow'`，收到的服務若不是
+   「shadow＋模擬盤」回 409 拒收（Apps Script 記 `shadow_target_mismatch`）。
+   防的是模擬服務網址日後被換成實盤 auto 服務 —— 設定當下的檢查擋不到這種事後變更。
+   狀態檔同時記下角色（live／shadow），兩個服務指到同一個目錄也會拒絕啟動；
+   損壞的狀態檔讀不出標記，實盤不接手。
+4. **Apps Script 端**：`forwardToShadow_` 在 `handleTradingViewSignal_` 的 `finally`
+   才執行（主流程全部處理完之後），永不拋例外、不重試（重放保護 60 秒，補送一定過期）。
+   `testShadowConnection()` 要求 `/health` 回報 `role=shadow` 且 `demo=true`；
+   `testExecutorConnection()` 拒絕主網址指向模擬服務；主服務是實盤時一律不送測試訊號。
+
+模擬服務的用途：每一筆訊號都執行（`MIN_GRADE=1`），統計的是策略本身；
+主服務只做按了進場的，兩者差距就是人工篩選的價值。順帶累積 BingX VST 成交，供 6.2 驗證。
+
+---
+
 ## 6. 還沒做完的
 
 依重要性排序。前三項是上真錢前該處理的。
@@ -416,8 +459,10 @@ BingX 沒有單筆平倉紀錄端點，`fetchPositionsHistory` 是把
 | Zeabur 跑的版本 | 開機日誌的橫幅，或看 Deployments 的時間 |
 | Apps Script 有沒有部署 | 卡片抬頭是 `👀 可觀察` 還是舊的 `⛔ 未執行`；有沒有 `[效益]` 那行 |
 | 環境變數到齊 | `AUTO_LEVERAGE` / `MIN_LIQ_CUSHION` / `FIXED_MARGIN_MAX_USDT` / `ALLOWED_TIMEFRAMES` |
-| 交易所 IP 白名單 | **有交易權限又沒綁 IP 的 OKX 金鑰，閒置 14 天會被自動刪除且不通知** |
-| 金鑰輪替 | bot token 與兩把 executor 金鑰曾在截圖中外洩，尚未輪替 |
+| 交易所 IP 白名單 | 專用伺服器固定 IP `43.167.242.52`。OKX 實盤、BingX 金鑰都綁這個；伺服器到期（2026-10-22）前要續約，否則 IP 會變 |
+| 金鑰輪替 | ✅ 2026-10-04 已輪替 bot token 與兩把 executor 金鑰 |
+| 實盤 `DATA_DIR` | 必須是 `/data/live`，不可沿用模擬盤的 `/data`（指錯會拒絕啟動） |
+| 模擬服務 | `testShadowConnection()` 通過；OKX 模擬帳戶上舊服務留下的部位先手動平掉 |
 
 **Apps Script 的陷阱**：貼上新程式碼不等於生效。
 `/exec` 永遠跑「已部署的版本」，必須
@@ -455,6 +500,19 @@ npm run preflight # 連 OKX，驗證金鑰與合約規格（需要真金鑰）
 
 ## 8. 部署
 
+**目前的方式：GitHub → Zeabur。** 兩個服務都連 `leeposheng/vegas-executor` 的 `main`，
+push 之後自動重新部署。push 之前一定先跑：
+
+```bash
+npm test
+node tools/check-before-push.js   # 檢查有沒有密鑰被 git 追蹤
+```
+
+repo 必須維持 Private。`.env` 在 .gitignore 裡，不會進 GitHub，
+所以「.env 跟著上傳」這個風險在 Git 部署下不存在。
+
+**備用方式（手動上傳）：**
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\make-deploy.ps1
 ```
@@ -465,11 +523,11 @@ powershell -ExecutionPolicy Bypass -File tools\make-deploy.ps1
 「平台環境變數優先，`.env` 只填補空缺」。若 `.env` 跟著上去，
 某個環境變數漏填時會**安靜地**用舊值補上。
 
-`DATA_DIR` 必須指向掛載的硬碟（例如 `/data`），否則每次重新部署
+`DATA_DIR` 必須在掛載的硬碟底下（實盤 `/data/live`、模擬 `/data/shadow`），否則每次重新部署
 `state.json` 歸零：冪等失效、所有在場部位變成系統不知道、日損重新計數。
 
-Render 的設定在 `render.yaml`，每一項都有註解說明為什麼。
-重點：不能用 free 方案（15 分鐘休眠、掛不了硬碟）。
+`render.yaml` 是當初評估 Render 時留下的，目前沒有使用。
+`deploy/vegas-executor.service`／`Caddyfile` 是自架 VPS 的備案，也沒有使用。
 
 ---
 
@@ -478,6 +536,9 @@ Render 的設定在 `render.yaml`，每一項都有註解說明為什麼。
 正常的樣子：
 
 ```
+維加斯執行服務已啟動
+  服務角色    : live（主服務：Apps Script 的按鈕與面板連到這裡）
+  狀態檔      : /data/live（實盤）
 [規格] 向交易所取得 2xx 個 USDT 永續合約規格
 [規格] 白名單共 50 個代碼可交易
 [自檢] ✓ 帳戶模式 合約模式｜持倉模式 net_mode｜槓桿已設為 40x
@@ -493,6 +554,10 @@ Render 的設定在 `render.yaml`，每一項都有註解說明為什麼。
 |---|---|
 | `[規格] 改用快取` / `靜態表` | 連不到交易所，規格可能過時 |
 | `[自檢] DRY_RUN 模式，略過` | 不會送出任何真單 |
+| `狀態檔模式不符` | `DATA_DIR` 指到另一種資金模式的狀態檔，服務不會啟動。改 `DATA_DIR`，不要刪檔 |
+| `INSTANCE_ROLE=shadow 必須搭配 DEMO_MODE=true` | 模擬服務被設成真錢，服務不會啟動 |
+| `[notify] Telegram 第 N 次重送成功` | 網路短暫中斷，已補上，不用處理 |
+| `[notify] Telegram 傳送失敗：…（ECONNRESET）` | 重送三次都失敗；下面一行是沒送出的內容，到交易所核對 |
 | `⛔ 自檢未通過` | 服務有起來但 kill switch 開著，修好後 `POST /control/resume` |
 | `對帳迴圈 : 停用` | 日損上限不會累積 |
 | `[對帳] 孤兒倉` | 交易所上有系統不知道的部位，需要人看 |
