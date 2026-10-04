@@ -199,6 +199,25 @@ class Store {
   }
 
   /**
+   * 在既有部位上補欄位，不動其他內容。找不到就回 false。
+   *
+   * 對帳用它記「這筆從什麼時候起已不在交易所上」（goneSinceMs）。
+   * 那個時間戳必須持久化：存在記憶體裡的話，每次重新部署都會重新起算，
+   * 而 Zeabur 的重新部署正是殘留部位最常出現的時機。
+   */
+  patchPosition(sigId, exchange, patch) {
+    const key = this._posKey(sigId, exchange);
+    const cur = this.state.positions[key];
+    if (cur === undefined) return false;
+    const next = Object.assign({}, cur, patch);
+    // 值為 undefined 的欄位視為「刪除」—— 部位重新出現時要能清掉 goneSinceMs
+    for (const k of Object.keys(patch)) if (patch[k] === undefined) delete next[k];
+    this.state.positions[key] = next;
+    this.save();
+    return true;
+  }
+
+  /**
    * @returns {boolean} 有沒有真的刪掉
    *
    * 回傳值不是裝飾。刪除失敗曾經是靜默的，結果是部位永遠留在 store、

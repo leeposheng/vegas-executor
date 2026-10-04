@@ -87,7 +87,13 @@ async function buildPlan(rawPayload, ctx) {
   result.gates = riskResult.gates;
   result.riskSummary = risk.summarise(riskResult);
 
-  if (!riskResult.passed) {
+  // 達持倉上限、而且只有這一道沒過：不直接拒絕，改走「超額進場」的待確認。
+  // 後面的倉位計算照常進行 —— 卡片上要看得到這筆超額單的實際大小。
+  const overLimit = riskResult.passed ? null
+    : risk.overflowEligible(riskResult, store, config.risk, exchange);
+  if (overLimit) result.overLimit = overLimit;
+
+  if (!riskResult.passed && !overLimit) {
     result.reasons = riskResult.reasons;
     // 只有「非冪等」造成的拒絕才記為已處理。若是冪等本身擋下的，
     // 再寫一次只會覆蓋掉原本更有用的處理結果。
@@ -177,6 +183,7 @@ async function buildPlan(rawPayload, ctx) {
       specWarning: result.specWarning,
       equity: result.equity,
       notionalCap: result.notionalCap,
+      overLimit: result.overLimit || null,
     },
   };
 }
@@ -488,8 +495,10 @@ async function handleForExchange(rawPayload, ctx, exchange) {
   const plan = built.plan;
 
   // ---- 決定要直接下單還是等人確認 ----
-  const auto = config.executionMode === 'auto' ||
-    (config.executionMode === 'by_grade' && plan.signal.grade >= config.autoGradeMin);
+  // 超額單一律等人確認，即使是 auto 模式 —— 超出上限是一個需要你
+  // 逐筆同意的例外，不該由系統自己決定。
+  const auto = !plan.overLimit && (config.executionMode === 'auto' ||
+    (config.executionMode === 'by_grade' && plan.signal.grade >= config.autoGradeMin));
 
   if (auto) {
     const result = await placeFromPlan(plan, ctx);
@@ -518,6 +527,8 @@ async function handleForExchange(rawPayload, ctx, exchange) {
     // 否則同一筆交易的兩次計算會出現無法解釋的差異。
     equity: plan.equity,
     notionalCap: plan.notionalCap,
+    // 確認時要知道這筆是超額單，才會以硬上限重查持倉數
+    overLimit: plan.overLimit || null,
   });
   // 標記為已處理，避免同一筆訊號重送時產生第二個待確認紀錄
   store.markProcessed(plan.signal.sigId, 'pending', plan.clientOrderId, plan.exchange);
@@ -539,7 +550,11 @@ async function handleForExchange(rawPayload, ctx, exchange) {
     tpDeferred: plan.tpDeferred,
     expiresAt,
     ttlSec: config.pendingTtlSec,
-    reasons: [],
+    overLimit: plan.overLimit || null,
+    reasons: plan.overLimit
+      ? [`已達持倉上限 ${plan.overLimit.maxNow}（目前 ${plan.overLimit.openCount} 筆），`
+        + `按「超額進場」將開第 ${plan.overLimit.openCount + 1} 筆，硬上限 ${plan.overLimit.hardCap}`]
+      : [],
     elapsedMs: Date.now() - started,
   };
   await notifyDecision(result, config, plan.exchange, ctx.suppressNotify);
@@ -685,7 +700,8 @@ async function confirmSignalInner(sigId, ctx) {
   }
 
   // 按下按鈕的當下重查會變動的閘門
-  const re = risk.recheck(pending.signal, { store, risk: config.risk, exchange: pending.exchange });
+  const re = risk.recheck(pending.signal, { store, risk: config.risk, exchange: pending.exchange },
+    { allowOverflow: Boolean(pending.overLimit) });
   if (!re.passed) {
     store.resolvePending(sigId, 'skipped', '確認時風控未通過：' + re.reasons.join('；'), exchange);
     const result = {

@@ -167,6 +167,10 @@ const config = {
   // 調太短沒有意義 —— 部位已經平掉了，早一點知道不會改變結果；
   // 調太長則會讓 DAILY_LOSS_LIMIT 的反應變慢，那是有代價的。
   reconcileSec: num(process.env.RECONCILE_SEC, 60, 'RECONCILE_SEC'),
+  // 殘留判定時限（分鐘）。交易所已無此部位、又查不到平倉紀錄，
+  // 持續這麼久就放寬比對；仍對不上則釋放持倉額度並推播。
+  // 太短會把交易所的短暫延遲誤判成殘留；太長則殘留會擋住新訊號。
+  reconcileStaleMin: num(process.env.RECONCILE_STALE_MIN, 30, 'RECONCILE_STALE_MIN'),
 
   port: num(process.env.PORT, 8080, 'PORT'),
   // Apps Script 或 TradingView 轉送訊號時要帶的共用密鑰
@@ -229,6 +233,19 @@ const config = {
     // Telegram 那端就算被冒用，也踩不過這條線。
     maxConcurrentCeiling: num(process.env.MAX_CONCURRENT_CEILING, 5,
       'MAX_CONCURRENT_CEILING'),
+
+    // 超額額度：達到持倉上限後，還允許「逐筆按鈕確認」再多開幾筆。
+    //
+    // 達上限且「只有」持倉上限這一道擋住時，訊號不再直接拒絕，而是改成
+    // 待確認卡片＋「➕ 超額進場」按鈕。硬上限 ＝ 目前上限 ＋ 這個值。
+    //
+    // 為什麼不沿用 MAX_CONCURRENT_CEILING：它的預設值也是 5，上限調到 5
+    // 的人會發現超額按鈕一筆都加不了。兩者管的是不同的事 ——
+    // 天花板管「平常最多幾個」，超額管「我逐筆同意的例外最多幾個」。
+    //
+    // 只放環境變數：Telegram 那端就算被冒用，也加不出這個數字以外的倉位。
+    // 0 ＝ 停用超額，達上限一律拒絕（舊行為）。
+    overflowPositions: num(process.env.OVERFLOW_POSITIONS, 2, 'OVERFLOW_POSITIONS'),
     // 單日累計虧損達此金額（USDT）即停止當日下單
     dailyLossLimitUsdt: num(process.env.DAILY_LOSS_LIMIT_USDT, 50, 'DAILY_LOSS_LIMIT_USDT'),
 
@@ -424,12 +441,19 @@ function validate() {
   }
   if (!(r.equityCacheMs >= 0)) errors.push('EQUITY_CACHE_SEC 不可為負');
   // 下限 10 秒：更短只會撞上交易所頻率限制，換不到任何有用的即時性。
+  if (!(config.reconcileStaleMin >= 5)) {
+    errors.push('RECONCILE_STALE_MIN 必須至少 5 分鐘');
+  }
   if (config.reconcileSec !== 0 && config.reconcileSec < 10) {
     errors.push('RECONCILE_SEC 必須是 0（停用）或至少 10 秒');
   }
   if (!(r.maxConcurrent >= 1)) errors.push('MAX_CONCURRENT_POSITIONS 必須 >= 1');
   if (!(r.maxConcurrentCeiling >= 1) || r.maxConcurrentCeiling > 20) {
     errors.push('MAX_CONCURRENT_CEILING 必須介於 1 與 20 之間');
+  }
+  if (!(r.overflowPositions >= 0) || r.overflowPositions > 10
+      || !Number.isInteger(r.overflowPositions)) {
+    errors.push('OVERFLOW_POSITIONS 必須是 0 到 10 的整數');
   }
   if (r.maxConcurrent > r.maxConcurrentCeiling) {
     errors.push(

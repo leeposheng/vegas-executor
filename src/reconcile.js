@@ -28,6 +28,46 @@ const OPEN_GRACE_MS = 90 * 1000;
 const OPEN_MATCH_MS = 5 * 60 * 1000;
 
 /**
+ * 殘留判定的預設時限（分鐘）。可用 RECONCILE_STALE_MIN 覆寫。
+ *
+ * 【為什麼需要時限】
+ * 「交易所上已沒有這個部位，但找不到吻合的平倉紀錄」時，原本的處置是
+ * 永遠保留、下一輪再試。這個保守是對的 —— 但沒有時限，它就會一直佔著
+ * 同時持倉額度，而且只寫在伺服器日誌裡，使用者完全看不到。
+ * 結果是 OKX 上只有 1 個部位，系統卻認定有 5 個、把新訊號全部擋下。
+ *
+ * 30 分鐘的依據：平倉紀錄在 OKX 通常數秒內就查得到，90 秒寬限期已涵蓋
+ * 正常延遲；連續 30 分鐘都查不到，就不是延遲，是比對條件本身對不上。
+ */
+const STALE_DEFAULT_MIN = 30;
+
+function staleMs(config) {
+  const m = Number(config && config.reconcileStaleMin);
+  return (Number.isFinite(m) && m > 0 ? m : STALE_DEFAULT_MIN) * 60 * 1000;
+}
+
+/**
+ * 放寬版比對：拿掉「開倉時間 ±5 分鐘」那一條，其餘不變。
+ * 只在殘留逾時後才用 —— 正常情況下嚴格比對才是對的。
+ *
+ * 取「開倉之後最早的那一筆平倉」。同幣種同時只會有一個系統部位
+ *（no_duplicate_symbol），所以開倉後的第一筆平倉最可能就是這一筆。
+ */
+function matchHistoryRelaxed(records, tracked) {
+  const openedMs = Date.parse(tracked.openedAt);
+  const wantSide = tracked.side === 'long' ? 'long' : 'short';
+  const candidates = records.filter((r) => {
+    if (!r.closedAtMs) return false;
+    if (Number.isFinite(openedMs) && r.closedAtMs < openedMs - 60000) return false;
+    if (r.posSide && r.posSide !== 'net' && r.posSide !== wantSide) return false;
+    return true;
+  });
+  if (!candidates.length) return null;
+  candidates.sort((a, b) => a.closedAtMs - b.closedAtMs);
+  return candidates[0];
+}
+
+/**
  * 判斷一筆平倉紀錄是不是我們那一筆。
  *
  * 用「合約 + 方向 + 平倉時間晚於開倉時間」三者比對，而不是只看合約。
@@ -139,6 +179,8 @@ async function reconcileOnce(ctx) {
     exchange: exName,
     checked: tracked.length, stillOpen: 0, closed: [],
     resolvedIntents: [], orphans: [], errors: [],
+    // 逾時後釋放的殘留紀錄（部位或意圖）。每一筆都要推播 —— 損益沒有入帳。
+    released: [],
   };
   if (!tracked.length && !intents.length) return out;
 
@@ -164,12 +206,34 @@ async function reconcileOnce(ctx) {
 
     let order;
     try {
+      // BingX 的意圖沒有 instId 欄位（它的代碼叫 symbol），直接帶 it.instId
+      // 會送出 symbol=undefined，反查永遠失敗。統一從代碼表補齊。
       order = await exchange.fetchOrderByClOrdId(
-        { instId: it.instId, clOrdId: it.clOrdId }, exCfg, flags
+        { instId: intentInstId(it, exName), clOrdId: it.clOrdId }, exCfg, flags
       );
     } catch (err) {
+      // 查不到就留著，下一輪再試。絕不猜 ——
+      // 但「一直查不到」不能無限期佔著持倉額度。
+      //
+      // 逾時後的判斷依據不是這筆訂單本身，而是交易所「現在」有沒有這個
+      // 合約的部位：持倉查詢在這一輪是成功的（失敗的話上面已經 return），
+      // 若該合約不在持倉清單裡，不管這筆單當初成交與否，現在都沒有曝險，
+      // 釋放額度是安全的。若它在清單裡，就留著讓人處理。
+      const instId = intentInstId(it, exName);
+      if (Number.isFinite(atMs) && now - atMs >= staleMs(config)
+          && instId && !openInstIds.has(instId)) {
+        store.clearIntent(it.sigId, it.exchange);
+        out.released.push({
+          kind: 'intent', sigId: it.sigId, symbol: it.symbol, side: it.side,
+          exchange: exName, sinceMs: atMs,
+          note: `下單結果反查失敗已超過 ${Math.round(staleMs(config) / 60000)} 分鐘，`
+            + '且交易所目前沒有此合約的部位，已釋放持倉額度',
+          lastError: err.message,
+        });
+        continue;
+      }
       out.errors.push(`意圖 ${it.clOrdId} 反查失敗：${err.message}`);
-      continue;   // 查不到就留著，下一輪再試。絕不猜。
+      continue;
     }
 
     if (!order) {
@@ -275,6 +339,9 @@ async function reconcileOnce(ctx) {
     const instId = resolved.spec.instId || resolved.spec.symbol;
 
     if (openInstIds.has(instId)) {
+      // 曾被標成「已不在」、現在又出現（例如上一輪交易所回了不完整的清單），
+      // 就把計時歸零 —— 否則它會在下一次短暫消失時被立刻釋放。
+      if (t.goneSinceMs) store.patchPosition(t.sigId, t.exchange, { goneSinceMs: undefined });
       out.stillOpen += 1;
       continue;
     }
@@ -299,16 +366,47 @@ async function reconcileOnce(ctx) {
       continue;
     }
 
-    const rec = matchHistory(history, t);
+    let rec = matchHistory(history, t);
+    let matchedBy = 'strict';
     if (!rec) {
-      // 部位不在、平倉紀錄也查不到。這通常代表訂單根本沒成交
-      // （掛單被取消、或下單當下就失敗了）。
-      // 不記損益、不刪部位 —— 留著讓它在下一輪再試，
-      // 並且在回傳值裡說出來，這種狀態需要人看一眼。
-      out.errors.push(
-        `${t.symbol} 部位已不存在，但查不到對應的平倉紀錄（sig ${t.sigId.slice(-12)}）`
-      );
-      continue;
+      // 部位不在、平倉紀錄也查不到。先記下「從什麼時候起不在」，
+      // 留著讓它在下一輪再試 —— 但只等到時限為止。
+      const goneSince = Number(t.goneSinceMs) || null;
+      if (!goneSince) {
+        store.patchPosition(t.sigId, t.exchange, { goneSinceMs: now });
+        out.errors.push(
+          `${t.symbol} 部位已不存在，但查不到對應的平倉紀錄（sig ${t.sigId.slice(-12)}），`
+          + `${Math.round(staleMs(config) / 60000)} 分鐘後仍對不上將釋放額度`
+        );
+        continue;
+      }
+      if (now - goneSince < staleMs(config)) {
+        out.errors.push(
+          `${t.symbol} 部位已不存在，仍查不到平倉紀錄（sig ${t.sigId.slice(-12)}，`
+          + `已 ${Math.round((now - goneSince) / 60000)} 分鐘）`
+        );
+        continue;
+      }
+
+      // 逾時：先放寬比對再試一次。對得上就照常入帳，只是標記比對方式。
+      rec = matchHistoryRelaxed(history, t);
+      matchedBy = 'relaxed';
+      if (!rec) {
+        // 仍然沒有 —— 釋放額度，損益不入帳，並推播請人核對。
+        // 不入帳而不是記 0：記 0 會讓日損上限讀到一個「看起來正常」的假數字。
+        const removedStale = store.removePosition(t.sigId, t.exchange);
+        if (!removedStale) {
+          out.errors.push(`${t.symbol} 殘留部位刪不掉（sig ${String(t.sigId).slice(-12)}），需要人工檢查`);
+          continue;
+        }
+        out.released.push({
+          kind: 'position', sigId: t.sigId, symbol: t.symbol, side: t.side,
+          exchange: exName, sinceMs: goneSince, openedAt: t.openedAt,
+          note: `交易所已無此部位超過 ${Math.round(staleMs(config) / 60000)} 分鐘，`
+            + '且查不到對應的平倉紀錄，已釋放持倉額度；這筆的損益沒有入帳',
+        });
+        continue;
+      }
     }
 
     // realizedPnl 已含手續費與資金費，直接記。
@@ -356,6 +454,8 @@ async function reconcileOnce(ctx) {
         + (exit ? '（' + exit + '）' : ''),
       closedAtMs: rec.closedAtMs,
       win: pnl > 0,
+      // relaxed＝殘留逾時後用放寬條件對上的。卡片會註明，事後檢討時分得出來。
+      matchedBy,
     });
   }
 
@@ -384,12 +484,42 @@ function renderClosedCard(c) {
     `[費用] ${((Number(c.feeUsdt) || 0) + (Number(c.fundingUsdt) || 0)).toFixed(2)} USDT`,
     `[損益] ${sign}${Number(c.pnlUsdt).toFixed(2)} USDT`,
   ];
+  if (c.matchedBy === 'relaxed') {
+    lines.push('');
+    lines.push('⚠️ 此筆在逾時後以放寬條件比對（未核對開倉時間），請到交易所確認是同一筆。');
+  }
   if (c.pnlConfidence === 'low') {
     lines.push('');
     lines.push('⚠️ 此損益由資金流水聚合而得，非交易所的單筆平倉紀錄。');
     lines.push('   若同期間有其他交易或資金費，可能被一併計入。');
   }
   return lines.join('\n');
+}
+
+/**
+ * 殘留釋放的推播。釋放代表「有一筆錢的去向系統不知道」，
+ * 所以不能只寫日誌 —— 那正是這次問題沒人發現的原因。
+ */
+function renderReleasedCard(r) {
+  const mins = r.sinceMs ? Math.round((Date.now() - r.sinceMs) / 60000) : null;
+  return [
+    `🧹 釋放殘留${r.kind === 'intent' ? '下單紀錄' : '部位'}｜${r.symbol}`
+      + (r.side ? ' ' + (r.side === 'long' ? '做多⬆' : '做空⬇') : '')
+      + (r.exchange ? `（${String(r.exchange).toUpperCase()}）` : ''),
+    '─────────────',
+    r.note,
+    mins !== null ? `已等待 ${mins} 分鐘` : '',
+    '',
+    '⚠️ 這筆的損益沒有計入日損上限。若它實際有成交並平倉，',
+    '   請到交易所查看實際損益。',
+  ].filter((x) => x !== '').join('\n');
+}
+
+/** 意圖對應的合約代碼。BingX 的意圖沒有 instId 欄位，要從代碼表補。 */
+function intentInstId(it, exName) {
+  if (it.instId) return it.instId;
+  const r = symbols.resolve(it.symbol, exName);
+  return r.ok ? (r.spec.instId || r.spec.symbol) : null;
 }
 
 /** 當日統計。給推播與 /health 用。 */
@@ -402,6 +532,7 @@ function dailySummary(store, now) {
 }
 
 module.exports = {
-  reconcileOnce, matchHistory, describeCloseType, inferExit,
-  renderClosedCard, dailySummary, OPEN_GRACE_MS, OPEN_MATCH_MS,
+  reconcileOnce, matchHistory, matchHistoryRelaxed, describeCloseType, inferExit,
+  renderClosedCard, renderReleasedCard, dailySummary,
+  OPEN_GRACE_MS, OPEN_MATCH_MS, STALE_DEFAULT_MIN,
 };

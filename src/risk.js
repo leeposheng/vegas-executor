@@ -13,6 +13,34 @@ function effectiveMaxConcurrent(store, risk) {
   return Math.max(1, Math.min(wanted, ceiling));
 }
 /**
+ * 超額進場的額度。
+ *
+ * @returns {{openCount, maxNow, hardCap, canOverflow}}
+ *   hardCap = 目前上限 + OVERFLOW_POSITIONS；canOverflow 代表還能再多開一筆
+ */
+function overflowAllowance(store, risk, exchange) {
+  const openCount = store.openPositionCount(exchange);
+  const maxNow = effectiveMaxConcurrent(store, risk);
+  const extra = Math.max(0, Math.floor(Number(risk.overflowPositions) || 0));
+  const hardCap = maxNow + extra;
+  return { openCount, maxNow, hardCap, canOverflow: extra > 0 && openCount < hardCap };
+}
+
+/**
+ * 這次拒絕能不能改成「超額進場」的待確認卡片。
+ *
+ * 條件刻意很窄：失敗的閘門必須「只有」max_concurrent。
+ * 同標的重複、日損上限、冷卻、kill switch、等級、週期 —— 任何一道也沒過，
+ * 都代表這筆本來就不該做，不能用一顆按鈕繞過去。
+ */
+function overflowEligible(riskResult, store, risk, exchange) {
+  const failed = riskResult.gates.filter((g) => !g.passed).map((g) => g.name);
+  if (failed.length !== 1 || failed[0] !== 'max_concurrent') return null;
+  const a = overflowAllowance(store, risk, exchange);
+  return a.canOverflow ? a : null;
+}
+
+/**
  * 目前生效的日損上限。
  *
  * 方向：Telegram 調大有天花板（DAILY_LOSS_CEILING_USDT），調小不限 ——
@@ -172,8 +200,11 @@ function evaluate(signal, ctx) {
  *   idempotency —— 待確認紀錄本身就是那筆訊號，必然已標記為處理過
  *   min_grade / timeframe —— 訊號的屬性，不隨時間改變
  */
-function recheck(signal, ctx) {
+function recheck(signal, ctx, opts) {
   const { store, risk } = ctx;
+  // allowOverflow：這筆是使用者按了「超額進場」的。持倉上限改以硬上限判定，
+  // 其餘閘門照常重查。
+  const allowOverflow = Boolean(opts && opts.allowOverflow);
   const gates = [];
   const add = (name, passed, detail) => gates.push({ name, passed, detail: detail || '' });
 
@@ -189,9 +220,18 @@ function recheck(signal, ctx) {
 
   const openCount = store.openPositionCount(ctx.exchange);
   const maxNow = effectiveMaxConcurrent(store, risk);
-  add('max_concurrent', openCount < maxNow,
-    openCount < maxNow ? '' :
-      `目前持倉 ${openCount} 筆，已達上限 ${maxNow}`);
+  if (allowOverflow) {
+    // 卡片躺在手機上的這段期間，可能又有別的訊號用掉了超額額度 ——
+    // 所以按下去的當下以硬上限重新判定，不是按卡片產生時的數字。
+    const a = overflowAllowance(store, risk, ctx.exchange);
+    add('max_concurrent', a.openCount < a.hardCap,
+      a.openCount < a.hardCap ? '' :
+        `目前持倉 ${a.openCount} 筆，已達超額硬上限 ${a.hardCap}（上限 ${a.maxNow}＋超額 ${a.hardCap - a.maxNow}）`);
+  } else {
+    add('max_concurrent', openCount < maxNow,
+      openCount < maxNow ? '' :
+        `目前持倉 ${openCount} 筆，已達上限 ${maxNow}`);
+  }
 
   const dupSymbol = store.hasPositionForSymbol(signal.symbol, ctx.exchange);
   add('no_duplicate_symbol', !dupSymbol,
@@ -223,5 +263,6 @@ function summarise(result) {
 }
 
 module.exports = {
+  overflowAllowance, overflowEligible,
   effectiveMaxConcurrent, effectiveDailyLossLimit, effectiveCooldownMin,
   resetCooldown, dailyLossGate, evaluate, recheck, summarise };

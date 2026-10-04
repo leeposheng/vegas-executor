@@ -28,7 +28,7 @@ const risk = require('./risk');
 const okx = require('./exchanges/okx');
 const bingx = require('./exchanges/bingx');
 const notify = require('./notify');
-const { reconcileOnce, renderClosedCard, dailySummary } = require('./reconcile');
+const { reconcileOnce, renderClosedCard, renderReleasedCard, dailySummary } = require('./reconcile');
 const instruments = require('./instruments');
 
 const MAX_BODY_BYTES = 16 * 1024;
@@ -158,6 +158,13 @@ async function runReconcileFor(store, trigger, exName) {
           config.telegram
         ).catch(() => {});
       }
+    }
+
+    // 逾時釋放的殘留紀錄。一定要推播：額度被放掉了、損益沒入帳，
+    // 只寫日誌的話就會重演「系統說滿倉、交易所只有一個部位」卻沒人知道的情況。
+    for (const rel of (r.released || [])) {
+      console.warn('[對帳] ' + exName + ' 🧹 釋放殘留 ' + rel.kind + ' ' + rel.symbol + '：' + rel.note);
+      await notify.send(renderReleasedCard(rel), config.telegram).catch(() => {});
     }
 
     // 孤兒倉：交易所有、系統沒有。只告警，不自動處理 ——
@@ -481,6 +488,8 @@ async function start() {
           // 少了這三個欄位，拒絕卡片就只剩一句沒有數字的結論。
           band: result.band || null,
           preview: result.preview || null,
+          // 超額進場的資訊。有值時卡片改成「🟡 已達持倉上限」並換按鈕文字。
+          overLimit: result.overLimit || null,
           // 權益來源要傳出去：卡片上的每個數字都是從它推出來的，
           // 它是查來的還是設定檔裡放著的，使用者有權知道。
           equity: result.equity || null,
@@ -801,7 +810,14 @@ async function start() {
           }
         }
         if (route === 'GET /positions') {
-          return json(res, 200, { ok: true, positions: store.listPositions() });
+          // intents 一起列出：它們也算進同時持倉數。只列 positions 的話，
+          // 「上限顯示 5、清單只有 3 筆」會讓人以為計數壞了。
+          return json(res, 200, {
+            ok: true,
+            positions: store.listPositions(),
+            intents: store.listIntents(),
+            counted: { okx: store.openPositionCount('okx'), bingx: store.openPositionCount('bingx') },
+          });
         }
         if (route === 'POST /control/reconcile' || route === 'GET /control/reconcile') {
           // 手動觸發一輪對帳。定時器每分鐘也會跑，但要驗證設定、

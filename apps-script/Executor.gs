@@ -1,7 +1,7 @@
 /**
  * ================================================================
  * 執行層橋接（Executor.gs）
- * 對應指標 v11.9、Apps Script 第 3.4 批、vegas-executor 階段 0（Zeabur）
+ * 對應指標 v11.9、Apps Script 第 3.5 批、vegas-executor（Zeabur，需含超額進場）
  * ================================================================
  *
  * 【這個檔案在做什麼】
@@ -49,6 +49,11 @@
  * 7. 併入另一條分支（repo apps-script/Executor.gs）的自動槓桿顯示：
  *    [風險] 標示預算或上限、槓桿被自動調低時註明原槓桿與原因、
  *    保證金被調高時另列 [保證金]。這幾行一樣只出現在私訊。
+ *
+ * 【v3.5】超額進場
+ * 執行層達持倉上限、且只有這一道擋住時，改回 decision=pending＋overLimit。
+ * 卡片抬頭為「🟡 已達持倉上限」，多一行 [持倉]，按鈕為「➕ 超額進場（第 N 筆）」。
+ * 是否允許超額由執行層依待確認紀錄判定，callback_data 與一般進場相同。
  *
  * 【v3.4.1 修正】
  * postToExecutor_ 沒有把執行層回傳的 band／preview／equity 轉出去。
@@ -521,6 +526,8 @@ function postToExecutor_(payload, cfg) {
       band: body.band || null,
       preview: body.preview || null,
       equity: body.equity || null,
+      // v3.5：達持倉上限時，執行層改回 pending＋overLimit，卡片換成超額進場按鈕
+      overLimit: body.overLimit || null,
       dryRun: Boolean(body.dryRun)
     };
   } catch (error) {
@@ -737,6 +744,10 @@ function cardHead_(result) {
   // 「結果未知」與「未執行」必須看起來完全不同 ——
   // 前者要你去交易所確認，後者不必做任何事。
   if (d === 'error') return '⚠️ 結果未知，請到交易所確認';
+  // 超額待確認：與一般待確認分開，一眼看得出「按下去會超過平常的上限」
+  if (d === 'pending' && result.overLimit) {
+    return '🟡 已達持倉上限' + (result.dryRun ? '（DRY_RUN）' : '');
+  }
   return result.dryRun ? '🧪 待確認（DRY_RUN，不會真的下單）' : '⏳ 待確認';
 }
 
@@ -824,6 +835,15 @@ function renderPendingCard_(payload, result, originalText, forBroadcast) {
   // 等於在群組裡公布帳戶規模。
   if (!forBroadcast && result.equity && result.equity.note) {
     lines.push('⚠️ ' + result.equity.note);
+  }
+
+  // 超額待確認：把「按下去會變成第幾筆、最多到幾筆」講清楚。
+  // 這是帳戶專屬資訊，只放私訊。
+  if (!forBroadcast && result.decision === 'pending' && result.overLimit) {
+    var ol = result.overLimit;
+    lines.push('─────────────');
+    lines.push('[持倉] 目前 ' + ol.openCount + ' 筆／上限 ' + ol.maxNow
+      + '，超額進場將開第 ' + (ol.openCount + 1) + ' 筆（硬上限 ' + ol.hardCap + '）');
   }
 
   // 被拒絕時，「為什麼」比任何數字都重要。沒有它，這張卡片只是
@@ -1610,7 +1630,13 @@ function sendPendingCard_(payload, result, originalText) {
   if (result.decision === 'pending') {
     markup = {
       inline_keyboard: [[
-        { text: '✅ 進場', callback_data: CB_CONFIRM + payload.sig_id },
+        // 超額單用不同的文字，避免把「超過上限」當成一般進場順手按下去。
+        // callback_data 不變：是否允許超額由執行層依待確認紀錄判定，
+        // 不是由按鈕告訴它 —— 按鈕內容可以被偽造，紀錄不行。
+        { text: result.overLimit
+            ? '➕ 超額進場（第 ' + (result.overLimit.openCount + 1) + ' 筆）'
+            : '✅ 進場',
+          callback_data: CB_CONFIRM + payload.sig_id },
         { text: '⏭ 略過', callback_data: CB_SKIP + payload.sig_id }
       ]]
     };
