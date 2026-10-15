@@ -1,0 +1,1469 @@
+[
+ {
+  "id": "seq_pnl_and_reset",
+  "fn": "store_sequence",
+  "input": {
+   "steps": [
+    [
+     "at",
+     1790294401000
+    ],
+    [
+     "recordOrder"
+    ],
+    [
+     "recordPnl",
+     -8.5
+    ],
+    [
+     "recordPnl",
+     2.25
+    ],
+    [
+     "at",
+     1790294402000
+    ],
+    [
+     "resetDailyLoss",
+     {
+      "by": "telegram",
+      "note": "x"
+     }
+    ],
+    [
+     "recordPnl",
+     -3
+    ],
+    [
+     "dailyPnlSinceReset"
+    ],
+    [
+     "dailyResetInfo"
+    ],
+    [
+     "at",
+     1790352000000
+    ],
+    [
+     "recordPnl",
+     -1
+    ],
+    [
+     "dailyResetInfo"
+    ]
+   ]
+  },
+  "expected": {
+   "steps": [
+    {
+     "op": "at",
+     "args": [
+      1790294401000
+     ]
+    },
+    {
+     "op": "recordOrder",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "recordPnl",
+     "args": [
+      -8.5
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "recordPnl",
+     "args": [
+      2.25
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "at",
+     "args": [
+      1790294402000
+     ]
+    },
+    {
+     "op": "resetDailyLoss",
+     "args": [
+      {
+       "by": "telegram",
+       "note": "x"
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "count": 1,
+       "clearedUsdt": -6.25,
+       "at": 1790294402000
+      }
+     }
+    },
+    {
+     "op": "recordPnl",
+     "args": [
+      -3
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "dailyPnlSinceReset",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": -3
+     }
+    },
+    {
+     "op": "dailyResetInfo",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": {
+       "count": 1,
+       "lastAt": 1790294402000,
+       "realisedPnlUsdt": -9.25,
+       "baseline": -6.25,
+       "effectivePnlUsdt": -3,
+       "resets": [
+        {
+         "at": 1790294402000,
+         "by": "telegram",
+         "clearedUsdt": -6.25,
+         "note": "x"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "op": "at",
+     "args": [
+      1790352000000
+     ]
+    },
+    {
+     "op": "recordPnl",
+     "args": [
+      -1
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "dailyResetInfo",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": {
+       "count": 0,
+       "lastAt": 1790294402000,
+       "realisedPnlUsdt": -1,
+       "baseline": 0,
+       "effectivePnlUsdt": -1,
+       "resets": []
+      }
+     }
+    }
+   ],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": -9.25,
+      "orders": 1,
+      "resetBaseline": -6.25,
+      "resets": [
+       {
+        "at": 1790294402000,
+        "by": "telegram",
+        "clearedUsdt": -6.25,
+        "note": "x"
+       }
+      ]
+     },
+     "2026-09-26": {
+      "realisedPnlUsdt": -1,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 1790294402000
+   }
+  }
+ },
+ {
+  "id": "seq_processed_prune",
+  "fn": "store_sequence",
+  "input": {
+   "steps": [
+    [
+     "at",
+     1790294400000
+    ],
+    [
+     "markProcessed",
+     "SIG-OLD-00001",
+     "placed",
+     {},
+     "okx"
+    ],
+    [
+     "at",
+     1790985600000
+    ],
+    [
+     "markProcessed",
+     "SIG-NEW-00001",
+     "skipped",
+     {},
+     "okx"
+    ],
+    [
+     "isProcessed",
+     "SIG-OLD-00001",
+     "okx"
+    ],
+    [
+     "isProcessed",
+     "SIG-NEW-00001",
+     "okx"
+    ]
+   ]
+  },
+  "expected": {
+   "steps": [
+    {
+     "op": "at",
+     "args": [
+      1790294400000
+     ]
+    },
+    {
+     "op": "markProcessed",
+     "args": [
+      "SIG-OLD-00001",
+      "placed",
+      {},
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "at",
+     "args": [
+      1790985600000
+     ]
+    },
+    {
+     "op": "markProcessed",
+     "args": [
+      "SIG-NEW-00001",
+      "skipped",
+      {},
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "isProcessed",
+     "args": [
+      "SIG-OLD-00001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": false
+     }
+    },
+    {
+     "op": "isProcessed",
+     "args": [
+      "SIG-NEW-00001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    }
+   ],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {
+     "okx:SIG-NEW-00001": {
+      "at": "2026-10-03T00:00:00.000Z",
+      "outcome": "skipped",
+      "detail": {},
+      "exchange": "okx"
+     }
+    },
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "seq_positions",
+  "fn": "store_sequence",
+  "input": {
+   "steps": [
+    [
+     "at",
+     1790294400000
+    ],
+    [
+     "addPosition",
+     "SIG-A-0000001",
+     {
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "qty": 1
+     }
+    ],
+    [
+     "addPosition",
+     "SIG-A-0000001",
+     {
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "bingx",
+      "qty": 2
+     }
+    ],
+    [
+     "openPositionCount",
+     "okx"
+    ],
+    [
+     "openPositionCount",
+     "bingx"
+    ],
+    [
+     "hasPositionForSymbol",
+     "BTCUSDT.P",
+     "okx"
+    ],
+    [
+     "hasPositionForSymbol",
+     "ETHUSDT.P",
+     "okx"
+    ],
+    [
+     "patchPosition",
+     "SIG-A-0000001",
+     "okx",
+     {
+      "status": "open"
+     }
+    ],
+    [
+     "listPositions",
+     "okx"
+    ],
+    [
+     "addLayer",
+     "SIG-A-0000001",
+     "okx",
+     {
+      "sigId": "L1",
+      "qty": 1
+     }
+    ],
+    [
+     "listPositions",
+     "okx"
+    ],
+    [
+     "removePosition",
+     "SIG-A-0000001",
+     "okx"
+    ],
+    [
+     "removePosition",
+     "SIG-A-0000001",
+     "okx"
+    ],
+    [
+     "listPositions"
+    ]
+   ]
+  },
+  "expected": {
+   "steps": [
+    {
+     "op": "at",
+     "args": [
+      1790294400000
+     ]
+    },
+    {
+     "op": "addPosition",
+     "args": [
+      "SIG-A-0000001",
+      {
+       "symbol": "BTCUSDT.P",
+       "side": "long",
+       "exchange": "okx",
+       "qty": 1
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "addPosition",
+     "args": [
+      "SIG-A-0000001",
+      {
+       "symbol": "BTCUSDT.P",
+       "side": "long",
+       "exchange": "bingx",
+       "qty": 2
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "openPositionCount",
+     "args": [
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": 1
+     }
+    },
+    {
+     "op": "openPositionCount",
+     "args": [
+      "bingx"
+     ],
+     "out": {
+      "ok": true,
+      "value": 1
+     }
+    },
+    {
+     "op": "hasPositionForSymbol",
+     "args": [
+      "BTCUSDT.P",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "hasPositionForSymbol",
+     "args": [
+      "ETHUSDT.P",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": false
+     }
+    },
+    {
+     "op": "patchPosition",
+     "args": [
+      "SIG-A-0000001",
+      "okx",
+      {
+       "status": "open"
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "listPositions",
+     "args": [
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": [
+       {
+        "openedAt": "2026-09-25T00:00:00.000Z",
+        "symbol": "BTCUSDT.P",
+        "side": "long",
+        "exchange": "okx",
+        "qty": 1,
+        "sigId": "SIG-A-0000001",
+        "status": "open"
+       }
+      ]
+     }
+    },
+    {
+     "op": "addLayer",
+     "args": [
+      "SIG-A-0000001",
+      "okx",
+      {
+       "sigId": "L1",
+       "qty": 1
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "listPositions",
+     "args": [
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": [
+       {
+        "openedAt": "2026-09-25T00:00:00.000Z",
+        "symbol": "BTCUSDT.P",
+        "side": "long",
+        "exchange": "okx",
+        "qty": 1,
+        "sigId": "SIG-A-0000001",
+        "status": "open",
+        "layers": [
+         {
+          "addedAt": "2026-09-25T00:00:00.000Z",
+          "sigId": "L1",
+          "qty": 1
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "op": "removePosition",
+     "args": [
+      "SIG-A-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "removePosition",
+     "args": [
+      "SIG-A-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": false
+     }
+    },
+    {
+     "op": "listPositions",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": [
+       {
+        "openedAt": "2026-09-25T00:00:00.000Z",
+        "symbol": "BTCUSDT.P",
+        "side": "long",
+        "exchange": "bingx",
+        "qty": 2,
+        "sigId": "SIG-A-0000001"
+       }
+      ]
+     }
+    }
+   ],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "bingx:SIG-A-0000001": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "bingx",
+      "qty": 2,
+      "sigId": "SIG-A-0000001"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "seq_pending_machine",
+  "fn": "store_sequence",
+  "input": {
+   "steps": [
+    [
+     "at",
+     1790294400000
+    ],
+    [
+     "addPending",
+     "SIG-P-0000001",
+     {
+      "exchange": "okx",
+      "status": "pending",
+      "expiresAt": 1790294700000,
+      "plan": {}
+     }
+    ],
+    [
+     "claimPending",
+     "SIG-P-0000001",
+     "okx"
+    ],
+    [
+     "claimPending",
+     "SIG-P-0000001",
+     "okx"
+    ],
+    [
+     "getPending",
+     "SIG-P-0000001",
+     "okx"
+    ],
+    [
+     "releasePending",
+     "SIG-P-0000001",
+     "okx"
+    ],
+    [
+     "getPending",
+     "SIG-P-0000001",
+     "okx"
+    ],
+    [
+     "claimPending",
+     "SIG-P-0000001",
+     "okx"
+    ],
+    [
+     "resolvePending",
+     "SIG-P-0000001",
+     "placed",
+     {
+      "orderId": "o1"
+     },
+     "okx"
+    ],
+    [
+     "listPendings",
+     "okx"
+    ],
+    [
+     "addPending",
+     "SIG-P-0000002",
+     {
+      "exchange": "okx",
+      "status": "pending",
+      "expiresAt": 1790294401000,
+      "plan": {}
+     }
+    ],
+    [
+     "at",
+     1790294405000
+    ],
+    [
+     "expirePendings",
+     1790294405000
+    ],
+    [
+     "listPendings",
+     "okx"
+    ],
+    [
+     "listDecisions",
+     10
+    ]
+   ]
+  },
+  "expected": {
+   "steps": [
+    {
+     "op": "at",
+     "args": [
+      1790294400000
+     ]
+    },
+    {
+     "op": "addPending",
+     "args": [
+      "SIG-P-0000001",
+      {
+       "exchange": "okx",
+       "status": "pending",
+       "expiresAt": 1790294700000,
+       "plan": {}
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "status": "pending",
+       "createdAt": "2026-09-25T00:00:00.000Z",
+       "exchange": "okx",
+       "expiresAt": 1790294700000,
+       "plan": {},
+       "sigId": "SIG-P-0000001"
+      }
+     }
+    },
+    {
+     "op": "claimPending",
+     "args": [
+      "SIG-P-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "claimPending",
+     "args": [
+      "SIG-P-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": false
+     }
+    },
+    {
+     "op": "getPending",
+     "args": [
+      "SIG-P-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "status": "confirming",
+       "createdAt": "2026-09-25T00:00:00.000Z",
+       "exchange": "okx",
+       "expiresAt": 1790294700000,
+       "plan": {},
+       "sigId": "SIG-P-0000001"
+      }
+     }
+    },
+    {
+     "op": "releasePending",
+     "args": [
+      "SIG-P-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "getPending",
+     "args": [
+      "SIG-P-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "status": "pending",
+       "createdAt": "2026-09-25T00:00:00.000Z",
+       "exchange": "okx",
+       "expiresAt": 1790294700000,
+       "plan": {},
+       "sigId": "SIG-P-0000001"
+      }
+     }
+    },
+    {
+     "op": "claimPending",
+     "args": [
+      "SIG-P-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "resolvePending",
+     "args": [
+      "SIG-P-0000001",
+      "placed",
+      {
+       "orderId": "o1"
+      },
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "status": "placed",
+       "createdAt": "2026-09-25T00:00:00.000Z",
+       "exchange": "okx",
+       "expiresAt": 1790294700000,
+       "plan": {},
+       "sigId": "SIG-P-0000001",
+       "resolvedAt": "2026-09-25T00:00:00.000Z",
+       "detail": {
+        "orderId": "o1"
+       }
+      }
+     }
+    },
+    {
+     "op": "listPendings",
+     "args": [
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": []
+     }
+    },
+    {
+     "op": "addPending",
+     "args": [
+      "SIG-P-0000002",
+      {
+       "exchange": "okx",
+       "status": "pending",
+       "expiresAt": 1790294401000,
+       "plan": {}
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "status": "pending",
+       "createdAt": "2026-09-25T00:00:00.000Z",
+       "exchange": "okx",
+       "expiresAt": 1790294401000,
+       "plan": {},
+       "sigId": "SIG-P-0000002"
+      }
+     }
+    },
+    {
+     "op": "at",
+     "args": [
+      1790294405000
+     ]
+    },
+    {
+     "op": "expirePendings",
+     "args": [
+      1790294405000
+     ],
+     "out": {
+      "ok": true,
+      "value": [
+       {
+        "status": "pending",
+        "createdAt": "2026-09-25T00:00:00.000Z",
+        "exchange": "okx",
+        "expiresAt": 1790294401000,
+        "plan": {},
+        "sigId": "SIG-P-0000002"
+       }
+      ]
+     }
+    },
+    {
+     "op": "listPendings",
+     "args": [
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": []
+     }
+    },
+    {
+     "op": "listDecisions",
+     "args": [
+      10
+     ],
+     "out": {
+      "ok": true,
+      "value": [
+       {
+        "sigId": "SIG-P-0000002",
+        "at": "2026-09-25T00:00:05.000Z",
+        "outcome": "expired"
+       },
+       {
+        "sigId": "SIG-P-0000001",
+        "at": "2026-09-25T00:00:00.000Z",
+        "outcome": "placed"
+       }
+      ]
+     }
+    }
+   ],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [
+     {
+      "sigId": "SIG-P-0000001",
+      "at": "2026-09-25T00:00:00.000Z",
+      "outcome": "placed"
+     },
+     {
+      "sigId": "SIG-P-0000002",
+      "at": "2026-09-25T00:00:05.000Z",
+      "outcome": "expired"
+     }
+    ],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "seq_halt",
+  "fn": "store_sequence",
+  "input": {
+   "steps": [
+    [
+     "isHalted"
+    ],
+    [
+     "setHalted",
+     true,
+     "日損",
+     "daily_loss"
+    ],
+    [
+     "isHalted"
+    ],
+    [
+     "haltedReason"
+    ],
+    [
+     "haltedSource"
+    ],
+    [
+     "clearHaltIfFrom",
+     "manual"
+    ],
+    [
+     "isHalted"
+    ],
+    [
+     "clearHaltIfFrom",
+     "daily_loss"
+    ],
+    [
+     "isHalted"
+    ],
+    [
+     "setOverride",
+     "maxConcurrent",
+     2
+    ],
+    [
+     "getOverride",
+     "maxConcurrent"
+    ]
+   ]
+  },
+  "expected": {
+   "steps": [
+    {
+     "op": "isHalted",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": false
+     }
+    },
+    {
+     "op": "setHalted",
+     "args": [
+      true,
+      "日損",
+      "daily_loss"
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "isHalted",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "haltedReason",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": "日損"
+     }
+    },
+    {
+     "op": "haltedSource",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": "daily_loss"
+     }
+    },
+    {
+     "op": "clearHaltIfFrom",
+     "args": [
+      "manual"
+     ],
+     "out": {
+      "ok": true,
+      "value": false
+     }
+    },
+    {
+     "op": "isHalted",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "clearHaltIfFrom",
+     "args": [
+      "daily_loss"
+     ],
+     "out": {
+      "ok": true,
+      "value": true
+     }
+    },
+    {
+     "op": "isHalted",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": false
+     }
+    },
+    {
+     "op": "setOverride",
+     "args": [
+      "maxConcurrent",
+      2
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "getOverride",
+     "args": [
+      "maxConcurrent"
+     ],
+     "out": {
+      "ok": true,
+      "value": 2
+     }
+    }
+   ],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {
+     "maxConcurrent": 2
+    },
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "seq_intents",
+  "fn": "store_sequence",
+  "input": {
+   "steps": [
+    [
+     "at",
+     1790294400000
+    ],
+    [
+     "recordIntent",
+     "SIG-I-0000001",
+     {
+      "clOrdId": "vg1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "at": 1790294400000,
+      "exchange": "okx"
+     }
+    ],
+    [
+     "listIntents",
+     "okx"
+    ],
+    [
+     "listIntents",
+     "bingx"
+    ],
+    [
+     "clearIntent",
+     "SIG-I-0000001",
+     "okx"
+    ],
+    [
+     "listIntents",
+     "okx"
+    ]
+   ]
+  },
+  "expected": {
+   "steps": [
+    {
+     "op": "at",
+     "args": [
+      1790294400000
+     ]
+    },
+    {
+     "op": "recordIntent",
+     "args": [
+      "SIG-I-0000001",
+      {
+       "clOrdId": "vg1",
+       "instId": "BTC-USDT-SWAP",
+       "symbol": "BTCUSDT.P",
+       "side": "long",
+       "at": 1790294400000,
+       "exchange": "okx"
+      }
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "listIntents",
+     "args": [
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": [
+       {
+        "at": 1790294400000,
+        "clOrdId": "vg1",
+        "instId": "BTC-USDT-SWAP",
+        "symbol": "BTCUSDT.P",
+        "side": "long",
+        "exchange": "okx",
+        "sigId": "SIG-I-0000001"
+       }
+      ]
+     }
+    },
+    {
+     "op": "listIntents",
+     "args": [
+      "bingx"
+     ],
+     "out": {
+      "ok": true,
+      "value": []
+     }
+    },
+    {
+     "op": "clearIntent",
+     "args": [
+      "SIG-I-0000001",
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": null
+     }
+    },
+    {
+     "op": "listIntents",
+     "args": [
+      "okx"
+     ],
+     "out": {
+      "ok": true,
+      "value": []
+     }
+    }
+   ],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "seq_bind_mode",
+  "fn": "store_sequence",
+  "input": {
+   "steps": [
+    [
+     "bindMode",
+     "demo",
+     "shadow"
+    ],
+    [
+     "getMode"
+    ],
+    [
+     "bindMode",
+     "demo",
+     "shadow"
+    ],
+    [
+     "bindMode",
+     "live",
+     "live"
+    ]
+   ]
+  },
+  "expected": {
+   "steps": [
+    {
+     "op": "bindMode",
+     "args": [
+      "demo",
+      "shadow"
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "ok": true,
+       "stamped": true
+      }
+     }
+    },
+    {
+     "op": "getMode",
+     "args": [],
+     "out": {
+      "ok": true,
+      "value": "demo"
+     }
+    },
+    {
+     "op": "bindMode",
+     "args": [
+      "demo",
+      "shadow"
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "ok": true
+      }
+     }
+    },
+    {
+     "op": "bindMode",
+     "args": [
+      "live",
+      "live"
+     ],
+     "out": {
+      "ok": true,
+      "value": {
+       "ok": false,
+       "error": "狀態檔屬於 shadow 服務（<DATA_DIR>/state.json），目前這個服務是 live。\n   主服務與模擬服務必須用不同的 DATA_DIR（例如 /data/live 與 /data/shadow）。"
+      }
+     }
+    }
+   ],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0,
+    "mode": "demo",
+    "role": "shadow"
+   }
+  }
+ },
+ {
+  "id": "corrupt_file",
+  "fn": "store_load_corrupt",
+  "input": {
+   "content": "{bad"
+  },
+  "expected": {
+   "state": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "backedUp": true
+  }
+ },
+ {
+  "id": "legacy_keys",
+  "fn": "store_legacy_load",
+  "input": {
+   "state": {
+    "positions": {
+     "ABCDEFGH-1": {
+      "symbol": "BTCUSDT.P",
+      "side": "long"
+     }
+    },
+    "processed": {
+     "ABCDEFGH-1": {
+      "at": 1790294400000,
+      "outcome": "placed"
+     }
+    },
+    "intents": {
+     "ABCDEFGH-1": {
+      "clOrdId": "vg1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "at": 1790294400000
+     }
+    }
+   }
+  },
+  "expected": {
+   "listPositions": [
+    {
+     "symbol": "BTCUSDT.P",
+     "side": "long",
+     "sigId": "ABCDEFGH-1",
+     "exchange": "okx"
+    }
+   ],
+   "listIntents": [
+    {
+     "clOrdId": "vg1",
+     "instId": "BTC-USDT-SWAP",
+     "symbol": "BTCUSDT.P",
+     "side": "long",
+     "at": 1790294400000,
+     "sigId": "ABCDEFGH-1",
+     "exchange": "okx"
+    }
+   ],
+   "isProcessed": true,
+   "count": 2
+  }
+ }
+]

@@ -1,0 +1,401 @@
+[
+ {
+  "id": "okx_sign_get_demo",
+  "fn": "okx_build_signed_request",
+  "input": {
+   "method": "get",
+   "requestPath": "/api/v5/account/balance?ccy=USDT",
+   "cfg": {
+    "apiKey": "KEY",
+    "apiSecret": "SECRET",
+    "passphrase": "PASS",
+    "baseUrl": "https://www.okx.com"
+   },
+   "demo": true,
+   "now": 1758470000000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "exchange": "okx",
+    "method": "GET",
+    "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+    "requestPath": "/api/v5/account/balance?ccy=USDT",
+    "headers": {
+     "Content-Type": "application/json",
+     "OK-ACCESS-KEY": "KEY",
+     "OK-ACCESS-SIGN": "ixgcztjlLnZjW5MJt3YqU8Xr7xkG5owUtJfCuFfLFU8=",
+     "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+     "OK-ACCESS-PASSPHRASE": "PASS",
+     "x-simulated-trading": "1"
+    },
+    "body": "",
+    "prehashShape": "2025-09-21T15:53:20.000Z|GET|/api/v5/account/balance?ccy=USDT|"
+   }
+  }
+ },
+ {
+  "id": "okx_sign_post_live",
+  "fn": "okx_build_signed_request",
+  "input": {
+   "method": "POST",
+   "requestPath": "/api/v5/trade/order",
+   "body": {
+    "a": 1,
+    "b": "中"
+   },
+   "cfg": {
+    "apiKey": "KEY",
+    "apiSecret": "SECRET",
+    "passphrase": "PASS",
+    "baseUrl": "https://www.okx.com"
+   },
+   "demo": false,
+   "now": 1758470000000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "exchange": "okx",
+    "method": "POST",
+    "url": "https://www.okx.com/api/v5/trade/order",
+    "requestPath": "/api/v5/trade/order",
+    "headers": {
+     "Content-Type": "application/json",
+     "OK-ACCESS-KEY": "KEY",
+     "OK-ACCESS-SIGN": "xG0BsabANvC2X231TadFrF+r1PheFcw68HYF+9lMeM8=",
+     "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+     "OK-ACCESS-PASSPHRASE": "PASS"
+    },
+    "body": "{\"a\":1,\"b\":\"中\"}",
+    "prehashShape": "2025-09-21T15:53:20.000Z|POST|/api/v5/trade/order|body(15)"
+   }
+  }
+ },
+ {
+  "id": "okx_sign_ts_ms",
+  "fn": "okx_build_signed_request",
+  "input": {
+   "method": "GET",
+   "requestPath": "/x",
+   "cfg": {
+    "apiKey": "KEY",
+    "apiSecret": "SECRET",
+    "passphrase": "PASS",
+    "baseUrl": "https://www.okx.com"
+   },
+   "demo": false,
+   "now": 1758470000007
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "exchange": "okx",
+    "method": "GET",
+    "url": "https://www.okx.com/x",
+    "requestPath": "/x",
+    "headers": {
+     "Content-Type": "application/json",
+     "OK-ACCESS-KEY": "KEY",
+     "OK-ACCESS-SIGN": "1cmdOnI8MCsDryoXdEAhYH1IbS1zogX2tT0QNNsM298=",
+     "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.007Z",
+     "OK-ACCESS-PASSPHRASE": "PASS"
+    },
+    "body": "",
+    "prehashShape": "2025-09-21T15:53:20.007Z|GET|/x|"
+   }
+  }
+ },
+ {
+  "id": "okx_body_long_net",
+  "fn": "okx_build_order_body",
+  "input": {
+   "instId": "BTC-USDT-SWAP",
+   "side": "long",
+   "orderQty": 12.96,
+   "clOrdId": "vgabc",
+   "tdMode": "isolated",
+   "sl": 85011.8,
+   "tp": 85783.2,
+   "posMode": "net_mode"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": "BTC-USDT-SWAP",
+    "tdMode": "isolated",
+    "side": "buy",
+    "ordType": "market",
+    "sz": "12.96",
+    "clOrdId": "vgabc",
+    "attachAlgoOrds": [
+     {
+      "slTriggerPx": "85011.8",
+      "slOrdPx": "-1",
+      "tpTriggerPx": "85783.2",
+      "tpOrdPx": "-1"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": "okx_body_short_ls",
+  "fn": "okx_build_order_body",
+  "input": {
+   "instId": "BTC-USDT-SWAP",
+   "side": "short",
+   "orderQty": 1,
+   "clOrdId": "vgabc",
+   "tdMode": "cross",
+   "sl": 85783.2,
+   "tp": 85011.8,
+   "posMode": "long_short_mode"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": "BTC-USDT-SWAP",
+    "tdMode": "cross",
+    "side": "sell",
+    "ordType": "market",
+    "sz": "1",
+    "clOrdId": "vgabc",
+    "attachAlgoOrds": [
+     {
+      "slTriggerPx": "85783.2",
+      "slOrdPx": "-1",
+      "tpTriggerPx": "85011.8",
+      "tpOrdPx": "-1"
+     }
+    ],
+    "posSide": "short"
+   }
+  }
+ },
+ {
+  "id": "okx_body_float_qty",
+  "fn": "okx_build_order_body",
+  "input": {
+   "instId": "X-USDT-SWAP",
+   "side": "long",
+   "orderQty": 0.1,
+   "clOrdId": "vg",
+   "tdMode": "cross",
+   "sl": 1e-7,
+   "tp": 2,
+   "posMode": "net_mode"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": "X-USDT-SWAP",
+    "tdMode": "cross",
+    "side": "buy",
+    "ordType": "market",
+    "sz": "0.1",
+    "clOrdId": "vg",
+    "attachAlgoOrds": [
+     {
+      "slTriggerPx": "1e-7",
+      "slOrdPx": "-1",
+      "tpTriggerPx": "2",
+      "tpOrdPx": "-1"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "id": "bingx_qs",
+  "fn": "bingx_build_query_string",
+  "input": {
+   "pairs": [
+    [
+     "symbol",
+     "BTC-USDT"
+    ],
+    [
+     "side",
+     "BUY"
+    ],
+    [
+     "empty",
+     ""
+    ],
+    [
+     "nul",
+     null
+    ],
+    [
+     "q",
+     "0.1296"
+    ]
+   ]
+  },
+  "expected": {
+   "ok": true,
+   "value": "symbol=BTC-USDT&side=BUY&q=0.1296"
+  }
+ },
+ {
+  "id": "bingx_sign",
+  "fn": "bingx_sign",
+  "input": {
+   "qs": "a=1&b=2",
+   "secret": "SECRET"
+  },
+  "expected": {
+   "ok": true,
+   "value": "dff2637b21af8ea4f9a13f6181b88104aa887a84e07c5c2f27e2e4f722ab37ae"
+  }
+ },
+ {
+  "id": "bingx_signed",
+  "fn": "bingx_build_signed_request",
+  "input": {
+   "method": "post",
+   "path": "/openApi/swap/v2/trade/order",
+   "pairs": [
+    [
+     "symbol",
+     "BTC-USDT"
+    ],
+    [
+     "side",
+     "BUY"
+    ],
+    [
+     "empty",
+     ""
+    ],
+    [
+     "nul",
+     null
+    ],
+    [
+     "q",
+     "0.1296"
+    ]
+   ],
+   "cfg": {
+    "apiKey": "KEY",
+    "apiSecret": "SECRET",
+    "baseUrl": "https://open-api.bingx.com"
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "exchange": "bingx",
+    "method": "POST",
+    "url": "https://open-api.bingx.com/openApi/swap/v2/trade/order?symbol=BTC-USDT&side=BUY&q=0.1296&timestamp=1758470000000&recvWindow=5000&signature=91433fd215a139ea08f9c57e6cca26e948dee9b1820d9ce236ff5e2562f98263",
+    "requestPath": "/openApi/swap/v2/trade/order",
+    "headers": {
+     "X-BX-APIKEY": "KEY"
+    },
+    "body": "",
+    "signedString": "symbol=BTC-USDT&side=BUY&q=0.1296&timestamp=1758470000000&recvWindow=5000"
+   }
+  }
+ },
+ {
+  "id": "bingx_order_long",
+  "fn": "bingx_build_order_pairs",
+  "input": {
+   "symbol": "BTC-USDT",
+   "side": "long",
+   "orderQty": 0.1296,
+   "clientOrderId": "vgabc",
+   "sl": 85011.8,
+   "tp": 85783.2
+  },
+  "expected": {
+   "ok": true,
+   "value": [
+    [
+     "symbol",
+     "BTC-USDT"
+    ],
+    [
+     "side",
+     "BUY"
+    ],
+    [
+     "positionSide",
+     "LONG"
+    ],
+    [
+     "type",
+     "MARKET"
+    ],
+    [
+     "quantity",
+     "0.1296"
+    ],
+    [
+     "clientOrderID",
+     "vgabc"
+    ],
+    [
+     "stopLoss",
+     "{\"type\":\"STOP_MARKET\",\"stopPrice\":85011.8,\"price\":85011.8,\"workingType\":\"MARK_PRICE\"}"
+    ],
+    [
+     "takeProfit",
+     "{\"type\":\"TAKE_PROFIT_MARKET\",\"stopPrice\":85783.2,\"price\":85783.2,\"workingType\":\"MARK_PRICE\"}"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "bingx_order_short",
+  "fn": "bingx_build_order_pairs",
+  "input": {
+   "symbol": "BTC-USDT",
+   "side": "short",
+   "orderQty": 0.1,
+   "clientOrderId": "vgabc",
+   "sl": 85783.2,
+   "tp": 85011.8
+  },
+  "expected": {
+   "ok": true,
+   "value": [
+    [
+     "symbol",
+     "BTC-USDT"
+    ],
+    [
+     "side",
+     "SELL"
+    ],
+    [
+     "positionSide",
+     "SHORT"
+    ],
+    [
+     "type",
+     "MARKET"
+    ],
+    [
+     "quantity",
+     "0.1"
+    ],
+    [
+     "clientOrderID",
+     "vgabc"
+    ],
+    [
+     "stopLoss",
+     "{\"type\":\"STOP_MARKET\",\"stopPrice\":85783.2,\"price\":85783.2,\"workingType\":\"MARK_PRICE\"}"
+    ],
+    [
+     "takeProfit",
+     "{\"type\":\"TAKE_PROFIT_MARKET\",\"stopPrice\":85011.8,\"price\":85011.8,\"workingType\":\"MARK_PRICE\"}"
+    ]
+   ]
+  }
+ }
+]

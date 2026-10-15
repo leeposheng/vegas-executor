@@ -1,0 +1,1244 @@
+[
+ {
+  "id": "parse_ok_long",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_ok_short",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-S",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "short",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85783.2,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85011.8,
+     84626
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-S",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "short",
+     "entry": 85397.5,
+     "sl": 85783.2,
+     "tp": [
+      85011.8,
+      84626
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_tf_number",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": 15,
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_side_upper",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": " LONG ",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_no_score",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": null,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_score_null",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": null,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": null,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_score_bad",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 101,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "score 若提供，必須是 0-100 的數字"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_no_version",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "unknown",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_sigid_short",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "abc",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "sig_id 格式不合法（僅允許英數與 . _ : -，長度 8-64）"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_sigid_bad_char",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "abc def ghij",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "sig_id 格式不合法（僅允許英數與 . _ : -，長度 8-64）"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_sigid_trim",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "  BTCUSDT.P-15-1758469990000-L  ",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_no_symbol",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "symbol 缺少或非字串"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_grade_4",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 4,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "grade 必須是 1、2 或 3"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_grade_str",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": "2",
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469995000,
+     "ageSec": 5,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 2,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_ts_str",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": "1758470000000",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "ts 缺少或非數字（需為毫秒時間戳）"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_long_sl_above",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 86000,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "做多訊號的 sl(86000) 必須低於 entry(85397.5)"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_short_sl_below",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "short",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85000,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85000
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "做空訊號的 sl(85000) 必須高於 entry(85397.5)"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_risk_tiny",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85397.4,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "風險距離過小（0.10000000000582077），可能是資料錯誤"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_tp_wrong_side",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85000
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "tp[0]=85000 未在做多的獲利方向"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_tp_unordered",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     85500
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "tp[1] 未依由近而遠排序"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_tp_empty",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": []
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "tp 必須是非空陣列"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_tp_nonnum",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     "x"
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "tp 內含非數字"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_expired",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469939000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "訊號已過期 61.0 秒（上限 60 秒）"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_future",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758470031000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "訊號時間戳位於未來 31.0 秒，請檢查送訊端時鐘"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_future_ok",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758470029000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758470029000,
+     "ageSec": -29,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "parse_entry_zero",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469995000,
+    "entry": 0,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "entry 必須大於 0",
+     "做多訊號的 sl(85011.8) 必須低於 entry(0)"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_multi_error",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "sig_id": "",
+    "symbol": 5,
+    "side": "x"
+   },
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "sig_id 缺少或非字串",
+     "symbol 缺少或非字串",
+     "tf 缺少",
+     "side 必須是 long 或 short",
+     "ts 缺少或非數字（需為毫秒時間戳）",
+     "entry 缺少或非數字",
+     "sl 缺少或非數字",
+     "grade 必須是 1、2 或 3",
+     "tp 必須是非空陣列"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_nonobj_null",
+  "fn": "parse_signal",
+  "input": {
+   "raw": null,
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "payload 不是 JSON 物件"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_nonobj_[]",
+  "fn": "parse_signal",
+  "input": {
+   "raw": [],
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "payload 不是 JSON 物件"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_nonobj_\"x\"",
+  "fn": "parse_signal",
+  "input": {
+   "raw": "x",
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "payload 不是 JSON 物件"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_nonobj_5",
+  "fn": "parse_signal",
+  "input": {
+   "raw": 5,
+   "nowMs": 1758470000000,
+   "maxAgeSec": 60
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "errors": [
+     "payload 不是 JSON 物件"
+    ]
+   }
+  }
+ },
+ {
+  "id": "parse_maxage_default",
+  "fn": "parse_signal",
+  "input": {
+   "raw": {
+    "v": "11.9",
+    "sig_id": "BTCUSDT.P-15-1758469990000-L",
+    "symbol": "BTCUSDT.P",
+    "tf": "15",
+    "side": "long",
+    "ts": 1758469941000,
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "grade": 3,
+    "score": 70,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ]
+   },
+   "nowMs": 1758470000000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "signal": {
+     "version": "11.9",
+     "sigId": "BTCUSDT.P-15-1758469990000-L",
+     "tsMs": 1758469941000,
+     "ageSec": 59,
+     "symbol": "BTCUSDT.P",
+     "timeframe": "15",
+     "grade": 3,
+     "score": 70,
+     "side": "long",
+     "entry": 85397.5,
+     "sl": 85011.8,
+     "tp": [
+      85783.2,
+      86169,
+      86554.7
+     ],
+     "riskDistance": 385.6999999999971
+    }
+   }
+  }
+ },
+ {
+  "id": "clordid_BTCUSDT.P-15-1",
+  "fn": "client_order_id",
+  "input": {
+   "sigId": "BTCUSDT.P-15-1",
+   "prefix": "vg"
+  },
+  "expected": {
+   "ok": true,
+   "value": "vg28727d4201adae3865a2b91262cac3"
+  }
+ },
+ {
+  "id": "clordid_a",
+  "fn": "client_order_id",
+  "input": {
+   "sigId": "a",
+   "prefix": null
+  },
+  "expected": {
+   "ok": true,
+   "value": "vgca978112ca1bbdcafac231b39a23dc"
+  }
+ },
+ {
+  "id": "clordid_中文",
+  "fn": "client_order_id",
+  "input": {
+   "sigId": "中文",
+   "prefix": "vg"
+  },
+  "expected": {
+   "ok": true,
+   "value": "vg72726d8818f693066ceb69afa36421"
+  }
+ },
+ {
+  "id": "clordid_x",
+  "fn": "client_order_id",
+  "input": {
+   "sigId": "x",
+   "prefix": "zz"
+  },
+  "expected": {
+   "ok": true,
+   "value": "zz2d711642b726b04401627ca9fbac32"
+  }
+ },
+ {
+  "id": "clordid_y",
+  "fn": "client_order_id",
+  "input": {
+   "sigId": "y",
+   "prefix": "a-very-long-prefix-aaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "expected": {
+   "ok": true,
+   "value": "a-very-long-prefix-aaaaaaaaaaaaa"
+  }
+ }
+]

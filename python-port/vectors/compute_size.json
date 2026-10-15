@@ -1,0 +1,982 @@
+[
+ {
+  "id": "rp_okx_base",
+  "fn": "compute_size",
+  "input": {
+   "equityUsdt": 10000,
+   "riskPct": 0.005,
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 5,
+   "maxNotionalUsdt": 50000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 12.96,
+     "baseQty": 0.12960000000000002,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "riskAmountUsdt": 50,
+     "actualRiskUsdt": 49.9867,
+     "riskUtilisation": 0.9997,
+     "notionalUsdt": 11067.516,
+     "marginUsdt": 2213.5032,
+     "leverage": 5
+    }
+   }
+  }
+ },
+ {
+  "id": "rp_bingx_base",
+  "fn": "compute_size",
+  "input": {
+   "equityUsdt": 10000,
+   "riskPct": 0.005,
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "symbol": "BTC-USDT",
+    "stepSize": 0.0001,
+    "minQty": 0.0001,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "bingx",
+   "leverage": 5,
+   "maxNotionalUsdt": 50000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "exchange": "bingx",
+     "unit": "base",
+     "orderQty": 0.1296,
+     "baseQty": 0.1296,
+     "step": 0.0001,
+     "minimum": 0.0001,
+     "riskDistance": 385.6999999999971,
+     "riskAmountUsdt": 50,
+     "actualRiskUsdt": 49.9867,
+     "riskUtilisation": 0.9997,
+     "notionalUsdt": 11067.516,
+     "marginUsdt": 2213.5032,
+     "leverage": 5
+    }
+   }
+  }
+ },
+ {
+  "id": "rp_below_min",
+  "fn": "compute_size",
+  "input": {
+   "equityUsdt": 10,
+   "riskPct": 0.005,
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 5,
+   "maxNotionalUsdt": 50000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 0.01,
+     "baseQty": 0.0001,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "riskAmountUsdt": 0.05,
+     "actualRiskUsdt": 0.0386,
+     "riskUtilisation": 0.7714,
+     "notionalUsdt": 8.5397,
+     "marginUsdt": 1.7079,
+     "leverage": 5
+    }
+   }
+  }
+ },
+ {
+  "id": "rp_over_cap",
+  "fn": "compute_size",
+  "input": {
+   "equityUsdt": 1000000,
+   "riskPct": 0.01,
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 5,
+   "maxNotionalUsdt": 1000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "error": "名目價值 2214083.90 USDT 超過上限 1000 USDT，拒絕下單"
+   }
+  }
+ },
+ {
+  "id": "rp_zero_dist",
+  "fn": "compute_size",
+  "input": {
+   "equityUsdt": 10000,
+   "riskPct": 0.005,
+   "entry": 100,
+   "sl": 100,
+   "side": "long",
+   "tp": [
+    101
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 5,
+   "maxNotionalUsdt": 50000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "error": "風險距離為 0，無法計算倉位"
+   }
+  }
+ },
+ {
+  "id": "rp_zec_lot1",
+  "fn": "compute_size",
+  "input": {
+   "equityUsdt": 10000,
+   "riskPct": 0.005,
+   "entry": 50,
+   "sl": 48,
+   "side": "long",
+   "tp": [
+    52
+   ],
+   "spec": {
+    "instId": "ZEC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 1,
+    "minSz": 1,
+    "tvSymbol": "ZECUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 5,
+   "maxNotionalUsdt": 50000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 2500,
+     "baseQty": 25,
+     "step": 1,
+     "minimum": 1,
+     "riskDistance": 2,
+     "riskAmountUsdt": 50,
+     "actualRiskUsdt": 50,
+     "riskUtilisation": 1,
+     "notionalUsdt": 1250,
+     "marginUsdt": 250,
+     "leverage": 5
+    }
+   }
+  }
+ },
+ {
+  "id": "rp_short",
+  "fn": "compute_size",
+  "input": {
+   "equityUsdt": 10000,
+   "riskPct": 0.005,
+   "entry": 85397.5,
+   "sl": 85783.2,
+   "side": "short",
+   "tp": [
+    85011.8
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 5,
+   "maxNotionalUsdt": 50000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 12.96,
+     "baseQty": 0.12960000000000002,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "riskAmountUsdt": 50,
+     "actualRiskUsdt": 49.9867,
+     "riskUtilisation": 0.9997,
+     "notionalUsdt": 11067.516,
+     "marginUsdt": 2213.5032,
+     "leverage": 5
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_live_example",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 1.17,
+     "baseQty": 0.0117,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "stopPct": 0.4517,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": true,
+     "actualRiskUsdt": 5.5119,
+     "priceLossUsdt": 4.5127,
+     "feeUsdt": 0.9992,
+     "riskUtilisation": 0.5011,
+     "notionalUsdt": 999.1508,
+     "marginUsdt": 24.9788,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 40,
+     "baseLeverage": 40,
+     "leverageNote": ""
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_no_auto",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": false,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 1.17,
+     "baseQty": 0.0117,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "stopPct": 0.4517,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": false,
+     "actualRiskUsdt": 5.5119,
+     "priceLossUsdt": 4.5127,
+     "feeUsdt": 0.9992,
+     "riskUtilisation": 0.5011,
+     "notionalUsdt": 999.1508,
+     "marginUsdt": 24.9788,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 40,
+     "baseLeverage": 40,
+     "leverageNote": ""
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_stop_tiny_reject",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85300,
+   "side": "long",
+   "tp": [
+    85500
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "band": "below",
+    "capBound": false,
+    "error": "虧損 2.14 < 下限 5（止損 0.114%，手續費佔 46.7%）",
+    "preview": {
+     "notionalUsdt": 999.1508,
+     "orderQty": 1.17,
+     "baseQty": 0.0117,
+     "estLossUsdt": 2.1399,
+     "feeUsdt": 0.9992,
+     "stopPct": 0.0011,
+     "leverage": 40,
+     "marginUsdt": 25,
+     "feeShare": 0.4669,
+     "rr": 0.0935,
+     "breakeven": 0.9145
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_stop_wide",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 83000,
+   "side": "long",
+   "tp": [
+    86000
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 0.32,
+     "baseQty": 0.0032,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 2397.5,
+     "stopPct": 2.8075,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": true,
+     "actualRiskUsdt": 7.9453,
+     "priceLossUsdt": 7.672,
+     "feeUsdt": 0.2733,
+     "riskUtilisation": 0.7223,
+     "notionalUsdt": 273.272,
+     "marginUsdt": 24.8429,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 11,
+     "baseLeverage": 40,
+     "leverageNote": "強平緩衝 3x 限制"
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_margin_range",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 100,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 1.17,
+     "baseQty": 0.0117,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "stopPct": 0.4517,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": true,
+     "actualRiskUsdt": 5.5119,
+     "priceLossUsdt": 4.5127,
+     "feeUsdt": 0.9992,
+     "riskUtilisation": 0.5011,
+     "notionalUsdt": 999.1508,
+     "marginUsdt": 24.9788,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 40,
+     "baseLeverage": 40,
+     "leverageNote": ""
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_cap_bound",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 300,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "band": "below",
+    "capBound": true,
+    "error": "虧損 1.65 < 下限 5（止損 0.452%，手續費佔 18.1%，名目已達上限 300）",
+    "preview": {
+     "notionalUsdt": 298.8912,
+     "orderQty": 0.35,
+     "baseQty": 0.0035,
+     "estLossUsdt": 1.6488,
+     "feeUsdt": 0.2989,
+     "stopPct": 0.0045,
+     "leverage": 12,
+     "marginUsdt": 25,
+     "feeShare": 0.1813,
+     "rr": 0.6375,
+     "breakeven": 0.6107
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_bingx",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "symbol": "BTC-USDT",
+    "stepSize": 0.0001,
+    "minQty": 0.0001,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "bingx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "bingx",
+     "unit": "base",
+     "orderQty": 0.0117,
+     "baseQty": 0.0117,
+     "step": 0.0001,
+     "minimum": 0.0001,
+     "riskDistance": 385.6999999999971,
+     "stopPct": 0.4517,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": true,
+     "actualRiskUsdt": 5.5119,
+     "priceLossUsdt": 4.5127,
+     "feeUsdt": 0.9992,
+     "riskUtilisation": 0.5011,
+     "notionalUsdt": 999.1508,
+     "marginUsdt": 24.9788,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 40,
+     "baseLeverage": 40,
+     "leverageNote": ""
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_short",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85783.2,
+   "side": "short",
+   "tp": [
+    85011.8
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 1.17,
+     "baseQty": 0.0117,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "stopPct": 0.4517,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": true,
+     "actualRiskUsdt": 5.5119,
+     "priceLossUsdt": 4.5127,
+     "feeUsdt": 0.9992,
+     "riskUtilisation": 0.5011,
+     "notionalUsdt": 999.1508,
+     "marginUsdt": 24.9788,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 40,
+     "baseLeverage": 40,
+     "leverageNote": ""
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_zec",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 50,
+   "sl": 48.5,
+   "side": "long",
+   "tp": [
+    52
+   ],
+   "spec": {
+    "instId": "ZEC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 1,
+    "minSz": 1,
+    "tvSymbol": "ZECUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 550,
+     "baseQty": 5.5,
+     "step": 1,
+     "minimum": 1,
+     "riskDistance": 1.5,
+     "stopPct": 3,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": true,
+     "actualRiskUsdt": 8.525,
+     "priceLossUsdt": 8.25,
+     "feeUsdt": 0.275,
+     "riskUtilisation": 0.775,
+     "notionalUsdt": 275,
+     "marginUsdt": 25,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 11,
+     "baseLeverage": 40,
+     "leverageNote": "強平緩衝 3x 限制"
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_big_equity",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 100000
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "sizing": {
+     "mode": "fixed_margin",
+     "exchange": "okx",
+     "unit": "contracts",
+     "orderQty": 1.17,
+     "baseQty": 0.0117,
+     "step": 0.01,
+     "minimum": 0.01,
+     "riskDistance": 385.6999999999971,
+     "stopPct": 0.4517,
+     "riskAmountUsdt": 11,
+     "riskBudgetIsCap": true,
+     "actualRiskUsdt": 5.5119,
+     "priceLossUsdt": 4.5127,
+     "feeUsdt": 0.9992,
+     "riskUtilisation": 0.5011,
+     "notionalUsdt": 999.1508,
+     "marginUsdt": 24.9788,
+     "targetMarginUsdt": 25,
+     "baseMarginUsdt": 25,
+     "leverage": 40,
+     "baseLeverage": 40,
+     "leverageNote": ""
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_rule_1007",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 85397.5,
+   "sl": 85011.8,
+   "side": "long",
+   "tp": [
+    85783.2,
+    86169,
+    86554.7
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 40,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 10,
+   "lossMaxUsdt": 20,
+   "maxNotionalUsdt": 3000,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "band": "below",
+    "capBound": false,
+    "error": "虧損 8.81 < 下限 10（止損 0.452%，手續費佔 18.1%）",
+    "preview": {
+     "notionalUsdt": 1596.9333,
+     "orderQty": 1.87,
+     "baseQty": 0.0187,
+     "estLossUsdt": 8.8095,
+     "feeUsdt": 1.5969,
+     "stopPct": 0.0045,
+     "leverage": 40,
+     "marginUsdt": 40,
+     "feeShare": 0.1813,
+     "rr": 0.6375,
+     "breakeven": 0.6107
+    }
+   }
+  }
+ },
+ {
+  "id": "fm_zero_dist",
+  "fn": "compute_fixed_margin",
+  "input": {
+   "entry": 100,
+   "sl": 100,
+   "side": "long",
+   "tp": [
+    101
+   ],
+   "spec": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tvSymbol": "BTCUSDT.P"
+   },
+   "exchange": "okx",
+   "leverage": 40,
+   "marginUsdt": 25,
+   "marginMaxUsdt": 0,
+   "autoLeverage": true,
+   "minLiqCushion": 3,
+   "feeRateOneWay": 0.0005,
+   "lossMinUsdt": 5,
+   "lossMaxUsdt": 11,
+   "maxNotionalUsdt": 1500,
+   "equityUsdt": 400
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "error": "風險距離為 0，無法計算倉位"
+   }
+  }
+ }
+]

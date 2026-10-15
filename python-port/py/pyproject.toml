@@ -1,0 +1,11 @@
+[project]
+name = "vegas-executor"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["starlette>=0.40", "uvicorn>=0.30"]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

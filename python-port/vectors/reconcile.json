@@ -1,0 +1,4202 @@
+[
+ {
+  "id": "rc_still_open",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "pos": 4.75
+    }
+   ],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 1,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_closed_tp",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790298000000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_closed_loss",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 83500,
+     "realizedPnl": -22.5,
+     "pnl": -20,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 83500,
+      "pnlUsdt": -22.5,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": -20,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790298000000,
+      "win": false,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": -22.5,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_closed_sl_infer",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 83510,
+     "realizedPnl": -5,
+     "pnl": -4,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 83510,
+      "pnlUsdt": -5,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": -4,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790298000000,
+      "win": false,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": -5,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_closed_manual_type",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "1",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "部分平倉",
+      "closedAtMs": 1790298000000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_closed_liquidation_type",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 83000,
+     "realizedPnl": -30,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "2",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 83000,
+      "pnlUsdt": -30,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "平倉（推斷止損）",
+      "closedAtMs": 1790298000000,
+      "win": false,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": -30,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_grace_no_record",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790294405000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 1,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_past_grace_no_record",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790295000000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1",
+      "goneSinceMs": 1790295000000
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_stale_no_record",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790296260000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1",
+      "goneSinceMs": 1790296260000
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_positions_throw",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": "網路逾時",
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "查詢持倉失敗：網路逾時"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_history_throw",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": "限流",
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 查詢平倉紀錄失敗：限流"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_cross_midnight_pnl",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T15:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790348400000,
+     "closedAtMs": 1790352000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790355600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790352000000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-26": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_open_time_within_tol",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294640000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790298000000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_open_time_outside_tol",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294040000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1",
+      "goneSinceMs": 1790301600000
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_open_time_outside_tol_stale",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294040000,
+     "closedAtMs": 1790295600000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790296260000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1",
+      "goneSinceMs": 1790296260000
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_side_mismatch",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "short",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1",
+      "goneSinceMs": 1790301600000
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_two_history_pick_latest",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": -99,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790283600000,
+     "closedAtMs": 1790287200000,
+     "posId": "old"
+    },
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790298000000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_two_positions_one_closed",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     },
+     "okx:sig-eth-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "ETHUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c2",
+      "sigId": "sig-eth-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [
+    {
+     "instId": "ETH-USDT-SWAP",
+     "pos": 1
+    }
+   ],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 2,
+    "stillOpen": 1,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790298000000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-eth-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "ETHUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c2",
+      "sigId": "sig-eth-1"
+     }
+    },
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_filled",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": {
+    "state": "filled",
+    "filledSz": 4.75,
+    "avgPx": 84010
+   },
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790295000000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [
+     {
+      "sigId": "sig-int-1",
+      "symbol": "BTCUSDT.P",
+      "outcome": "filled",
+      "avgPx": 84010,
+      "qty": 4.75,
+      "note": "下單當時未收到回應，但實際已成交，已補登部位"
+     }
+    ],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-int-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84010,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c-int-1",
+      "recoveredBy": "reconcile",
+      "sigId": "sig-int-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_partial",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": {
+    "state": "partially_filled",
+    "filledSz": 2,
+    "avgPx": 84010
+   },
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790295000000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "意圖 c-int-1 部分成交（2 / 4.75 張），尚未結案，下一輪再查。若持續如此請到交易所確認。"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_canceled",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": {
+    "state": "canceled",
+    "filledSz": 0
+   },
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790295000000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [
+     {
+      "sigId": "sig-int-1",
+      "symbol": "BTCUSDT.P",
+      "outcome": "canceled",
+      "note": "訂單已被取消，未成交"
+     }
+    ],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_live",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": {
+    "state": "live",
+    "filledSz": 0
+   },
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790295000000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_notfound",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790295000000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [
+     {
+      "sigId": "sig-int-1",
+      "symbol": "BTCUSDT.P",
+      "outcome": "never_sent",
+      "note": "交易所查無此單，該筆請求並未送達，未造成部位"
+     }
+    ],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_throw",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": "網路逾時",
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790295000000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "意圖 c-int-1 反查失敗：網路逾時"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_throw_stale_no_live",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": "網路逾時",
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790296260000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": [
+     {
+      "kind": "intent",
+      "sigId": "sig-int-1",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "sinceMs": 1790294400000,
+      "note": "下單結果反查失敗已超過 30 分鐘，且交易所目前沒有此合約的部位，已釋放持倉額度",
+      "lastError": "網路逾時"
+     }
+    ]
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_throw_stale_live_pos",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "pos": 4.75
+    }
+   ],
+   "history": [],
+   "order": null,
+   "orderThrow": "網路逾時",
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790296260000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "意圖 c-int-1 反查失敗：網路逾時"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_intent_grace",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790294405000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 0,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {
+     "okx:sig-int-1": {
+      "at": "2026-09-25T00:00:00.000Z",
+      "clOrdId": "c-int-1",
+      "instId": "BTC-USDT-SWAP",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "sigId": "sig-int-1"
+     }
+    },
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_stale_two_rounds_release",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": [
+    600000,
+    2460000
+   ],
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": [
+     {
+      "kind": "position",
+      "sigId": "sig-btc-1",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "exchange": "okx",
+      "sinceMs": 1790295000000,
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "note": "交易所已無此部位超過 30 分鐘，且查不到對應的平倉紀錄，已釋放持倉額度；這筆的損益沒有入帳"
+     }
+    ]
+   },
+   "rounds": [
+    {
+     "exchange": "okx",
+     "checked": 1,
+     "stillOpen": 0,
+     "closed": [],
+     "resolvedIntents": [],
+     "orphans": [],
+     "errors": [
+      "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+     ],
+     "released": []
+    },
+    {
+     "exchange": "okx",
+     "checked": 1,
+     "stillOpen": 0,
+     "closed": [],
+     "resolvedIntents": [],
+     "orphans": [],
+     "errors": [],
+     "released": [
+      {
+       "kind": "position",
+       "sigId": "sig-btc-1",
+       "symbol": "BTCUSDT.P",
+       "side": "long",
+       "exchange": "okx",
+       "sinceMs": 1790295000000,
+       "openedAt": "2026-09-25T00:00:00.000Z",
+       "note": "交易所已無此部位超過 30 分鐘，且查不到對應的平倉紀錄，已釋放持倉額度；這筆的損益沒有入帳"
+      }
+     ]
+    }
+   ],
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_stale_two_rounds_relaxed",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294040000,
+     "closedAtMs": 1790294700000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": [
+    600000,
+    2460000
+   ],
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790294700000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "relaxed"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "rounds": [
+    {
+     "exchange": "okx",
+     "checked": 1,
+     "stillOpen": 0,
+     "closed": [],
+     "resolvedIntents": [],
+     "orphans": [],
+     "errors": [
+      "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+     ],
+     "released": []
+    },
+    {
+     "exchange": "okx",
+     "checked": 1,
+     "stillOpen": 0,
+     "closed": [
+      {
+       "sigId": "sig-btc-1",
+       "exchange": "okx",
+       "symbol": "BTCUSDT.P",
+       "side": "long",
+       "entry": 84000,
+       "openAvgPx": 84000,
+       "closeAvgPx": 84500,
+       "pnlUsdt": 19.25,
+       "pnlConfidence": "high",
+       "grossPnlUsdt": 23.75,
+       "feeUsdt": -4,
+       "fundingUsdt": -0.5,
+       "reason": "強制平倉",
+       "closedAtMs": 1790294700000,
+       "win": true,
+       "layers": 0,
+       "matchedBy": "relaxed"
+      }
+     ],
+     "resolvedIntents": [],
+     "orphans": [],
+     "errors": [],
+     "released": []
+    }
+   ],
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_stale_two_rounds_recovered",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": [
+    600000,
+    720000
+   ],
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 部位已不存在，仍查不到平倉紀錄（sig sig-btc-1，已 2 分鐘）"
+    ],
+    "released": []
+   },
+   "rounds": [
+    {
+     "exchange": "okx",
+     "checked": 1,
+     "stillOpen": 0,
+     "closed": [],
+     "resolvedIntents": [],
+     "orphans": [],
+     "errors": [
+      "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+     ],
+     "released": []
+    },
+    {
+     "exchange": "okx",
+     "checked": 1,
+     "stillOpen": 0,
+     "closed": [],
+     "resolvedIntents": [],
+     "orphans": [],
+     "errors": [
+      "BTCUSDT.P 部位已不存在，仍查不到平倉紀錄（sig sig-btc-1，已 2 分鐘）"
+     ],
+     "released": []
+    }
+   ],
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    },
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1",
+      "goneSinceMs": 1790295000000
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_orphan",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": true
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "pos": 4.75
+    },
+    {
+     "instId": "ETH-USDT-SWAP",
+     "pos": 2,
+     "avgPx": 3000,
+     "upl": -12
+    }
+   ],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 1,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [
+     {
+      "instId": "ETH-USDT-SWAP",
+      "pos": 2,
+      "avgPx": 3000,
+      "upl": -12
+     }
+    ],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": true
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_bingx_flags",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "bingx": {
+     "k": 1
+    },
+    "demo": false
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "bingx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "bingx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": "bingx"
+  },
+  "expected": {
+   "result": {
+    "exchange": "bingx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [
+     "BTCUSDT.P 部位已不存在，但查不到對應的平倉紀錄（sig sig-btc-1），30 分鐘後仍對不上將釋放額度"
+    ],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": false
+    },
+    {
+     "demo": false
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "bingx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "bingx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1",
+      "goneSinceMs": 1790301600000
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "rc_live_flag_false",
+  "fn": "reconcile_once",
+  "input": {
+   "cfg": {
+    "okx": {},
+    "demo": false
+   },
+   "initialState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {
+     "okx:sig-btc-1": {
+      "openedAt": "2026-09-25T00:00:00.000Z",
+      "symbol": "BTCUSDT.P",
+      "exchange": "okx",
+      "side": "long",
+      "entry": 84000,
+      "sl": 83500,
+      "tp": [
+       84500,
+       85000,
+       85500
+      ],
+      "orderQty": 4.75,
+      "baseQty": 0.0475,
+      "clientOrderId": "c1",
+      "sigId": "sig-btc-1"
+     }
+    },
+    "pendings": {},
+    "daily": {},
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   },
+   "live": [],
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "order": null,
+   "orderThrow": null,
+   "positionsThrow": null,
+   "historyThrow": null,
+   "now": 1790301600000,
+   "rounds": null,
+   "exchangeName": null
+  },
+  "expected": {
+   "result": {
+    "exchange": "okx",
+    "checked": 1,
+    "stillOpen": 0,
+    "closed": [
+     {
+      "sigId": "sig-btc-1",
+      "exchange": "okx",
+      "symbol": "BTCUSDT.P",
+      "side": "long",
+      "entry": 84000,
+      "openAvgPx": 84000,
+      "closeAvgPx": 84500,
+      "pnlUsdt": 19.25,
+      "pnlConfidence": "high",
+      "grossPnlUsdt": 23.75,
+      "feeUsdt": -4,
+      "fundingUsdt": -0.5,
+      "reason": "強制平倉",
+      "closedAtMs": 1790298000000,
+      "win": true,
+      "layers": 0,
+      "matchedBy": "strict"
+     }
+    ],
+    "resolvedIntents": [],
+    "orphans": [],
+    "errors": [],
+    "released": []
+   },
+   "threw": null,
+   "flagsSeen": [
+    {
+     "demo": false
+    },
+    {
+     "demo": false
+    }
+   ],
+   "notifications": [],
+   "finalState": {
+    "halted": false,
+    "haltedReason": "",
+    "haltedSource": "",
+    "processed": {},
+    "positions": {},
+    "pendings": {},
+    "daily": {
+     "2026-09-25": {
+      "realisedPnlUsdt": 19.25,
+      "orders": 0,
+      "resetBaseline": 0,
+      "resets": []
+     }
+    },
+    "decisions": [],
+    "intents": {},
+    "overrides": {},
+    "lastResetAtMs": 0
+   }
+  }
+ },
+ {
+  "id": "mh_ok",
+  "fn": "match_history",
+  "input": {
+   "tracked": {
+    "symbol": "BTCUSDT.P",
+    "side": "long",
+    "entry": 84000,
+    "openedAt": "2026-09-25T00:00:00.000Z"
+   },
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "now": 1790301600000
+  },
+  "expected": {
+   "instId": "BTC-USDT-SWAP",
+   "posSide": "long",
+   "openAvgPx": 84000,
+   "closeAvgPx": 84500,
+   "realizedPnl": 19.25,
+   "pnl": 23.75,
+   "fee": -4,
+   "fundingFee": -0.5,
+   "closeType": "3",
+   "openedAtMs": 1790294400000,
+   "closedAtMs": 1790298000000,
+   "posId": "p1"
+  }
+ },
+ {
+  "id": "mh_none",
+  "fn": "match_history",
+  "input": {
+   "tracked": {
+    "symbol": "BTCUSDT.P",
+    "side": "long",
+    "entry": 84000,
+    "openedAt": "2026-09-25T00:00:00.000Z"
+   },
+   "history": [],
+   "now": 1790301600000
+  },
+  "expected": null
+ },
+ {
+  "id": "mh_wrong_inst",
+  "fn": "match_history",
+  "input": {
+   "tracked": {
+    "symbol": "BTCUSDT.P",
+    "side": "long",
+    "entry": 84000,
+    "openedAt": "2026-09-25T00:00:00.000Z"
+   },
+   "history": [
+    {
+     "instId": "ETH-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294400000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "now": 1790301600000
+  },
+  "expected": {
+   "instId": "ETH-USDT-SWAP",
+   "posSide": "long",
+   "openAvgPx": 84000,
+   "closeAvgPx": 84500,
+   "realizedPnl": 19.25,
+   "pnl": 23.75,
+   "fee": -4,
+   "fundingFee": -0.5,
+   "closeType": "3",
+   "openedAtMs": 1790294400000,
+   "closedAtMs": 1790298000000,
+   "posId": "p1"
+  }
+ },
+ {
+  "id": "mh_tol_edge",
+  "fn": "match_history",
+  "input": {
+   "tracked": {
+    "symbol": "BTCUSDT.P",
+    "side": "long",
+    "entry": 84000,
+    "openedAt": "2026-09-25T00:00:00.000Z"
+   },
+   "history": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "long",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "3",
+     "openedAtMs": 1790294100000,
+     "closedAtMs": 1790298000000,
+     "posId": "p1"
+    }
+   ],
+   "now": 1790301600000
+  },
+  "expected": {
+   "instId": "BTC-USDT-SWAP",
+   "posSide": "long",
+   "openAvgPx": 84000,
+   "closeAvgPx": 84500,
+   "realizedPnl": 19.25,
+   "pnl": 23.75,
+   "fee": -4,
+   "fundingFee": -0.5,
+   "closeType": "3",
+   "openedAtMs": 1790294100000,
+   "closedAtMs": 1790298000000,
+   "posId": "p1"
+  }
+ },
+ {
+  "id": "infer_0",
+  "fn": "infer_exit",
+  "input": {
+   "px": 84490,
+   "tracked": {
+    "sl": 83500,
+    "tp": [
+     84500
+    ]
+   }
+  },
+  "expected": "推斷止盈"
+ },
+ {
+  "id": "infer_1",
+  "fn": "infer_exit",
+  "input": {
+   "px": 83510,
+   "tracked": {
+    "sl": 83500,
+    "tp": [
+     84500
+    ]
+   }
+  },
+  "expected": "推斷止損"
+ },
+ {
+  "id": "infer_2",
+  "fn": "infer_exit",
+  "input": {
+   "px": null,
+   "tracked": {
+    "sl": 83500,
+    "tp": [
+     84500
+    ]
+   }
+  },
+  "expected": null
+ },
+ {
+  "id": "infer_3",
+  "fn": "infer_exit",
+  "input": {
+   "px": 84000,
+   "tracked": {}
+  },
+  "expected": null
+ },
+ {
+  "id": "infer_4",
+  "fn": "infer_exit",
+  "input": {
+   "px": 84250,
+   "tracked": {
+    "sl": 83500,
+    "tp": [
+     84500
+    ]
+   }
+  },
+  "expected": "推斷止盈"
+ },
+ {
+  "id": "ct_1",
+  "fn": "describe_close_type",
+  "input": {
+   "t": "1"
+  },
+  "expected": "部分平倉"
+ },
+ {
+  "id": "ct_2",
+  "fn": "describe_close_type",
+  "input": {
+   "t": "2"
+  },
+  "expected": "平倉"
+ },
+ {
+  "id": "ct_3",
+  "fn": "describe_close_type",
+  "input": {
+   "t": "3"
+  },
+  "expected": "強制平倉"
+ },
+ {
+  "id": "ct_4",
+  "fn": "describe_close_type",
+  "input": {
+   "t": "4"
+  },
+  "expected": "部分強平"
+ },
+ {
+  "id": "ct_5",
+  "fn": "describe_close_type",
+  "input": {
+   "t": "5"
+  },
+  "expected": "自動減倉（未全平）"
+ },
+ {
+  "id": "ct_9",
+  "fn": "describe_close_type",
+  "input": {
+   "t": "9"
+  },
+  "expected": "已平倉"
+ },
+ {
+  "id": "ct_undefined",
+  "fn": "describe_close_type",
+  "input": {
+   "t": null
+  },
+  "expected": "已平倉"
+ },
+ {
+  "id": "ct_",
+  "fn": "describe_close_type",
+  "input": {
+   "t": ""
+  },
+  "expected": "已平倉"
+ }
+]

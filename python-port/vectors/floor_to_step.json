@@ -1,0 +1,158 @@
+[
+ {
+  "id": "f_12.969_0.01",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 12.969,
+   "step": 0.01
+  },
+  "expected": {
+   "ok": true,
+   "value": 12.96
+  }
+ },
+ {
+  "id": "f_12.96_0.01",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 12.96,
+   "step": 0.01
+  },
+  "expected": {
+   "ok": true,
+   "value": 12.96
+  }
+ },
+ {
+  "id": "f_0.3_0.1",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 0.3,
+   "step": 0.1
+  },
+  "expected": {
+   "ok": true,
+   "value": 0.3
+  }
+ },
+ {
+  "id": "f_0.7_0.1",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 0.7,
+   "step": 0.1
+  },
+  "expected": {
+   "ok": true,
+   "value": 0.7
+  }
+ },
+ {
+  "id": "f_1.0000000000001_1",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 1.0000000000001,
+   "step": 1
+  },
+  "expected": {
+   "ok": true,
+   "value": 1
+  }
+ },
+ {
+  "id": "f_0.99999999999_1",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 0.99999999999,
+   "step": 1
+  },
+  "expected": {
+   "ok": true,
+   "value": 0
+  }
+ },
+ {
+  "id": "f_5.55_0.05",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 5.55,
+   "step": 0.05
+  },
+  "expected": {
+   "ok": true,
+   "value": 5.55
+  }
+ },
+ {
+  "id": "f_100_0.001",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 100,
+   "step": 0.001
+  },
+  "expected": {
+   "ok": true,
+   "value": 100
+  }
+ },
+ {
+  "id": "f_0.00039999_0.0001",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 0.00039999,
+   "step": 0.0001
+  },
+  "expected": {
+   "ok": true,
+   "value": 0.0003
+  }
+ },
+ {
+  "id": "f_3_1",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 3,
+   "step": 1
+  },
+  "expected": {
+   "ok": true,
+   "value": 3
+  }
+ },
+ {
+  "id": "f_0.30000000000000004_0.1",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 0.30000000000000004,
+   "step": 0.1
+  },
+  "expected": {
+   "ok": true,
+   "value": 0.3
+  }
+ },
+ {
+  "id": "f_1e-9_0.0001",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 1e-9,
+   "step": 0.0001
+  },
+  "expected": {
+   "ok": true,
+   "value": 0
+  }
+ },
+ {
+  "id": "f_0_0.01",
+  "fn": "floor_to_step",
+  "input": {
+   "value": 0,
+   "step": 0.01
+  },
+  "expected": {
+   "ok": true,
+   "value": 0
+  }
+ }
+]

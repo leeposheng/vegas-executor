@@ -38,3 +38,23 @@ coverage/
 .nyc_output/
 *.tgz
 *.zip
+
+# ── Python 版（python-port）────────────────────────
+# 虛擬環境與建置產物
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# 你的真實交易紀錄與外部資料，不進版本控制
+result.json
+*.log.gz
+python-port/py/replay_report.json
+python-port/py/okx_instruments.json
+python-port/py/*.zip
+python-port/py/replay_report.json
+python-port/py/okx_instruments.json
+python-port/py/*.zip
+python-port/py/*.egg-info/
+python-port/**/.pytest_cache/

@@ -1,0 +1,383 @@
+[
+ {
+  "id": "map_BTCUSDT.P",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": "BTCUSDT.P"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": "BTC-USDT-SWAP",
+    "bingx": "BTC-USDT"
+   }
+  }
+ },
+ {
+  "id": "map_ ethusdt.p ",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": " ethusdt.p "
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": "ETH-USDT-SWAP",
+    "bingx": "ETH-USDT"
+   }
+  }
+ },
+ {
+  "id": "map_BTCUSD",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": "BTCUSD"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": null,
+    "bingx": null
+   }
+  }
+ },
+ {
+  "id": "map_BTCUSDT",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": "BTCUSDT"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": null,
+    "bingx": null
+   }
+  }
+ },
+ {
+  "id": "map_1000PEPEUSDT.P",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": "1000PEPEUSDT.P"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": "1000PEPE-USDT-SWAP",
+    "bingx": "1000PEPE-USDT"
+   }
+  }
+ },
+ {
+  "id": "map_BTC-USDT-SWAP",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": "BTC-USDT-SWAP"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": null,
+    "bingx": null
+   }
+  }
+ },
+ {
+  "id": "map_",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": ""
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": null,
+    "bingx": null
+   }
+  }
+ },
+ {
+  "id": "map_null",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": null
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": null,
+    "bingx": null
+   }
+  }
+ },
+ {
+  "id": "map_undefined",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": null
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": null,
+    "bingx": null
+   }
+  }
+ },
+ {
+  "id": "map_BTCUSDC.P",
+  "fn": "symbol_maps",
+  "input": {
+   "tv": "BTCUSDC.P"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "instId": null,
+    "bingx": null
+   }
+  }
+ },
+ {
+  "id": "tv_BTC-USDT-SWAP",
+  "fn": "to_tv_symbol",
+  "input": {
+   "instId": "BTC-USDT-SWAP"
+  },
+  "expected": {
+   "ok": true,
+   "value": "BTCUSDT.P"
+  }
+ },
+ {
+  "id": "tv_1000PEPE-USDT-SWAP",
+  "fn": "to_tv_symbol",
+  "input": {
+   "instId": "1000PEPE-USDT-SWAP"
+  },
+  "expected": {
+   "ok": true,
+   "value": "1000PEPEUSDT.P"
+  }
+ },
+ {
+  "id": "tv_BTC-USD-SWAP",
+  "fn": "to_tv_symbol",
+  "input": {
+   "instId": "BTC-USD-SWAP"
+  },
+  "expected": {
+   "ok": true,
+   "value": null
+  }
+ },
+ {
+  "id": "tv_x",
+  "fn": "to_tv_symbol",
+  "input": {
+   "instId": "x"
+  },
+  "expected": {
+   "ok": true,
+   "value": null
+  }
+ },
+ {
+  "id": "tv_null",
+  "fn": "to_tv_symbol",
+  "input": {
+   "instId": null
+  },
+  "expected": {
+   "ok": true,
+   "value": null
+  }
+ },
+ {
+  "id": "resolve_static_BTCUSDT.P_okx",
+  "fn": "symbols_resolve_static",
+  "input": {
+   "tv": "BTCUSDT.P",
+   "exchange": "okx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "spec": {
+     "tvSymbol": "BTCUSDT.P",
+     "instId": "BTC-USDT-SWAP",
+     "ctVal": 0.01,
+     "lotSz": 0.01,
+     "minSz": 0.01
+    }
+   }
+  }
+ },
+ {
+  "id": "resolve_static_btcusdt.p_bingx",
+  "fn": "symbols_resolve_static",
+  "input": {
+   "tv": "btcusdt.p",
+   "exchange": "bingx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "spec": {
+     "tvSymbol": "btcusdt.p",
+     "symbol": "BTC-USDT",
+     "stepSize": 0.0001,
+     "minQty": 0.0001
+    }
+   }
+  }
+ },
+ {
+  "id": "resolve_static_ZECUSDT.P_bingx",
+  "fn": "symbols_resolve_static",
+  "input": {
+   "tv": "ZECUSDT.P",
+   "exchange": "bingx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "error": "代碼 ZECUSDT.P 未設定 bingx 的對應"
+   }
+  }
+ },
+ {
+  "id": "resolve_static_DOGEUSDT.P_okx",
+  "fn": "symbols_resolve_static",
+  "input": {
+   "tv": "DOGEUSDT.P",
+   "exchange": "okx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "error": "代碼 DOGEUSDT.P 不在白名單內，拒絕下單"
+   }
+  }
+ },
+ {
+  "id": "install_runtime",
+  "fn": "symbols_install",
+  "input": {
+   "allowed": [
+    "BTCUSDT.P",
+    "ETHUSDT.P",
+    "ZZZUSDT.P"
+   ],
+   "specs": {
+    "BTC-USDT-SWAP": {
+     "instId": "BTC-USDT-SWAP",
+     "ctVal": 0.01,
+     "lotSz": 0.01,
+     "minSz": 0.01
+    },
+    "ETH-USDT-SWAP": {
+     "instId": "ETH-USDT-SWAP",
+     "ctVal": 0.1,
+     "lotSz": 0.01,
+     "minSz": 0.01
+    }
+   }
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "installed": [
+     "BTCUSDT.P",
+     "ETHUSDT.P"
+    ],
+    "missing": [
+     "ZZZUSDT.P"
+    ],
+    "missingBingx": []
+   }
+  }
+ },
+ {
+  "id": "resolve_rt_BTCUSDT.P_okx",
+  "fn": "symbols_resolve_runtime",
+  "input": {
+   "tv": "BTCUSDT.P",
+   "exchange": "okx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "spec": {
+     "tvSymbol": "BTCUSDT.P",
+     "instId": "BTC-USDT-SWAP",
+     "ctVal": 0.01,
+     "lotSz": 0.01,
+     "minSz": 0.01
+    }
+   }
+  }
+ },
+ {
+  "id": "resolve_rt_ETHUSDT.P_okx",
+  "fn": "symbols_resolve_runtime",
+  "input": {
+   "tv": "ETHUSDT.P",
+   "exchange": "okx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "spec": {
+     "tvSymbol": "ETHUSDT.P",
+     "instId": "ETH-USDT-SWAP",
+     "ctVal": 0.1,
+     "lotSz": 0.01,
+     "minSz": 0.01
+    }
+   }
+  }
+ },
+ {
+  "id": "resolve_rt_ZECUSDT.P_okx",
+  "fn": "symbols_resolve_runtime",
+  "input": {
+   "tv": "ZECUSDT.P",
+   "exchange": "okx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": false,
+    "error": "代碼 ZECUSDT.P 不在白名單內，拒絕下單"
+   }
+  }
+ },
+ {
+  "id": "resolve_rt_BTCUSDT.P_bingx",
+  "fn": "symbols_resolve_runtime",
+  "input": {
+   "tv": "BTCUSDT.P",
+   "exchange": "bingx"
+  },
+  "expected": {
+   "ok": true,
+   "value": {
+    "ok": true,
+    "spec": {
+     "tvSymbol": "BTCUSDT.P",
+     "symbol": "BTC-USDT",
+     "stepSize": 0.0001,
+     "minQty": 0.0001
+    }
+   }
+  }
+ }
+]

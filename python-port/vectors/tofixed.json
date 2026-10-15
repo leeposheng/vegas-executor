@@ -1,0 +1,110 @@
+[
+ {
+  "id": "tf_0.03125_4",
+  "fn": "to_fixed",
+  "input": {
+   "value": 0.03125,
+   "digits": 4
+  },
+  "expected": {
+   "ok": true,
+   "value": "0.0313"
+  }
+ },
+ {
+  "id": "tf_1.005_2",
+  "fn": "to_fixed",
+  "input": {
+   "value": 1.005,
+   "digits": 2
+  },
+  "expected": {
+   "ok": true,
+   "value": "1.00"
+  }
+ },
+ {
+  "id": "tf_2.5_0",
+  "fn": "to_fixed",
+  "input": {
+   "value": 2.5,
+   "digits": 0
+  },
+  "expected": {
+   "ok": true,
+   "value": "3"
+  }
+ },
+ {
+  "id": "tf_0.00005_4",
+  "fn": "to_fixed",
+  "input": {
+   "value": 0.00005,
+   "digits": 4
+  },
+  "expected": {
+   "ok": true,
+   "value": "0.0001"
+  }
+ },
+ {
+  "id": "tf_1.45_1",
+  "fn": "to_fixed",
+  "input": {
+   "value": 1.45,
+   "digits": 1
+  },
+  "expected": {
+   "ok": true,
+   "value": "1.4"
+  }
+ },
+ {
+  "id": "tf_8.345_2",
+  "fn": "to_fixed",
+  "input": {
+   "value": 8.345,
+   "digits": 2
+  },
+  "expected": {
+   "ok": true,
+   "value": "8.35"
+  }
+ },
+ {
+  "id": "tf_0.125_2",
+  "fn": "to_fixed",
+  "input": {
+   "value": 0.125,
+   "digits": 2
+  },
+  "expected": {
+   "ok": true,
+   "value": "0.13"
+  }
+ },
+ {
+  "id": "tf_-0.03125_4",
+  "fn": "to_fixed",
+  "input": {
+   "value": -0.03125,
+   "digits": 4
+  },
+  "expected": {
+   "ok": true,
+   "value": "-0.0313"
+  }
+ },
+ {
+  "id": "tf_1234.56785_4",
+  "fn": "to_fixed",
+  "input": {
+   "value": 1234.56785,
+   "digits": 4
+  },
+  "expected": {
+   "ok": true,
+   "value": "1234.5678"
+  }
+ }
+]

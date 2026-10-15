@@ -1,0 +1,3199 @@
+[
+ {
+  "id": "okxnet_acct_lv2_net",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "2",
+        "posMode": "net_mode",
+        "uid": "123456789012"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "acctLv": "2",
+    "acctLvName": "合約模式",
+    "canTradeSwap": true,
+    "posMode": "net_mode",
+    "uid": "789012"
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_acct_lv3_ls_live",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "3",
+        "posMode": "long_short_mode"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": false
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "acctLv": "3",
+    "acctLvName": "跨幣種保證金模式",
+    "canTradeSwap": true,
+    "posMode": "long_short_mode",
+    "uid": null
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_acct_spot",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "1",
+        "posMode": "net_mode"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "acctLv": "1",
+    "acctLvName": "現貨模式",
+    "canTradeSwap": false,
+    "posMode": "net_mode",
+    "uid": null
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_acct_unknown",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "9"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "acctLv": "9",
+    "acctLvName": "未知(9)",
+    "canTradeSwap": false,
+    "posMode": "",
+    "uid": null
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_acct_empty",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "acctLv": "",
+    "acctLvName": "未知(undefined)",
+    "canTradeSwap": false,
+    "posMode": "",
+    "uid": null
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_err_50111",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 401,
+     "json": {
+      "code": "50111",
+      "msg": "Invalid OK-ACCESS-KEY",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 查詢帳戶設定 失敗 HTTP 401 code=50111 msg=Invalid OK-ACCESS-KEY\n  → API Key 無效。最常見原因是把實盤金鑰用在模擬盤（或相反）—— 兩者完全不通用。",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_err_http500_nojson",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 500,
+     "json": null,
+     "badJson": true
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 查詢帳戶設定 失敗 HTTP 500 code=? msg=(無)",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_err_http429",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 429,
+     "json": {
+      "code": "50011",
+      "msg": "Too Many Requests"
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 查詢帳戶設定 失敗 HTTP 429 code=50011 msg=Too Many Requests\n  → 觸發限流，請降低請求頻率。",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_err_network",
+  "fn": "fetchAccountConfig",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "throw": "fetch failed"
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "fetch failed",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_equity_eq",
+  "fn": "fetchEquity",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "totalEq": "1000",
+        "details": [
+         {
+          "ccy": "USDT",
+          "eq": "812.5",
+          "availEq": "700"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "equityUsdt": 812.5,
+    "source": "USDT.eq",
+    "availEq": 700
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_equity_fallback_total",
+  "fn": "fetchEquity",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "totalEq": "950.25",
+        "details": [
+         {
+          "ccy": "BTC",
+          "eq": "1"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "equityUsdt": 950.25,
+    "source": "totalEq",
+    "availEq": null
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_equity_zero_eq_uses_total",
+  "fn": "fetchEquity",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "totalEq": "77",
+        "details": [
+         {
+          "ccy": "USDT",
+          "eq": "0"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "equityUsdt": 77,
+    "source": "totalEq",
+    "availEq": null
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_equity_unparsable",
+  "fn": "fetchEquity",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "totalEq": "",
+        "details": []
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 回傳的權益無法解析，請確認帳戶內有 USDT 餘額",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_equity_err_sCode",
+  "fn": "fetchEquity",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "data": [
+       {
+        "sCode": "51010",
+        "sMsg": "mode"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 查詢權益 失敗 HTTP 200 code=0 sCode=51010 msg=mode\n  → 目前帳戶模式不支援此操作 —— 永續合約需要「合約模式」以上。請到 OKX 網頁或 App 切換帳戶模式，這個設定 API 改不了。",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_order_filled",
+  "fn": "fetchOrderByClOrdId",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "clOrdId": "vgabc123"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "ordId": "9",
+        "clOrdId": "vgabc123",
+        "state": "filled",
+        "accFillSz": "4.75",
+        "avgPx": "84010.5",
+        "side": "buy",
+        "posSide": "net",
+        "cTime": "1758469990000"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ordId": "9",
+    "clOrdId": "vgabc123",
+    "state": "filled",
+    "filledSz": 4.75,
+    "avgPx": 84010.5,
+    "side": "buy",
+    "posSide": "net",
+    "createdAtMs": 1758469990000
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/order?instId=BTC-USDT-SWAP&clOrdId=vgabc123",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "ORkJ0y7oINljhyb6jPJBzCKL16ZX0/3/JFJejyXsTMk=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_order_live_zero",
+  "fn": "fetchOrderByClOrdId",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "clOrdId": "vgabc123"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "ordId": "9",
+        "state": "live",
+        "accFillSz": "0",
+        "avgPx": ""
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ordId": "9",
+    "state": "live",
+    "filledSz": 0,
+    "avgPx": null,
+    "createdAtMs": null
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/order?instId=BTC-USDT-SWAP&clOrdId=vgabc123",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "ORkJ0y7oINljhyb6jPJBzCKL16ZX0/3/JFJejyXsTMk=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_order_notfound_51603",
+  "fn": "fetchOrderByClOrdId",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "clOrdId": "vgabc123"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "51603",
+      "msg": "Order does not exist",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": null,
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/order?instId=BTC-USDT-SWAP&clOrdId=vgabc123",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "ORkJ0y7oINljhyb6jPJBzCKL16ZX0/3/JFJejyXsTMk=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_order_empty_data",
+  "fn": "fetchOrderByClOrdId",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "clOrdId": "vgabc123"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": null,
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/order?instId=BTC-USDT-SWAP&clOrdId=vgabc123",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "ORkJ0y7oINljhyb6jPJBzCKL16ZX0/3/JFJejyXsTMk=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_order_other_err",
+  "fn": "fetchOrderByClOrdId",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "clOrdId": "vgabc123"
+    }
+   ],
+   "responses": [
+    {
+     "status": 401,
+     "json": {
+      "code": "50113",
+      "msg": "bad sign"
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 反查訂單 失敗 HTTP 401 code=50113 msg=bad sign\n  → 簽章驗證失敗。prehash 必須是 timestamp+METHOD+requestPath+body，且 requestPath 要與實際送出的完全一致（含 query string）。",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/order?instId=BTC-USDT-SWAP&clOrdId=vgabc123",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "ORkJ0y7oINljhyb6jPJBzCKL16ZX0/3/JFJejyXsTMk=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_positions_filter",
+  "fn": "fetchPositions",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "instId": "BTC-USDT-SWAP",
+        "posSide": "net",
+        "pos": "4.75",
+        "avgPx": "84000",
+        "upl": "12.3",
+        "mgnMode": "isolated",
+        "lever": "40"
+       },
+       {
+        "instId": "ETH-USDT-SWAP",
+        "pos": "0",
+        "avgPx": ""
+       },
+       {
+        "instId": "SOL-USDT-SWAP",
+        "posSide": "short",
+        "pos": "-3",
+        "avgPx": "150",
+        "upl": "-1",
+        "mgnMode": "cross",
+        "lever": "10"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "net",
+     "pos": 4.75,
+     "avgPx": 84000,
+     "upl": 12.3,
+     "mgnMode": "isolated",
+     "lever": 40
+    },
+    {
+     "instId": "SOL-USDT-SWAP",
+     "posSide": "short",
+     "pos": -3,
+     "avgPx": 150,
+     "upl": -1,
+     "mgnMode": "cross",
+     "lever": 10
+    }
+   ],
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/positions?instType=SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "O7iOzX3nrYj4jNX0rxyLfOrqKgUAR+CYzVJthbkUBpM=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_positions_empty",
+  "fn": "fetchPositions",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": [],
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/positions?instType=SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "O7iOzX3nrYj4jNX0rxyLfOrqKgUAR+CYzVJthbkUBpM=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_positions_err",
+  "fn": "fetchPositions",
+  "input": {
+   "args": [],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "50011",
+      "msg": "rate"
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 查詢持倉 失敗 HTTP 200 code=50011 msg=rate\n  → 觸發限流，請降低請求頻率。",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/positions?instType=SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "O7iOzX3nrYj4jNX0rxyLfOrqKgUAR+CYzVJthbkUBpM=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_history_basic",
+  "fn": "fetchPositionsHistory",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "afterMs": 1758469000000
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "instId": "BTC-USDT-SWAP",
+        "posSide": "net",
+        "openAvgPx": "84000",
+        "closeAvgPx": "84500",
+        "realizedPnl": "19.25",
+        "pnl": "23.75",
+        "fee": "-4",
+        "fundingFee": "-0.5",
+        "type": "2",
+        "cTime": "1758469000000",
+        "uTime": "1758470500000",
+        "posId": "p1"
+       },
+       {
+        "instId": "BTC-USDT-SWAP",
+        "posSide": "net",
+        "openAvgPx": "84000",
+        "closeAvgPx": "84500",
+        "realizedPnl": "19.25",
+        "pnl": "23.75",
+        "fee": "-4",
+        "fundingFee": "-0.5",
+        "type": "2",
+        "cTime": "1758469000000",
+        "uTime": "1758000000000",
+        "posId": "old"
+       },
+       {
+        "instId": "BTC-USDT-SWAP",
+        "posSide": "net",
+        "openAvgPx": "84000",
+        "closeAvgPx": "84500",
+        "realizedPnl": "19.25",
+        "pnl": "23.75",
+        "fee": "-4",
+        "fundingFee": "-0.5",
+        "type": "2",
+        "cTime": "1758469000000",
+        "uTime": "",
+        "posId": "nouTime"
+       },
+       {
+        "instId": "BTC-USDT-SWAP",
+        "posSide": "net",
+        "openAvgPx": "84000",
+        "closeAvgPx": "84500",
+        "realizedPnl": "19.25",
+        "pnl": "23.75",
+        "fee": "-4",
+        "fundingFee": "-0.5",
+        "type": "",
+        "cTime": "1758469000000",
+        "uTime": "1758470500000",
+        "posId": "notype"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "net",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "2",
+     "openedAtMs": 1758469000000,
+     "closedAtMs": 1758470500000,
+     "posId": "p1"
+    },
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "net",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "2",
+     "openedAtMs": 1758469000000,
+     "closedAtMs": null,
+     "posId": "nouTime"
+    },
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "net",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "",
+     "openedAtMs": 1758469000000,
+     "closedAtMs": 1758470500000,
+     "posId": "notype"
+    }
+   ],
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/positions-history?instType=SWAP&limit=20&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "XsHb8toMyL6zVkr9plORMXYPznojHUMrX1q/8i9dSAs=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_history_no_params",
+  "fn": "fetchPositionsHistory",
+  "input": {
+   "args": [
+    {}
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "instId": "BTC-USDT-SWAP",
+        "posSide": "net",
+        "openAvgPx": "84000",
+        "closeAvgPx": "84500",
+        "realizedPnl": "19.25",
+        "pnl": "23.75",
+        "fee": "-4",
+        "fundingFee": "-0.5",
+        "type": "2",
+        "cTime": "1758469000000",
+        "uTime": "1758470500000",
+        "posId": "p1"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "posSide": "net",
+     "openAvgPx": 84000,
+     "closeAvgPx": 84500,
+     "realizedPnl": 19.25,
+     "pnl": 23.75,
+     "fee": -4,
+     "fundingFee": -0.5,
+     "closeType": "2",
+     "openedAtMs": 1758469000000,
+     "closedAtMs": 1758470500000,
+     "posId": "p1"
+    }
+   ],
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/positions-history?instType=SWAP&limit=20",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "AIVKQAM3/dbTD+o8L7bll4tFiXj0IsSJcHkHOrz3iIU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_ensure_net_cross_twice",
+  "fn": "ensureLeverage2",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "leverage": 40,
+     "tdMode": "cross",
+     "posMode": "net_mode"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "lever": "40"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "lever": "40"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "set": true,
+    "sides": 1
+   },
+   "result2": {
+    "cached": true
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lUV/8XXT1rxCE00M1EixQHrA8qF/FTE5h3BIK4kmj/g=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"lever\":\"40\",\"mgnMode\":\"cross\"}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_ensure_iso_ls",
+  "fn": "ensureLeverage",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "leverage": 40,
+     "tdMode": "isolated",
+     "posMode": "long_short_mode"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {}
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {}
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "set": true,
+    "sides": 2
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "Do6DkXmdiPJFjF5hpRr9nEtH0VYJFaFVS85ELuYSGqI=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"lever\":\"40\",\"mgnMode\":\"isolated\",\"posSide\":\"long\"}"
+    },
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "63sm3A5ko0xOhXnbTaOpVl6RNNi6HdBSI2n4AOvq0Yc=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"lever\":\"40\",\"mgnMode\":\"isolated\",\"posSide\":\"short\"}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_ensure_iso_net",
+  "fn": "ensureLeverage",
+  "input": {
+   "args": [
+    {
+     "instId": "ETH-USDT-SWAP",
+     "leverage": 12.5,
+     "tdMode": "isolated",
+     "posMode": "net_mode"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {}
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "set": true,
+    "sides": 1
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "N/BJlZ5ihycC0E+x+H8ogpKZSA8ldrXZdLxbyBsKw/M=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"ETH-USDT-SWAP\",\"lever\":\"12.5\",\"mgnMode\":\"isolated\"}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_ensure_no_leverage",
+  "fn": "ensureLeverage",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "leverage": 0,
+     "tdMode": "cross"
+    }
+   ],
+   "responses": [],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "skipped": "未設定槓桿"
+   },
+   "threw": null,
+   "requests": []
+  }
+ },
+ {
+  "id": "okxnet_ensure_fail_not_cached",
+  "fn": "ensureLeverageFailThenOk",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "leverage": 40,
+     "tdMode": "cross",
+     "posMode": "net_mode"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "1",
+      "data": [
+       {
+        "sCode": "59000",
+        "sMsg": "has pos"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {}
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "firstThrew": "OKX 設定 BTC-USDT-SWAP 槓桿 失敗 HTTP 200 code=1 sCode=59000 msg=has pos\n  → 有持倉或掛單時不能切換設定，請先平倉或撤單。"
+   },
+   "result2": {
+    "set": true,
+    "sides": 1
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lUV/8XXT1rxCE00M1EixQHrA8qF/FTE5h3BIK4kmj/g=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"lever\":\"40\",\"mgnMode\":\"cross\"}"
+    },
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lUV/8XXT1rxCE00M1EixQHrA8qF/FTE5h3BIK4kmj/g=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"lever\":\"40\",\"mgnMode\":\"cross\"}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_preflight_ok",
+  "fn": "preflight",
+  "input": {
+   "args": [
+    {
+     "leverage": 40,
+     "tdMode": "isolated"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "2",
+        "posMode": "net_mode"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "totalEq": "1",
+        "details": [
+         {
+          "ccy": "USDT",
+          "eq": "5000"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": true,
+    "warnings": [],
+    "errors": [],
+    "instruments": {},
+    "account": {
+     "acctLv": "2",
+     "acctLvName": "合約模式",
+     "canTradeSwap": true,
+     "posMode": "net_mode",
+     "uid": null
+    },
+    "equity": {
+     "equityUsdt": 5000,
+     "source": "USDT.eq",
+     "availEq": null
+    }
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_preflight_spot_and_equity_fail",
+  "fn": "preflight",
+  "input": {
+   "args": [
+    {
+     "leverage": 40,
+     "tdMode": "cross"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "1",
+        "posMode": "net_mode"
+       }
+      ]
+     }
+    },
+    {
+     "status": 401,
+     "json": {
+      "code": "50111",
+      "msg": "k"
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": false,
+    "warnings": [],
+    "errors": [
+     "帳戶模式為「現貨模式」，不能交易永續合約。請到 OKX 網頁或 App 改成「合約模式」以上 —— 這個設定 API 改不了。",
+     "查詢權益失敗：OKX 查詢權益 失敗 HTTP 401 code=50111 msg=k\n  → API Key 無效。最常見原因是把實盤金鑰用在模擬盤（或相反）—— 兩者完全不通用。"
+    ],
+    "instruments": {},
+    "account": {
+     "acctLv": "1",
+     "acctLvName": "現貨模式",
+     "canTradeSwap": false,
+     "posMode": "net_mode",
+     "uid": null
+    }
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_preflight_ls_warn_specs",
+  "fn": "preflight",
+  "input": {
+   "args": [
+    {
+     "instIds": [
+      "BTC-USDT-SWAP",
+      "XXX-USDT-SWAP"
+     ],
+     "leverage": 40,
+     "tdMode": "cross",
+     "staticSpecs": {
+      "BTC-USDT-SWAP": {
+       "ctVal": 0.01,
+       "lotSz": 0.01,
+       "minSz": 0.01
+      }
+     },
+     "liveSpecs": {
+      "BTC-USDT-SWAP": {
+       "ctVal": 0.001,
+       "lotSz": 0.01,
+       "minSz": 0.01
+      }
+     }
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "2",
+        "posMode": "long_short_mode"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "totalEq": "9",
+        "details": [
+         {
+          "ccy": "USDT",
+          "eq": "9"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": true,
+    "warnings": [
+     "持倉模式為「開平倉模式（雙向）」，下單會帶 posSide。若非刻意設定，建議改為「買賣模式（單向）」，邏輯較單純。",
+     "BTC-USDT-SWAP 的 ctVal 不一致：靜態表 0.01，交易所 0.001。請更新 symbols.js，否則倉位會以錯誤的倍率計算。"
+    ],
+    "errors": [],
+    "instruments": {
+     "BTC-USDT-SWAP": {
+      "ctVal": 0.001,
+      "lotSz": 0.01,
+      "minSz": 0.01
+     }
+    },
+    "account": {
+     "acctLv": "2",
+     "acctLvName": "合約模式",
+     "canTradeSwap": true,
+     "posMode": "long_short_mode",
+     "uid": null
+    },
+    "equity": {
+     "equityUsdt": 9,
+     "source": "USDT.eq",
+     "availEq": null
+    }
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_preflight_verify_leverage",
+  "fn": "preflight",
+  "input": {
+   "args": [
+    {
+     "instIds": [
+      "BTC-USDT-SWAP"
+     ],
+     "leverage": 40,
+     "tdMode": "isolated",
+     "verifyLeverage": true
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "acctLv": "2",
+        "posMode": "long_short_mode"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "totalEq": "9",
+        "details": [
+         {
+          "ccy": "USDT",
+          "eq": "9"
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {}
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {}
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": true,
+    "warnings": [
+     "持倉模式為「開平倉模式（雙向）」，下單會帶 posSide。若非刻意設定，建議改為「買賣模式（單向）」，邏輯較單純。"
+    ],
+    "errors": [],
+    "instruments": {},
+    "account": {
+     "acctLv": "2",
+     "acctLvName": "合約模式",
+     "canTradeSwap": true,
+     "posMode": "long_short_mode",
+     "uid": null
+    },
+    "equity": {
+     "equityUsdt": 9,
+     "source": "USDT.eq",
+     "availEq": null
+    },
+    "leverageVerifiedOn": "BTC-USDT-SWAP"
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/config",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "b1x0Zmvlhjh8t9gwSfY7LP27cZHwRjg3etYYrUsdgik=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/account/balance?ccy=USDT",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "lyrAVKOyfu9grDFWr/in1VmkLDdrSejuou2+wipQWKo=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "Do6DkXmdiPJFjF5hpRr9nEtH0VYJFaFVS85ELuYSGqI=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"lever\":\"40\",\"mgnMode\":\"isolated\",\"posSide\":\"long\"}"
+    },
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/account/set-leverage",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "63sm3A5ko0xOhXnbTaOpVl6RNNi6HdBSI2n4AOvq0Yc=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"lever\":\"40\",\"mgnMode\":\"isolated\",\"posSide\":\"short\"}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_algo_pending",
+  "fn": "fetchAlgoPending",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP"
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "algoId": "a1",
+        "instId": "BTC-USDT-SWAP",
+        "ordType": "oco",
+        "state": "live",
+        "slTriggerPx": "85011.8",
+        "tpTriggerPx": "85783.2",
+        "sz": "12.96",
+        "posSide": "net"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "algoId": "a2",
+        "instId": "BTC-USDT-SWAP",
+        "ordType": "conditional",
+        "state": "live",
+        "slTriggerPx": "",
+        "tpTriggerPx": "",
+        "sz": "",
+        "posSide": "net"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": [
+    {
+     "algoId": "a1",
+     "instId": "BTC-USDT-SWAP",
+     "ordType": "oco",
+     "state": "live",
+     "slTriggerPx": 85011.8,
+     "tpTriggerPx": 85783.2,
+     "sz": 12.96,
+     "posSide": "net"
+    },
+    {
+     "algoId": "a2",
+     "instId": "BTC-USDT-SWAP",
+     "ordType": "conditional",
+     "state": "live",
+     "slTriggerPx": null,
+     "tpTriggerPx": null,
+     "sz": null,
+     "posSide": "net"
+    }
+   ],
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=oco&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "S2OZtEnVxM+3topGmgJzQ70zFCTfTHsxu8rFJrnXa/c=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=conditional&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "fA1vPpctc/uEJ6hLgh5HPOWlcs8+W20An2uQvtk4HVY=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_protect_ok",
+  "fn": "verifyProtection",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "sl": 85011.8
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "algoId": "a1",
+        "instId": "BTC-USDT-SWAP",
+        "ordType": "oco",
+        "state": "live",
+        "slTriggerPx": "85011.8",
+        "tpTriggerPx": "85783.2",
+        "sz": "12.96",
+        "posSide": "net"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": true,
+    "hasSl": true,
+    "hasTp": true,
+    "found": 1,
+    "orders": [
+     {
+      "algoId": "a1",
+      "instId": "BTC-USDT-SWAP",
+      "ordType": "oco",
+      "state": "live",
+      "slTriggerPx": 85011.8,
+      "tpTriggerPx": 85783.2,
+      "sz": 12.96,
+      "posSide": "net"
+     }
+    ],
+    "note": ""
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=oco&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "S2OZtEnVxM+3topGmgJzQ70zFCTfTHsxu8rFJrnXa/c=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=conditional&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "fA1vPpctc/uEJ6hLgh5HPOWlcs8+W20An2uQvtk4HVY=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_protect_missing",
+  "fn": "verifyProtection",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "sl": 85011.8
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": false,
+    "hasSl": false,
+    "hasTp": false,
+    "found": 0,
+    "orders": [],
+    "note": "交易所查不到這個標的的止損單"
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=oco&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "S2OZtEnVxM+3topGmgJzQ70zFCTfTHsxu8rFJrnXa/c=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=conditional&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "fA1vPpctc/uEJ6hLgh5HPOWlcs8+W20An2uQvtk4HVY=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_protect_tp_only",
+  "fn": "verifyProtection",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "sl": 85011.8
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "algoId": "a1",
+        "instId": "BTC-USDT-SWAP",
+        "ordType": "oco",
+        "state": "live",
+        "slTriggerPx": "",
+        "tpTriggerPx": "85783.2",
+        "sz": "12.96",
+        "posSide": "net"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": false,
+    "hasSl": false,
+    "hasTp": true,
+    "found": 1,
+    "orders": [
+     {
+      "algoId": "a1",
+      "instId": "BTC-USDT-SWAP",
+      "ordType": "oco",
+      "state": "live",
+      "slTriggerPx": null,
+      "tpTriggerPx": 85783.2,
+      "sz": 12.96,
+      "posSide": "net"
+     }
+    ],
+    "note": "交易所查不到這個標的的止損單"
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=oco&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "S2OZtEnVxM+3topGmgJzQ70zFCTfTHsxu8rFJrnXa/c=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=conditional&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "fA1vPpctc/uEJ6hLgh5HPOWlcs8+W20An2uQvtk4HVY=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_protect_price_mismatch",
+  "fn": "verifyProtection",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "sl": 85011.8
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "algoId": "a1",
+        "instId": "BTC-USDT-SWAP",
+        "ordType": "oco",
+        "state": "live",
+        "slTriggerPx": "84000",
+        "tpTriggerPx": "85783.2",
+        "sz": "12.96",
+        "posSide": "net"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": true,
+    "hasSl": true,
+    "hasTp": true,
+    "found": 1,
+    "orders": [
+     {
+      "algoId": "a1",
+      "instId": "BTC-USDT-SWAP",
+      "ordType": "oco",
+      "state": "live",
+      "slTriggerPx": 84000,
+      "tpTriggerPx": 85783.2,
+      "sz": 12.96,
+      "posSide": "net"
+     }
+    ],
+    "note": "交易所有止損，但觸發價與這筆訊號的 85011.8 差超過 0.5%"
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=oco&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "S2OZtEnVxM+3topGmgJzQ70zFCTfTHsxu8rFJrnXa/c=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=conditional&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "fA1vPpctc/uEJ6hLgh5HPOWlcs8+W20An2uQvtk4HVY=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_protect_other_inst",
+  "fn": "verifyProtection",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "sl": 85011.8
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "algoId": "a1",
+        "instId": "ETH-USDT-SWAP",
+        "ordType": "oco",
+        "state": "live",
+        "slTriggerPx": "85011.8",
+        "tpTriggerPx": "85783.2",
+        "sz": "12.96",
+        "posSide": "net"
+       }
+      ]
+     }
+    },
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "ok": false,
+    "hasSl": false,
+    "hasTp": false,
+    "found": 0,
+    "orders": [],
+    "note": "交易所查不到這個標的的止損單"
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=oco&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "S2OZtEnVxM+3topGmgJzQ70zFCTfTHsxu8rFJrnXa/c=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    },
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=conditional&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "fA1vPpctc/uEJ6hLgh5HPOWlcs8+W20An2uQvtk4HVY=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_protect_query_throws",
+  "fn": "verifyProtection",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "sl": 85011.8
+    }
+   ],
+   "responses": [
+    {
+     "throw": "fetch failed"
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "fetch failed",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/trade/orders-algo-pending?ordType=oco&instId=BTC-USDT-SWAP",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "S2OZtEnVxM+3topGmgJzQ70zFCTfTHsxu8rFJrnXa/c=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_place_ok",
+  "fn": "placeOrder",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "side": "long",
+     "orderQty": 12.96,
+     "clOrdId": "vgabc123",
+     "tdMode": "isolated",
+     "posMode": "net_mode",
+     "sl": 85011.8,
+     "tp": 85783.2
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "ordId": "1",
+        "clOrdId": "vgabc123",
+        "sCode": "0",
+        "sMsg": ""
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true,
+    "dryRun": false
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "sent": true,
+    "request": {
+     "exchange": "okx",
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "requestPath": "/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "q8/08YYm2CERV2L+4DWkXWc2+rxSHlPmwa+R4O66CVU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"buy\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}]}",
+     "prehashShape": "2025-09-21T15:53:20.000Z|POST|/api/v5/trade/order|body(211)"
+    },
+    "response": {
+     "code": "0",
+     "msg": "",
+     "data": [
+      {
+       "ordId": "1",
+       "clOrdId": "vgabc123",
+       "sCode": "0",
+       "sMsg": ""
+      }
+     ]
+    }
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "q8/08YYm2CERV2L+4DWkXWc2+rxSHlPmwa+R4O66CVU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"buy\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}]}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_place_ok_live_ls_short",
+  "fn": "placeOrder",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "side": "short",
+     "orderQty": 12.96,
+     "clOrdId": "vgabc123",
+     "tdMode": "isolated",
+     "posMode": "long_short_mode",
+     "sl": 85011.8,
+     "tp": 85783.2
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "sCode": "0"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": false,
+    "dryRun": false
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "sent": true,
+    "request": {
+     "exchange": "okx",
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "requestPath": "/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "Y2oR49CTLW9tp8rQhPDaMPTamzbMJM+NT80MNsxQ+YU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"sell\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}],\"posSide\":\"short\"}",
+     "prehashShape": "2025-09-21T15:53:20.000Z|POST|/api/v5/trade/order|body(230)"
+    },
+    "response": {
+     "code": "0",
+     "msg": "",
+     "data": [
+      {
+       "sCode": "0"
+      }
+     ]
+    }
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "Y2oR49CTLW9tp8rQhPDaMPTamzbMJM+NT80MNsxQ+YU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"sell\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}],\"posSide\":\"short\"}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_place_sCode_fail",
+  "fn": "placeOrder",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "side": "long",
+     "orderQty": 12.96,
+     "clOrdId": "vgabc123",
+     "tdMode": "isolated",
+     "posMode": "net_mode",
+     "sl": 85011.8,
+     "tp": 85783.2
+    }
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "1",
+      "msg": "All operations failed",
+      "data": [
+       {
+        "sCode": "51008",
+        "sMsg": "Insufficient margin"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true,
+    "dryRun": false
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 下單 失敗 HTTP 200 code=1 sCode=51008 msg=Insufficient margin\n  → 保證金不足。模擬盤可在 OKX 介面重置模擬資金。",
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "q8/08YYm2CERV2L+4DWkXWc2+rxSHlPmwa+R4O66CVU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"buy\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}]}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_place_http_fail",
+  "fn": "placeOrder",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "side": "long",
+     "orderQty": 12.96,
+     "clOrdId": "vgabc123",
+     "tdMode": "isolated",
+     "posMode": "net_mode",
+     "sl": 85011.8,
+     "tp": 85783.2
+    }
+   ],
+   "responses": [
+    {
+     "status": 503,
+     "json": null,
+     "badJson": true
+    }
+   ],
+   "flags": {
+    "demo": true,
+    "dryRun": false
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 下單 失敗 HTTP 503 code=? msg=(無)",
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "q8/08YYm2CERV2L+4DWkXWc2+rxSHlPmwa+R4O66CVU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"buy\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}]}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_place_network_throw",
+  "fn": "placeOrder",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "side": "long",
+     "orderQty": 12.96,
+     "clOrdId": "vgabc123",
+     "tdMode": "isolated",
+     "posMode": "net_mode",
+     "sl": 85011.8,
+     "tp": 85783.2
+    }
+   ],
+   "responses": [
+    {
+     "throw": "socket hang up"
+    }
+   ],
+   "flags": {
+    "demo": true,
+    "dryRun": false
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "socket hang up",
+   "requests": [
+    {
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "q8/08YYm2CERV2L+4DWkXWc2+rxSHlPmwa+R4O66CVU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"buy\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}]}"
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_place_dry",
+  "fn": "placeOrder",
+  "input": {
+   "args": [
+    {
+     "instId": "BTC-USDT-SWAP",
+     "side": "long",
+     "orderQty": 12.96,
+     "clOrdId": "vgabc123",
+     "tdMode": "isolated",
+     "posMode": "net_mode",
+     "sl": 85011.8,
+     "tp": 85783.2
+    }
+   ],
+   "responses": [],
+   "flags": {
+    "demo": true,
+    "dryRun": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "sent": false,
+    "request": {
+     "exchange": "okx",
+     "method": "POST",
+     "url": "https://www.okx.com/api/v5/trade/order",
+     "requestPath": "/api/v5/trade/order",
+     "headers": {
+      "Content-Type": "application/json",
+      "OK-ACCESS-KEY": "K",
+      "OK-ACCESS-SIGN": "q8/08YYm2CERV2L+4DWkXWc2+rxSHlPmwa+R4O66CVU=",
+      "OK-ACCESS-TIMESTAMP": "2025-09-21T15:53:20.000Z",
+      "OK-ACCESS-PASSPHRASE": "P",
+      "x-simulated-trading": "1"
+     },
+     "body": "{\"instId\":\"BTC-USDT-SWAP\",\"tdMode\":\"isolated\",\"side\":\"buy\",\"ordType\":\"market\",\"sz\":\"12.96\",\"clOrdId\":\"vgabc123\",\"attachAlgoOrds\":[{\"slTriggerPx\":\"85011.8\",\"slOrdPx\":\"-1\",\"tpTriggerPx\":\"85783.2\",\"tpOrdPx\":\"-1\"}]}",
+     "prehashShape": "2025-09-21T15:53:20.000Z|POST|/api/v5/trade/order|body(211)"
+    },
+    "response": null
+   },
+   "threw": null,
+   "requests": []
+  }
+ },
+ {
+  "id": "okxnet_ticker_ok",
+  "fn": "fetchTicker",
+  "input": {
+   "args": [
+    "BTC-USDT-SWAP"
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "instId": "BTC-USDT-SWAP",
+        "last": "85000.5",
+        "askPx": "85001",
+        "bidPx": "0",
+        "ts": "1758469999000"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "instId": "BTC-USDT-SWAP",
+    "last": 85000.5,
+    "askPx": 85001,
+    "bidPx": null,
+    "ts": 1758469999000
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/market/ticker?instId=BTC-USDT-SWAP",
+     "headers": null,
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_ticker_bad_last",
+  "fn": "fetchTicker",
+  "input": {
+   "args": [
+    "BTC-USDT-SWAP"
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "last": "abc"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 回傳的 BTC-USDT-SWAP 現價無法解析",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/market/ticker?instId=BTC-USDT-SWAP",
+     "headers": null,
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_ticker_http500",
+  "fn": "fetchTicker",
+  "input": {
+   "args": [
+    "BTC-USDT-SWAP"
+   ],
+   "responses": [
+    {
+     "status": 500,
+     "json": {}
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX 查詢 BTC-USDT-SWAP 現價 失敗 HTTP 500 code=? msg=(無)",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/market/ticker?instId=BTC-USDT-SWAP",
+     "headers": null,
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_instrument_ok",
+  "fn": "fetchInstrument",
+  "input": {
+   "args": [
+    "BTC-USDT-SWAP"
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": [
+       {
+        "instId": "BTC-USDT-SWAP",
+        "ctVal": "0.01",
+        "lotSz": "0.01",
+        "minSz": "0.01",
+        "tickSz": "0.1"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "result": {
+    "instId": "BTC-USDT-SWAP",
+    "ctVal": 0.01,
+    "lotSz": 0.01,
+    "minSz": 0.01,
+    "tickSz": 0.1
+   },
+   "threw": null,
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=BTC-USDT-SWAP",
+     "headers": null,
+     "body": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "okxnet_instrument_empty",
+  "fn": "fetchInstrument",
+  "input": {
+   "args": [
+    "BTC-USDT-SWAP"
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "json": {
+      "code": "0",
+      "msg": "",
+      "data": []
+     }
+    }
+   ],
+   "flags": {
+    "demo": true
+   },
+   "now": 1758470000000
+  },
+  "expected": {
+   "threw": "OKX instruments 回應異常：{\"code\":\"0\",\"msg\":\"\",\"data\":[]}",
+   "requests": [
+    {
+     "method": "GET",
+     "url": "https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=BTC-USDT-SWAP",
+     "headers": null,
+     "body": null
+    }
+   ]
+  }
+ }
+]

@@ -1,0 +1,602 @@
+[
+ {
+  "id": "render_pending_300",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "pending",
+   "expiresAt": 1758470300000,
+   "ttlSec": 300
+  },
+  "expected": {
+   "ok": true,
+   "value": "⏳ 待確認｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等\n─────────────\n⏱ 5 分鐘內有效，逾時自動失效\n回覆「進場」或「略過」（階段 2 會換成按鈕）"
+  }
+ },
+ {
+  "id": "render_pending_90",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "pending",
+   "expiresAt": 1758470090000,
+   "ttlSec": 90
+  },
+  "expected": {
+   "ok": true,
+   "value": "⏳ 待確認｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等\n─────────────\n⏱ 1 分 30 秒內有效，逾時自動失效\n回覆「進場」或「略過」（階段 2 會換成按鈕）"
+  }
+ },
+ {
+  "id": "render_pending_30",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "pending",
+   "expiresAt": 1758470030000,
+   "ttlSec": 30
+  },
+  "expected": {
+   "ok": true,
+   "value": "⏳ 待確認｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等\n─────────────\n⏱ 30 秒內有效，逾時自動失效\n回覆「進場」或「略過」（階段 2 會換成按鈕）"
+  }
+ },
+ {
+  "id": "render_pending_0",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "pending",
+   "expiresAt": 1758470000000,
+   "ttlSec": 0
+  },
+  "expected": {
+   "ok": true,
+   "value": "⏳ 待確認｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等\n─────────────\n⏱ 有效，逾時自動失效\n回覆「進場」或「略過」（階段 2 會換成按鈕）"
+  }
+ },
+ {
+  "id": "render_placed_live",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "placed"
+  },
+  "expected": {
+   "ok": true,
+   "value": "✅ 實盤下單｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等"
+  }
+ },
+ {
+  "id": "render_placed_demo",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": true,
+   "exchange": "okx",
+   "decision": "placed"
+  },
+  "expected": {
+   "ok": true,
+   "value": "📄 模擬盤下單｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等"
+  }
+ },
+ {
+  "id": "render_placed_dry",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": true,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "placed"
+  },
+  "expected": {
+   "ok": true,
+   "value": "🧪 模擬計算（未送單）｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等"
+  }
+ },
+ {
+  "id": "render_placed_confirmed",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "placed",
+   "confirmedByUser": true
+  },
+  "expected": {
+   "ok": true,
+   "value": "👍 已確認｜✅ 實盤下單｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等"
+  }
+ },
+ {
+  "id": "render_skipped",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [
+    "使用者略過"
+   ],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "skipped"
+  },
+  "expected": {
+   "ok": true,
+   "value": "⏭ 已略過｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等\n[原因] 使用者略過"
+  }
+ },
+ {
+  "id": "render_rejected",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": null,
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [
+    "min_grade: 等級 1 低於下限 2",
+    "timeframe: x"
+   ],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "rejected"
+  },
+  "expected": {
+   "ok": true,
+   "value": "⛔ 已拒絕｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[閘門] ✓停止 ✓冪等\n[原因] min_grade: 等級 1 低於下限 2；timeframe: x"
+  }
+ },
+ {
+  "id": "render_short_noscore",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": null,
+    "side": "short",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "contracts",
+    "orderQty": 12.96,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "okx",
+   "decision": "placed"
+  },
+  "expected": {
+   "ok": true,
+   "value": "✅ 實盤下單｜BTCUSDT.P 做空⬇\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 12.96 張（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] okx\n[閘門] ✓停止 ✓冪等"
+  }
+ },
+ {
+  "id": "render_bingx_unit",
+  "fn": "render_decision",
+  "input": {
+   "signal": {
+    "version": "11.9",
+    "sigId": "BTCUSDT.P-15-1758469990000-L",
+    "tsMs": 1758469995000,
+    "ageSec": 5,
+    "symbol": "BTCUSDT.P",
+    "timeframe": "15",
+    "grade": 3,
+    "score": 70,
+    "side": "long",
+    "entry": 85397.5,
+    "sl": 85011.8,
+    "tp": [
+     85783.2,
+     86169,
+     86554.7
+    ],
+    "riskDistance": 385.6999999999971
+   },
+   "sizing": {
+    "exchange": "okx",
+    "unit": "base",
+    "orderQty": 0.1296,
+    "baseQty": 0.12960000000000002,
+    "step": 0.01,
+    "minimum": 0.01,
+    "riskDistance": 385.6999999999971,
+    "riskAmountUsdt": 50,
+    "actualRiskUsdt": 49.9867,
+    "riskUtilisation": 0.9997,
+    "notionalUsdt": 11067.516,
+    "marginUsdt": 2213.5032,
+    "leverage": 5
+   },
+   "riskSummary": "✓停止 ✓冪等",
+   "reasons": [],
+   "dryRun": false,
+   "demo": false,
+   "exchange": "bingx",
+   "decision": "placed"
+  },
+  "expected": {
+   "ok": true,
+   "value": "✅ 實盤下單｜BTCUSDT.P 做多⬆\n─────────────\n[訊號] BTCUSDT.P-15-1758469990000-L\n[週期] 15｜[等級] 3★｜[分數] 70\n[進場] 85397.5\n[止損] 85011.8（距離 385.7000）\n[數量] 0.1296 幣（0.129600 base）\n[風險] 預算 50.00 → 實際 49.99 USDT（用量 100.0%）\n[名目] 11067.52 USDT｜保證金 2213.50 USDT\n[交易所] bingx\n[閘門] ✓停止 ✓冪等"
+  }
+ }
+]
